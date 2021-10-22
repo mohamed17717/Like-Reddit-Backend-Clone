@@ -1,0 +1,18 @@
+[
+  {
+    "model": "reports.ReportDecision",
+    "fields": { "name": "pending" }
+  },
+  {
+    "model": "reports.ReportDecision",
+    "fields": { "name": "safe" }
+  },
+  {
+    "model": "reports.ReportDecision",
+    "fields": { "name": "warn" }
+  },
+  {
+    "model": "reports.ReportDecision",
+    "fields": { "name": "dangerous" }
+  }
+]
