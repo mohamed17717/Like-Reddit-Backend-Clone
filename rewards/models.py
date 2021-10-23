@@ -15,7 +15,7 @@ class Reward(models.Model):
   title = models.CharField(max_length=128)
   icon = models.ImageField(upload_to='rewards_icons/')
   description = models.TextField(blank=True, null=True)
-  points = models.IntegerField()
+  points = models.PositiveIntegerField()
 
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
@@ -32,7 +32,7 @@ class Reward(models.Model):
 class RewardTodoAction(models.Model):
   # Actions that make user get rewards
   title = models.CharField(max_length=128)
-  points = models.IntegerField()
+  points = models.PositiveIntegerField()
 
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
@@ -50,7 +50,7 @@ class UserAction(models.Model):
   # actions user has done to obtain points -- count is how many action done
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='actions')
   action = models.ForeignKey(RewardTodoAction, on_delete=models.CASCADE, related_name='actions')
-  count = models.IntegerField(default=0)
+  count = models.PositiveIntegerField(default=0)
 
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
@@ -83,7 +83,7 @@ class UserReward(models.Model):
 # W: Runtime | R: Anyone
 class UserTotalPoints(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reward_points')
-  points = models.IntegerField(default=0)
+  points = models.PositiveIntegerField(default=0)
 
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
