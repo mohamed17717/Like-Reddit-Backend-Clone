@@ -6,8 +6,11 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 
 # W: Runtime | R: Runtime
 class PrivateContent(models.Model):
-  'Thread or Category or SubCategory'
-  content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+  limits = models.Q(app_label='threads', model='Thread') | \
+    models.Q(app_label='categories', model='Category') | \
+    models.Q(app_label='categories', model='SubCategory')
+
+  content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limits)
   content_id = models.PositiveIntegerField()
   content_object = GenericForeignKey('content_type', 'content_id')
 

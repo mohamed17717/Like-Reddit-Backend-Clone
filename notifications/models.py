@@ -36,10 +36,6 @@ class Notification(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
   type = models.ForeignKey(NotificationType, on_delete=models.CASCADE, related_name='notifications')
 
-  sender_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-  sender_id = models.PositiveIntegerField()
-  sender_object = GenericForeignKey('sender_type', 'sender_id')
-
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
 
@@ -54,6 +50,11 @@ class Notification(models.Model):
 # W: Runtime | R: Runtime
 class NotificationSender(models.Model):
   notification = models.ForeignKey(Notification, on_delete=models.CASCADE, related_name='senders')
+
+  # limits = models.Q(app_label='threads', model='Thread') | \
+  #   models.Q(app_label='categories', model='Category') | \
+  #   models.Q(app_label='categories', model='SubCategory')
+  # limit_choices_to=limits
 
   sender_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
   sender_id = models.PositiveIntegerField()
