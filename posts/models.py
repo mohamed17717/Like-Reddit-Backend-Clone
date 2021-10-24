@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from threads.models import Thread
 
 User = get_user_model()
 
@@ -105,17 +104,7 @@ class PostReplay(models.Model):
     return self.replay
 
 
-# W: Anyone | R: Anyone
-class ThreadPost(models.Model):
-  thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='posts')
-  post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='thread_post')
 
-  class Meta:
-    verbose_name = 'ThreadPost'
-    verbose_name_plural = 'ThreadPosts'
-
-  def __str__(self):
-    return self.replay
 
 
 

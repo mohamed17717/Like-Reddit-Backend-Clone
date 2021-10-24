@@ -17,12 +17,12 @@ class ThreadStates(models.Model):
     verbose_name_plural = 'Categories'
 
   def __str__(self):
-    return self.name
+    return self.state
 
 
   @classmethod
   def get_value_obj(cls, value) -> int:
-    obj = cls.objects.get_or_create(name=value)[0].pk
+    obj = cls.objects.get_or_create(state=value)[0].pk
     return obj
 
   @classmethod
@@ -58,3 +58,15 @@ class Thread(models.Model):
   def __str__(self):
     return self.title
 
+
+# W: Anyone | R: Anyone
+class ThreadPost(models.Model):
+  thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='posts')
+  post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='thread_post')
+
+  class Meta:
+    verbose_name = 'ThreadPost'
+    verbose_name_plural = 'ThreadPosts'
+
+  def __str__(self):
+    return self.replay
