@@ -38,15 +38,17 @@ class ThreadStates(models.Model):
   def get_pending_obj(cls): return cls.get_value_obj('pending')
 
   @classmethod
-  def get_pinned_obj(cls): return cls.get_value_obj('pinned')
-
+  def get_default_obj(cls):
+    default = ThreadDefaultSetting.objects.all().first()
+    default = default and default.pk or cls.get_active_obj()
+    return default
 
 # W: Anyone | R: Anyone
 class Thread(models.Model):
   post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='thread')
   title = models.CharField(max_length=128)
   category = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='threads')
-  state = models.ForeignKey(ThreadStates, on_delete=models.SET_DEFAULT, default=ThreadStates.get_active_obj, related_name='threads')
+  state = models.ForeignKey(ThreadStates, on_delete=models.SET_DEFAULT, default=ThreadStates.get_default_obj, related_name='threads')
 
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
@@ -70,3 +72,28 @@ class ThreadPost(models.Model):
 
   def __str__(self):
     return self.replay
+
+
+# W: Admin | R: Anyone
+class ThreadPin(models.Model):
+  thread = models.OneToOneField(Thread, on_delete=models.CASCADE, related_name='pinned')
+
+  class Meta:
+    verbose_name = 'ThreadPin'
+    verbose_name_plural = 'ThreadsPins'
+
+  def __str__(self):
+    return self.thread
+
+
+# W: Static | R: Admin
+class ThreadDefaultSetting(models.Model):
+  default_thread_state =  models.OneToOneField(ThreadStates, on_delete=models.SET_DEFAULT, default=ThreadStates.get_active_obj, related_name='default_state')
+  is_posting_active = models.BooleanField(default=True)
+
+  class Meta:
+    verbose_name = 'ThreadDefaultSetting'
+    verbose_name_plural = 'ThreadDefaultSettings'
+
+  def __str__(self):
+    return 'Set Thread Settings'
