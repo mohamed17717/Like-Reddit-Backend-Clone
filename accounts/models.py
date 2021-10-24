@@ -30,14 +30,14 @@ class UserVerified(models.Model):
 
 
 # W: Admin | R: Anyone
-class UserVerified(models.Model):
+class UserBan(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bans')
   days = models.PositiveIntegerField(default=1)
   start = models.DateField(auto_now_add=True)
 
   class Meta:
-    verbose_name = 'UserVerified'
-    verbose_name_plural = 'UsersVerified'
+    verbose_name = 'UserBan'
+    verbose_name_plural = 'UsersBans'
 
   def __str__(self):
     return self.user
