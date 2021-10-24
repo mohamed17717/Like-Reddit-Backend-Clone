@@ -45,6 +45,7 @@ INSTALLED_APPS = [
   'impressions',
   'notifications',
   'posts',
+  'privates',
   'reports',
   'rewards',
   'saves',
