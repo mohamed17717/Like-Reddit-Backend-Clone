@@ -29,6 +29,20 @@ class UserVerified(models.Model):
     return self.user
 
 
+
+# W: Admin | R: Anyone
+class UserPremium(models.Model):
+  """ Has Access To Private Content """
+  user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='premium')
+
+  class Meta:
+    verbose_name = 'UserPremium'
+    verbose_name_plural = 'UsersPremium'
+
+  def __str__(self):
+    return self.user
+
+
 # W: Admin | R: Anyone
 class UserBan(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bans')
