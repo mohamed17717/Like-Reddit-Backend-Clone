@@ -47,6 +47,7 @@ INSTALLED_APPS = [
   'posts',
   'reports',
   'rewards',
+  'saves',
   'threads',
 
   # third parties
