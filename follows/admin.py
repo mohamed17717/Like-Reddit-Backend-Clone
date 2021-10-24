@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import UserFollow
+from .models import ThreadFollow
+
+admin.site.register(UserFollow)
+admin.site.register(ThreadFollow)
+

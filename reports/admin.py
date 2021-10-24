@@ -1,3 +1,12 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import ReportDecision
+from .models import ReportType
+from .models import ReportSubType
+from .models import PostReport
+
+admin.site.register(ReportDecision)
+admin.site.register(ReportType)
+admin.site.register(ReportSubType)
+admin.site.register(PostReport)
+
