@@ -1,9 +1,11 @@
 from django.contrib import admin
 
-from .models import UserProfile
-from .models import UserVerified
-from .models import UserPremium
-from .models import UserBan
+from accounts.models import (
+  UserProfile,
+  UserVerified,
+  UserPremium,
+  UserBan,
+)
 
 admin.site.register(UserProfile)
 admin.site.register(UserVerified)

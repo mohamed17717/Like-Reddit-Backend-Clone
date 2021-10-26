@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UserKarma
+from rewards.models import UserKarma
 
 admin.site.register(UserKarma)
 

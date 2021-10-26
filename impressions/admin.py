@@ -1,10 +1,11 @@
 from django.contrib import admin
 
-from .models import Emoji
-from .models import PostEmoji
-from .models import PostUpVote
-from .models import PostDownVote
-
+from impressions.models import (
+  Emoji,
+  PostEmoji,
+  PostUpVote,
+  PostDownVote,
+)
 
 admin.site.register(Emoji)
 admin.site.register(PostEmoji)

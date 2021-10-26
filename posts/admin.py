@@ -1,10 +1,12 @@
 from django.contrib import admin
 
-from .models import PostConetntType
-from .models import PostContent
-from .models import PostState
-from .models import Post
-from .models import PostReplay
+from posts.models import (
+  PostConetntType,
+  PostContent,
+  PostState,
+  Post,
+  PostReplay,
+)
 
 admin.site.register(PostConetntType)
 admin.site.register(PostContent)

@@ -1,9 +1,11 @@
 from django.contrib import admin
 
-from .models import NotificationType
-from .models import NotificationMessage
-from .models import Notification
-from .models import NotificationSender
+from notifications.models import (
+  NotificationType,
+  NotificationMessage,
+  Notification,
+  NotificationSender,
+)
 
 admin.site.register(NotificationType)
 admin.site.register(NotificationMessage)
