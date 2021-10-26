@@ -49,14 +49,20 @@ class Notification(models.Model):
 
 # W: Runtime | R: Runtime
 class NotificationSender(models.Model):
+  limits = models.Q(app_label='follows', model='UserFollow') | \
+    models.Q(app_label='posts', model='PostReplay') | \
+    models.Q(app_label='threads', model='Thread') | \
+    models.Q(app_label='threads', model='ThreadPost') | \
+    models.Q(app_label='impressions', model='PostUpVote') | \
+    models.Q(app_label='impressions', model='PostDownVote') | \
+    models.Q(app_label='impressions', model='PostEmoji') | \
+    models.Q(app_label='accounts', model='UserBan') | \
+    models.Q(app_label='accounts', model='UserPremium') | \
+    models.Q(app_label='accounts', model='UserVerified')
+
   notification = models.ForeignKey(Notification, on_delete=models.CASCADE, related_name='senders')
 
-  # limits = models.Q(app_label='threads', model='Thread') | \
-  #   models.Q(app_label='categories', model='Category') | \
-  #   models.Q(app_label='categories', model='SubCategory')
-  # limit_choices_to=limits
-
-  sender_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+  sender_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limits)
   sender_id = models.PositiveIntegerField()
   sender_object = GenericForeignKey('sender_type', 'sender_id')
 
