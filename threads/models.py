@@ -1,11 +1,15 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
 from posts.models import Post
 from categories.models import SubCategory
 
 
+User = get_user_model()
+
 # TODO:
 #   set counters for threads etc...
+#   signal for user visit
 
 
 # W: Static | R: Admin
@@ -97,3 +101,50 @@ class ThreadDefaultSetting(models.Model):
 
   def __str__(self):
     return 'Set Thread Settings'
+
+
+
+
+class ThreadUserVisit(models.Model):
+  thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='visits')
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='visits')
+
+  created = models.DateField(auto_now_add=True)
+  updated = models.DateField(auto_now=True)
+
+  class Meta:
+    verbose_name = 'ThreadUserVisit'
+    verbose_name_plural = 'ThreadUserVisits'
+
+  def __str__(self):
+    return f'{self.user} -> {self.thread}'
+
+class Flair(models.Model):
+  title = models.CharField(max_length=128)
+
+  class Meta:
+    verbose_name = 'Flair'
+    verbose_name_plural = 'Flairs'
+
+  def __str__(self):
+    return self.title
+
+
+class ThreadFlair(models.Model):
+  thread = models.OneToOneField(Thread, on_delete=models.CASCADE, related_name='flair')
+  flair = models.ForeignKey(Flair, on_delete=models.CASCADE, related_name='threads')
+
+  created = models.DateField(auto_now_add=True)
+  updated = models.DateField(auto_now=True)
+
+  class Meta:
+    verbose_name = 'ThreadFlair'
+    verbose_name_plural = 'ThreadFlairs'
+
+  def __str__(self):
+    return f'({self.flair}) {self.thread}'
+
+
+
+
+
