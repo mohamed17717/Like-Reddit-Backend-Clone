@@ -19,5 +19,5 @@ class PrivateContent(models.Model):
     verbose_name_plural = 'PrivateContents'
 
   def __str__(self):
-    return self.content_object
+    return f'{self.content_object}'
 

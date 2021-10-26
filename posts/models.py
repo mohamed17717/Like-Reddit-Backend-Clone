@@ -101,7 +101,7 @@ class PostReplay(models.Model):
     verbose_name_plural = 'PostReplays'
 
   def __str__(self):
-    return self.replay
+    return f'{self.replay}'
 
 
 

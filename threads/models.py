@@ -75,7 +75,7 @@ class ThreadPost(models.Model):
     verbose_name_plural = 'ThreadPosts'
 
   def __str__(self):
-    return self.replay
+    return f'{self.post}'
 
 
 # W: Admin | R: Anyone
@@ -87,7 +87,7 @@ class ThreadPin(models.Model):
     verbose_name_plural = 'ThreadsPins'
 
   def __str__(self):
-    return self.thread
+    return f'{self.thread}'
 
 
 # W: Static | R: Admin
