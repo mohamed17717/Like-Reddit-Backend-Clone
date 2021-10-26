@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models.expressions import F
+from django.db.models.query_utils import Q
 
 from threads.models import Thread
 
@@ -19,6 +21,11 @@ class UserFollow(models.Model):
     verbose_name = 'UserFollow'
     verbose_name_plural = 'UserFollows'
 
+    constraints = [
+      models.UniqueConstraint(fields=['target', 'follower'], name='user_follow_user_once'),
+      models.CheckConstraint(check=~Q(target=F('follower')), name='user_cant_follow_himself')
+    ]
+
   def __str__(self):
     return f'{self.follower} -> {self.target}'
 
@@ -34,6 +41,10 @@ class ThreadFollow(models.Model):
   class Meta:
     verbose_name = 'ThreadFollow'
     verbose_name_plural = 'ThreadFollows'
+
+    constraints = [
+      models.UniqueConstraint(fields=['target', 'follower'], name='user_follow_thread_once')
+    ]
 
   def __str__(self):
     return f'{self.follower} -> {self.target}'
