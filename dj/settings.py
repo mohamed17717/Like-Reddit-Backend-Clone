@@ -52,6 +52,7 @@ INSTALLED_APPS = [
   'threads',
 
   # third parties
+  'rest_framework',
 ]
 
 MIDDLEWARE = [
