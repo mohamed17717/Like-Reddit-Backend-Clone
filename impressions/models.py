@@ -5,6 +5,7 @@ from posts.models import Post
 
 # TODO:
 #   may be set upVote counter in post itself better than calculate every time
+#   user cant upvote and downvote the same post 
 
 
 User = get_user_model()

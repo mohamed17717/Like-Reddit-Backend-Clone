@@ -47,6 +47,7 @@ class ThreadStates(models.Model):
     default = default and default.pk or cls.get_active_obj()
     return default
 
+
 # W: Anyone | R: Anyone
 class Thread(models.Model):
   post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='thread')
@@ -103,8 +104,7 @@ class ThreadDefaultSetting(models.Model):
     return 'Set Thread Settings'
 
 
-
-
+# W: Runtime | R: Runtime
 class ThreadUserVisit(models.Model):
   thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='visits')
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='visits')
@@ -119,6 +119,8 @@ class ThreadUserVisit(models.Model):
   def __str__(self):
     return f'{self.user} -> {self.thread}'
 
+
+# W: Admin | R: Anyone
 class Flair(models.Model):
   title = models.CharField(max_length=128)
 
@@ -130,6 +132,7 @@ class Flair(models.Model):
     return self.title
 
 
+# W: Anyone | R: Anyone
 class ThreadFlair(models.Model):
   thread = models.OneToOneField(Thread, on_delete=models.CASCADE, related_name='flair')
   flair = models.ForeignKey(Flair, on_delete=models.CASCADE, related_name='threads')
@@ -143,8 +146,4 @@ class ThreadFlair(models.Model):
 
   def __str__(self):
     return f'({self.flair}) {self.thread}'
-
-
-
-
 
