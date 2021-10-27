@@ -3,6 +3,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
+# TODO
+#   collapse notifications like upvote etc...
+#   notification seen field
+
 
 User = get_user_model()
 
