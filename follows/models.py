@@ -27,7 +27,7 @@ class UserFollow(models.Model):
     ]
 
   def __str__(self):
-    return f'{self.follower} -> {self.target}'
+    return f'New Follower ({self.follower}) for you ({self.target})'
 
 
 # W: Anyone | R: Anyone

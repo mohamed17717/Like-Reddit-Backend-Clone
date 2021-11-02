@@ -50,7 +50,7 @@ class Notification(models.Model):
 
     message = ''
     if sender.sender_object:
-      message = message_format.format(username=sender.sender_object.follower.username)
+      message = message_format.format(username=sender.sender_object)
     else:
       self.delete()
     return message
