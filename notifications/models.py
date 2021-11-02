@@ -43,9 +43,23 @@ class Notification(models.Model):
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
 
+  @property
+  def message(self):
+    sender = self.senders.all().first()
+    message_format = self.type.message.message_format
+
+    message = ''
+    if sender.sender_object:
+      message = message_format.format(username=sender.sender_object.follower.username)
+    else:
+      self.delete()
+    return message
+
   class Meta:
     verbose_name = 'Notification'
     verbose_name_plural = 'Notifications'
+
+    ordering = ['-created']
 
   def __str__(self):
     return f'{self.user} ({self.type})'
