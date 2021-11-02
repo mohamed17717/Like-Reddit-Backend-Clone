@@ -4,9 +4,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework import views, permissions
 from rest_framework.response import Response
 
-from follows.models import UserFollow
+from follows.models import UserFollow, ThreadFollow
 from accounts.serializers import UserBasicPublicSerializer
 from core.generics import ToggleRecordGenericView
+from threads.models import Thread
 
 
 User = get_user_model()
@@ -68,6 +69,18 @@ class UserFollow_ListFollowers_ApiView(views.APIView):
     return Response(serialized.data)
 
 
+class ThreadFollow_ToggleFollow_ApiView(ToggleRecordGenericView):
+  model = ThreadFollow
+  lookup_field = 'thread_id'
+  permission_classes = [permissions.IsAuthenticated]
+  
+  def get_queryset_kwargs(self, request, **kwargs):
+    thread_id = kwargs.get(self.lookup_field, '')
+
+    target = get_object_or_404(Thread, id=thread_id)
+    follower = request.user
+
+    return {'target': target, 'follower': follower}
 
 
 
