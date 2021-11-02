@@ -7,7 +7,7 @@ User = get_user_model()
 # W: Runtime | R: Anyone
 class UserProfile(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-  profile_picture = models.ImageField(upload_to='static/user-profile-pic/', blank=True, null=True)
+  profile_picture = models.ImageField(upload_to='static/user-profile-pic/', default='static/user-profile-pic/default.jpg')
 
   class Meta:
     verbose_name = 'UserProfile'
