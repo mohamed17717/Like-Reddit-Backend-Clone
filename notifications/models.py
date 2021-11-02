@@ -24,7 +24,7 @@ class NotificationType(models.Model):
 
 # W: Static | R: Runtime
 class NotificationMessage(models.Model):
-  type = models.ForeignKey(NotificationType, on_delete=models.CASCADE, related_name='messages')
+  type = models.OneToOneField(NotificationType, on_delete=models.CASCADE, related_name='message')
   message_format = models.TextField()
 
   class Meta:
