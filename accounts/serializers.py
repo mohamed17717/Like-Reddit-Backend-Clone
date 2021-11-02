@@ -1,6 +1,23 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
 from accounts.models import UserProfile, UserVerified, UserPremium, UserBan
 
+
+User = get_user_model()
+
+
+class UserBasicPublicSerializer(serializers.ModelSerializer):
+  profile_picture = serializers.StringRelatedField(source='profile.profile_picture.url')
+  class Meta:
+    model = User
+    fields = ('username', 'first_name', 'last_name', 'email', 'profile_picture',)
+
+class UserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = User
+    fields = '__all__'
+    extra_kwargs = {'password': {'write_only': True}}
 
 class UserProfileSerializer(serializers.ModelSerializer):
   class Meta:
