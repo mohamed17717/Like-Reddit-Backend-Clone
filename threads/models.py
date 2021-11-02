@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 from posts.models import Post
 from categories.models import SubCategory
@@ -64,6 +65,10 @@ class Thread(models.Model):
 
   def __str__(self):
     return self.title
+
+  def get_absolute_url(self):
+    return reverse("threads:thread-retrieve", kwargs={"pk": self.pk})
+  
 
 
 # W: Anyone | R: Anyone
