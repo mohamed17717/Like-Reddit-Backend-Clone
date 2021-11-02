@@ -26,12 +26,12 @@ from accounts.models import UserBan, UserPremium, UserVerified
 User = get_user_model()
 
 def notify(user:User, type:str, sender:models.Model):
-  type = NotificationType.objects.get_or_create(type=type)
+  type, _ = NotificationType.objects.get_or_create(type=type)
   notification = Notification.objects.create(user=user, type=type)
   NotificationSender.objects.create(notification=notification, sender_object=sender)
 
 def notify_many(users:list[User], type:str, sender:models.Model):
-  type = NotificationType.objects.get_or_create(type=type)
+  type, _ = NotificationType.objects.get_or_create(type=type)
 
   notifications = Notification.objects.bulk_create([ Notification(user=user, type=type) for user in users ])
   NotificationSender.objects.bulk_create([ NotificationSender(notification=notification, sender_object=sender) for notification in notifications ])
