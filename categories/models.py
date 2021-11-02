@@ -13,7 +13,7 @@ class Category(models.Model):
     verbose_name_plural = 'Categories'
 
   def __str__(self):
-    return self.name
+    return f'{self.id} - {self.name}'
 
 
 # W: Admin | R: Anyone
@@ -29,5 +29,5 @@ class SubCategory(models.Model):
     verbose_name_plural = 'SubCategories'
 
   def __str__(self):
-    return f'{self.name} ({self.category.name})'
+    return f'{self.id} -{self.name} ({self.category.name})'
 
