@@ -16,6 +16,7 @@ class SavePost(models.Model):
   class Meta:
     verbose_name = 'SavePost'
     verbose_name_plural = 'SavePosts'
+    ordering = ['-created']
 
     constraints = [
       models.UniqueConstraint(fields=['post', 'user'], name='user_post_unique_save_post')
