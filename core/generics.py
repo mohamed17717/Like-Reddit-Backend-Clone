@@ -18,26 +18,6 @@ class ToggleRecordGenericView(views.APIView):
   get_queryset_kwargs:function (kwargs for filter and create)
   '''
 
-  # def get(self, request, **kwargs):
-  #   self.request = request
-  #   self.kwargs = kwargs
-
-  #   status = {'created': 201, 'deleted': 200}
-  #   state = 'created' if self.toggle_record_mixin() else 'deleted'
-
-  #   return response.Response(state, status=status[state])
-
-  # def toggle_record_mixin(self):
-  #   qs_kwargs = self.get_queryset_kwargs(self.request, **self.kwargs)
-
-  #   qs = self.filter(qs_kwargs)
-  #   obj = None
-
-  #   if qs.exists(): qs.remove()
-  #   else: obj = self.create(qs_kwargs)
-
-  #   return obj
-
   def get(self, request, **kwargs):
     qs_kwargs = self.get_queryset_kwargs(request, **kwargs)
     self.model.objects.create(**qs_kwargs)
