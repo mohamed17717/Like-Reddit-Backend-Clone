@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 
 User = get_user_model()
@@ -89,6 +90,18 @@ class Post(models.Model):
 
   def __str__(self):
     return f'({self.user}) {self.description}'
+
+  
+  def get_absolute_url(self):
+    '''url is for the thread it attached with'''
+    # thread = self.thread or self.thread_post.thread or self.replay.post.thread_post.thread
+    # ((self.replay and self.replay.post or self).thread_post or self).thread
+
+    thread_deep2 = self.replay.post if hasattr(self, 'replay') else self
+    thread_deep1 = thread_deep2.thread_post if hasattr(thread_deep2, 'thread_post') else self
+    thread = thread_deep1.thread
+
+    return f'{thread.get_absolute_url()}#post{self.pk}'
 
 
 # W: Anyone | R: Anyone
