@@ -10,6 +10,13 @@ class CreateUpdateDestroyListViewSet(
 
   pass
 
+class CreateUpdateDestroyViewSet(
+    mixins.CreateModelMixin, mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin, viewsets.GenericViewSet
+  ):
+
+  pass
+
 
 class ToggleRecordGenericView(views.APIView):
   ''' Needed Fields
