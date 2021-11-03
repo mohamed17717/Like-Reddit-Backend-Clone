@@ -69,5 +69,7 @@ class PostReport(models.Model):
     verbose_name = 'PostReport'
     verbose_name_plural = 'PostReports'
 
+    ordering = ['-created']
+
   def __str__(self):
     return f'Post: {self.post.pk} ({self.type.title})'
