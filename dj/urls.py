@@ -12,6 +12,7 @@ urlpatterns = [
   path('', include('rewards.urls', namespace='rewards')),
   path('', include('reports.urls', namespace='reports')),
   path('', include('impressions.urls', namespace='impressions')),
+  path('', include('accounts.urls', namespace='accounts')),
 
   path('admin/', admin.site.urls),
   path('api-auth/', include('rest_framework.urls'))
