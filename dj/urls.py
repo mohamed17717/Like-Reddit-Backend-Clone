@@ -13,6 +13,7 @@ urlpatterns = [
   path('', include('reports.urls', namespace='reports')),
   path('', include('impressions.urls', namespace='impressions')),
   path('', include('accounts.urls', namespace='accounts')),
+  path('', include('posts.urls', namespace='posts')),
 
   path('admin/', admin.site.urls),
   path('api-auth/', include('rest_framework.urls'))
