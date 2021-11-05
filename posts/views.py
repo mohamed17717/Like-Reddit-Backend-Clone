@@ -1,14 +1,11 @@
-from django.db.models.query import QuerySet
-from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
 
 from core.generics import UpdateDestroyListRetrieveViewSet
-from posts.models import Post, PostReplay, PostState
+from posts.models import Post
 from posts.serializers import Post_OwnerActions_Serializer, PostReplaySerializer, Post_UpdateState_serializer
 
 
