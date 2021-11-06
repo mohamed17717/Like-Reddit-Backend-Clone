@@ -13,5 +13,5 @@ def user_start_follow_thread(sender, instance, created, **kwargs):
     thread = instance.thread
     user = instance.post.user
 
-    ThreadFollow.objects.create(target=thread, follower=user)
+    ThreadFollow.objects.get_or_create(target=thread, follower=user)
 
