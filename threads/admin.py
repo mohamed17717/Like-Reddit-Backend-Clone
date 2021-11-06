@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from threads.models import (
-  ThreadStates,
+  ThreadState,
   Thread,
   ThreadPost,
   ThreadPin,
@@ -11,7 +11,7 @@ from threads.models import (
   ThreadFlair,
 )
 
-admin.site.register(ThreadStates)
+admin.site.register(ThreadState)
 admin.site.register(Thread)
 admin.site.register(ThreadPost)
 admin.site.register(ThreadPin)
