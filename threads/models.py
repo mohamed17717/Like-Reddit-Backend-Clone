@@ -14,12 +14,12 @@ User = get_user_model()
 
 
 # W: Static | R: Admin
-class ThreadStates(models.Model):
+class ThreadState(models.Model):
   state = models.CharField(max_length=32)
 
   class Meta:
-    verbose_name = 'Category'
-    verbose_name_plural = 'Categories'
+    verbose_name = 'ThreadState'
+    verbose_name_plural = 'ThreadStates'
 
   def __str__(self):
     return self.state
@@ -54,7 +54,7 @@ class Thread(models.Model):
   post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='thread')
   title = models.CharField(max_length=128)
   category = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='threads')
-  state = models.ForeignKey(ThreadStates, on_delete=models.SET_DEFAULT, default=ThreadStates.get_default_obj, related_name='threads')
+  state = models.ForeignKey(ThreadState, on_delete=models.SET_DEFAULT, default=ThreadState.get_default_obj, related_name='threads')
 
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
@@ -76,9 +76,15 @@ class ThreadPost(models.Model):
   thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='posts')
   post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='thread_post')
 
+  created = models.DateField(auto_now_add=True)
+  updated = models.DateField(auto_now=True)
+
   class Meta:
     verbose_name = 'ThreadPost'
     verbose_name_plural = 'ThreadPosts'
+
+    ordering = ['-created']
+
 
   def __str__(self):
     return f'{self.post}'
@@ -98,7 +104,7 @@ class ThreadPin(models.Model):
 
 # W: Static | R: Admin
 class ThreadDefaultSetting(models.Model):
-  default_thread_state =  models.OneToOneField(ThreadStates, on_delete=models.SET_DEFAULT, default=ThreadStates.get_active_obj, related_name='default_state')
+  default_thread_state =  models.OneToOneField(ThreadState, on_delete=models.SET_DEFAULT, default=ThreadState.get_active_obj, related_name='default_state')
   is_posting_active = models.BooleanField(default=True)
 
   class Meta:
