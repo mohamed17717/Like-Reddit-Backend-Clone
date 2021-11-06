@@ -28,3 +28,11 @@ class SubCategorySerializer(serializers.ModelSerializer):
     model = SubCategory
     fields = '__all__'
 
+
+
+class SubCategory_ListFromThread_Serializer(serializers.ModelSerializer):
+  main_category = serializers.CharField(source='category.name', read_only=True)
+  class Meta:
+    model = SubCategory
+    fields = ('main_category', 'name')
+
