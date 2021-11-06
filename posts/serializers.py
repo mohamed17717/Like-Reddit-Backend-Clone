@@ -15,7 +15,7 @@ class PostContentSerializer(serializers.ModelSerializer):
   type = serializers.CharField(source='type.type')
   class Meta:
     model = PostContent
-    fields = '__all__'
+    fields = ('type', 'content')
 
 
 class PostStateSerializer(serializers.ModelSerializer):
@@ -28,6 +28,27 @@ class PostSerializer(serializers.ModelSerializer):
   class Meta:
     model = Post
     fields = '__all__'
+
+class Post_InOwnerThreadActions_Serializer(serializers.ModelSerializer):
+  post_content = PostContentSerializer()
+
+  class Meta:
+    model = Post
+    fields = ('description', 'post_content', )
+
+
+class Post_Commenting_Serializer(serializers.ModelSerializer):
+  post_content = PostContentSerializer()
+
+  class Meta:
+    model = Post
+    fields = ('post_content', )
+
+class Post_ForListing_Serializer(serializers.ModelSerializer):
+  user = UserBasicPublicSerializer(read_only=True)
+  class Meta:
+    model = Post
+    fields = ('id', 'description', 'user',)
 
 
 class Post_OwnerActions_Serializer(serializers.ModelSerializer):
