@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
 
   # third parties
   'rest_framework',
+  'djoser',
 ]
 
 MIDDLEWARE = [
@@ -143,4 +145,44 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
   'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
   'PAGE_SIZE': 5,
+}
+
+# Email Setup
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'max891997@gmail.com'
+EMAIL_HOST_PASSWORD = 'cushkehryomxidxx'
+EMAIL_USE_TLS = True
+
+# DJOSER
+REST_FRAMEWORK = {
+  'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+  ),
+}
+
+SIMPLE_JWT = {
+  'AUTH_HEADER_TYPES': ('JWT',),
+  'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+  'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+DJOSER = {
+  'LOGIN_FIELD': 'email',
+  'USER_CREATE_PASSWORD_RETYPE': True,
+  'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
+  'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+  'SEND_CONFIRMATION_EMAIL': True,
+  'SET_PASSWORD_RETYPE': True,
+  'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+  'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
+  'ACTIVATION_URL': 'activate/{uid}/{token}',
+  'SEND_ACTIVATION_EMAIL': True,
+  'SERIALIZERS': {
+    'user_create': 'accounts.serializers.UserCreateSerializer',
+    'user': 'accounts.serializers.UserCreateSerializer',
+    'user_delete': 'djoser.serializers.UserDeleteSerializer',
+  }
 }
