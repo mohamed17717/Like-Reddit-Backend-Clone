@@ -19,6 +19,10 @@ class Thread_Retrieve_ApiView(RetrieveAPIView):
   queryset = Thread.objects.all()
   serializer_class = Thread_Owner_serializer
 
+  lookup_field = 'pk'
+  lookup_url_kwarg = 'thread_id'
+
+
 
 class Thread_ListOnSubCategory_ApiView(APIView, LimitOffsetPagination):
   def get(self, request, sub_category_id):
@@ -33,6 +37,9 @@ class Thread_ListOnSubCategory_ApiView(APIView, LimitOffsetPagination):
 class Thread_Commenting_ApiView(CreateAPIView):
   permission_classes = [IsAuthenticated]
   serializer_class = ThreadPost_Serializer
+
+  lookup_field = 'pk'
+  lookup_url_kwarg = 'thread_id'
 
   def get_serializer_context(self):
     context = super(Thread_Commenting_ApiView, self).get_serializer_context()

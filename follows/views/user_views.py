@@ -14,11 +14,13 @@ User = get_user_model()
 
 class UserFollow_ToggleFollow_ApiView(ToggleRecordGenericView):
   model = UserFollow
-  lookup_field = 'username'
   permission_classes = [IsAuthenticated]
 
+  lookup_field = 'username'
+  lookup_url_kwarg = 'username'
+
   def get_queryset_kwargs(self, request, **kwargs):
-    username = kwargs.get(self.lookup_field, '')
+    username = kwargs.get(self.lookup_url_kwarg, '')
 
     target = get_object_or_404(User, username=username)
     follower = request.user
@@ -27,11 +29,12 @@ class UserFollow_ToggleFollow_ApiView(ToggleRecordGenericView):
 
 class UserFollow_CheckFollow_ApiView(views.APIView):
   model = UserFollow
-  lookup_field = 'username'
   permission_classes = [IsAuthenticated]
 
+  lookup_url_kwarg = 'username'
+
   def get_queryset_kwargs(self, request, **kwargs):
-    username = kwargs.get(self.lookup_field, '')
+    username = kwargs.get(self.lookup_url_kwarg, '')
 
     target = get_object_or_404(User, username=username)
     follower = request.user
@@ -47,11 +50,13 @@ class UserFollow_CheckFollow_ApiView(views.APIView):
 
 class ThreadFollow_ToggleFollow_ApiView(ToggleRecordGenericView):
   model = ThreadFollow
-  lookup_field = 'thread_id'
   permission_classes = [IsAuthenticated]
+
+  lookup_field = 'pk'
+  lookup_url_kwarg = 'thread_id'
   
   def get_queryset_kwargs(self, request, **kwargs):
-    thread_id = kwargs.get(self.lookup_field, '')
+    thread_id = kwargs.get(self.lookup_url_kwarg, '')
 
     target = get_object_or_404(Thread, id=thread_id)
     follower = request.user

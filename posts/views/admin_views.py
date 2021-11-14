@@ -9,5 +9,7 @@ class Post_AdminUpdateState_ApiView(RetrieveUpdateAPIView):
   queryset = Post.objects.all()
   permission_classes = [IsAdminUser]
   serializer_class = Post_UpdateState_serializer
+
   lookup_field = 'pk'
+  lookup_url_kwarg = 'post_id'
 

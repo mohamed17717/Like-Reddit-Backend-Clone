@@ -13,7 +13,8 @@ from posts.serializers import (
 
 
 class PostReplay_ListPostReplays_ApiView(APIView):
-  lookup_field = 'post_id'
+  lookup_field = 'pk'
+  lookup_url_kwarg = 'post_id'
 
   def get(self, request, post_id):
     post = get_object_or_404(Post, id=post_id)

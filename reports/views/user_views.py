@@ -28,13 +28,15 @@ class ReportSubType_UserList_ApiView(ListAPIView):
 
 class PostReport_UserReport_Apiview(CreateAPIView):
   serializer_class = PostReport_Create_Serializer
-  lookup_field = 'post_id'
   permission_classes = [IsAuthenticated]
+
+  lookup_field = 'pk'
+  lookup_url_kwarg = 'post_id'
 
   def perform_create(self, serializer):
     user = self.request.user
 
-    post_id = self.kwargs.get(self.lookup_field, '')
+    post_id = self.kwargs.get(self.lookup_url_kwarg, '')
     post = get_object_or_404(Post, id=post_id)
 
     serializer.save(user=user, post=post)

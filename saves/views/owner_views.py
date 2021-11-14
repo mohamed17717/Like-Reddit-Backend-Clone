@@ -12,10 +12,12 @@ from saves.serializers import SavePostSerializer
 
 class SavePost_ToggleSave_ApiView(ToggleRecordGenericView):
   model = SavePost
-  lookup_field = 'post_id'
+
+  lookup_field = 'pk'
+  lookup_url_kwarg = 'post_id'
 
   def get_queryset_kwargs(self, request, **kwargs):
-    post_id = kwargs.get(self.lookup_field, '')
+    post_id = kwargs.get(self.lookup_url_kwarg, '')
     post = get_object_or_404(Post, id=post_id)
 
     return {'user': request.user, 'post': post}

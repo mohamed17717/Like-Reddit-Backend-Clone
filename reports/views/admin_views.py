@@ -60,5 +60,8 @@ class PostReport_UpdateDecision_Apiview(UpdateAPIView):
   serializer_class = PostReport_UpdateDecision_Serializer
   permission_classes = [IsAdminUser]
 
+  lookup_field = 'pk'
+  lookup_url_kwarg = 'report_id'
+
 
 

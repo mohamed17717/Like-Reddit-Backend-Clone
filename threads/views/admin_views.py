@@ -28,3 +28,7 @@ class Thread_AdminUpdateState_ApiView(RetrieveUpdateAPIView):
   permission_classes = [IsAdminUser]
   serializer_class = Thread_AdminUpdateState_Serializer
 
+  lookup_field = 'pk'
+  lookup_url_kwarg = 'thread_id'
+
+
