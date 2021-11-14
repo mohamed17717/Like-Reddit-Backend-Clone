@@ -1,6 +1,6 @@
 from django.urls import path
 
-from privates.views import (
+from privates.views.admin_views import (
   PrivateContent_ToggleThreadPrivate_ApiView,
   PrivateContent_ToggleCategoryPrivate_ApiView,
   PrivateContent_ToggleSubCategoryPrivate_ApiView,

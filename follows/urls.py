@@ -1,12 +1,15 @@
 from django.urls import path
 
-from follows.views import (
+from follows.views.user_views import (
   UserFollow_ToggleFollow_ApiView,
   UserFollow_CheckFollow_ApiView,
-  UserFollow_ListFollows_ApiView,
-  UserFollow_ListFollowers_ApiView,
 
   ThreadFollow_ToggleFollow_ApiView,
+)
+
+from follows.views.owner_views import (
+  UserFollow_ListFollows_ApiView,
+  UserFollow_ListFollowers_ApiView,
 )
 
 app_name = 'follows'

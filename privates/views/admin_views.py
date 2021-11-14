@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-from core.generics import ToggleRecordGenericView
 from django.contrib.contenttypes.models import ContentType
 
+from rest_framework.permissions import IsAdminUser
+
+from core.generics import ToggleRecordGenericView
 
 from privates.models import PrivateContent
 from threads.models import Thread
@@ -11,6 +12,7 @@ from categories.models import Category, SubCategory
 class PrivateContent_ToggleThreadPrivate_ApiView(ToggleRecordGenericView):
   model = PrivateContent
   lookup_field = 'thread_id'
+  permission_classes = [IsAdminUser]
 
   def get_queryset_kwargs(self, request, **kwargs):
     thread_id = kwargs.get(self.lookup_field, '')
@@ -21,6 +23,7 @@ class PrivateContent_ToggleThreadPrivate_ApiView(ToggleRecordGenericView):
 class PrivateContent_ToggleCategoryPrivate_ApiView(ToggleRecordGenericView):
   model = PrivateContent
   lookup_field = 'category_id'
+  permission_classes = [IsAdminUser]
 
   def get_queryset_kwargs(self, request, **kwargs):
     category_id = kwargs.get(self.lookup_field, '')
@@ -31,6 +34,7 @@ class PrivateContent_ToggleCategoryPrivate_ApiView(ToggleRecordGenericView):
 class PrivateContent_ToggleSubCategoryPrivate_ApiView(ToggleRecordGenericView):
   model = PrivateContent
   lookup_field = 'sub_category_id'
+  permission_classes = [IsAdminUser]
 
   def get_queryset_kwargs(self, request, **kwargs):
     sub_category_id = kwargs.get(self.lookup_field, '')

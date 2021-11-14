@@ -2,18 +2,15 @@ from django.urls import path
 
 from rest_framework import routers
 
-
-from reports.views import (
+from reports.views.user_views import PostReport_UserReport_Apiview
+from reports.views.admin_views import (
   ReportType_ApiView,
   ReportSubType_ApiView,
-
-  PostReport_UserReport_Apiview,
-
   PostReport_ListReports_ApiView,
   ReportDecision_ListDecision_ApiView,
-
   PostReport_UpdateDecision_Apiview,
 )
+
 
 app_name = 'reports'
 router = routers.SimpleRouter()

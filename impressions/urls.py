@@ -1,12 +1,12 @@
 from django.urls import path
 from rest_framework import routers
-from .views import (
-  Emoji_ApiView,
-
+from impressions.views.user_views import (
   PostEmoji_UserReact_ApiView,
   PostUpVote_UserReact_ApiView,
   PostDownVote_UserReact_ApiView
 )
+
+from impressions.views.admin_views import  Emoji_ApiView
 
 app_name = 'impressions'
 router = routers.SimpleRouter()

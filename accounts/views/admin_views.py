@@ -5,6 +5,7 @@ from core.generics import CreateDestroyListViewSet
 from accounts.models import UserBan, UserPremium, UserVerified
 from accounts.serializers import UserBanSerializer, UserPremiumSerializer, UserVerifiedSerializer
 
+
 class UserVerified_ApiView(CreateDestroyListViewSet):
   queryset = UserVerified.objects.all()
   serializer_class = UserVerifiedSerializer

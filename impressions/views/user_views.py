@@ -1,20 +1,14 @@
 from django.shortcuts import get_object_or_404
+
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK
 from rest_framework.response import Response
 
-from core.generics import CreateDestroyListViewSet, ToggleRecordGenericView
-from core.permissions import IsAdminOrReadOnly
+from core.generics import ToggleRecordGenericView
+
 from impressions.models import Emoji, PostDownVote, PostEmoji, PostUpVote
-from impressions.serializers import EmojiSerializer
 from posts.models import Post
-
-class Emoji_ApiView(CreateDestroyListViewSet):
-  queryset = Emoji.objects.all()
-  serializer_class = EmojiSerializer
-
-  permission_classes = [IsAdminOrReadOnly]
 
 
 class PostEmoji_UserReact_ApiView(ToggleRecordGenericView):
@@ -28,16 +22,6 @@ class PostEmoji_UserReact_ApiView(ToggleRecordGenericView):
     emoji = get_object_or_404(Emoji, id=emoji_id)
 
     return {'user': request.user, 'post': post, 'emoji': emoji}
-
-
-# class PostUpVote_UserReact_ApiView(ToggleRecordGenericView):
-#   model = PostUpVote
-#   permission_classes = [IsAuthenticated]
-#   post_lookup_field = 'post_id'
-
-#   def get_queryset_kwargs(self, request, post_id, **kwargs):
-#     post = get_object_or_404(Post, id=post_id)
-#     return {'user': request.user, 'post': post}
 
 class PostUpVote_UserReact_ApiView(APIView):
   permission_classes = [IsAuthenticated]
@@ -60,19 +44,6 @@ class PostUpVote_UserReact_ApiView(APIView):
 
     self.model.objects.filter(post=post, user=user).delete()
     return Response(status=HTTP_200_OK)
-
-
-
-
-# class PostDownVote_UserReact_ApiView(ToggleRecordGenericView):
-#   model = PostDownVote
-#   permission_classes = [IsAuthenticated]
-#   post_lookup_field = 'post_id'
-
-#   def get_queryset_kwargs(self, request, post_id, **kwargs):
-#     post = get_object_or_404(Post, id=post_id)
-#     return {'user': request.user, 'post': post}
-
 
 class PostDownVote_UserReact_ApiView(APIView):
   permission_classes = [IsAuthenticated]

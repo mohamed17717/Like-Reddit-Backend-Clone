@@ -1,9 +1,10 @@
-
 from django.shortcuts import get_object_or_404
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from core.generics import ToggleRecordGenericView
+
 from posts.models import Post
 from saves.models import SavePost
 from saves.serializers import SavePostSerializer

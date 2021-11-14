@@ -1,6 +1,6 @@
 from django.urls import path
 
-from saves.views import (
+from saves.views.owner_views import (
   SavePost_ToggleSave_ApiView,
   SavePost_ListSaves_ApiView,
 )

@@ -1,23 +1,24 @@
 from django.urls import path
 from rest_framework import routers
 
-from threads.views import (
+from threads.views.owner_views import (
   Thread_Owner_ApiView,
-
-  Thread_Retrieve_ApiView,
-
-  ThreadPin_Toggle_ApiView,
-  ThreadPin_List_ApiView,
-
-  Thread_ListOnSubCategory_ApiView,
-
-  Thread_AdminUpdateState_ApiView,
-
-  Thread_Commenting_ApiView,
-
   Thread_OwnerUpdateStatePrivate_ApiView,
   Thread_OwnerUpdateStatePublic_ApiView
 )
+
+from threads.views.user_views import (
+  Thread_Retrieve_ApiView,
+  Thread_ListOnSubCategory_ApiView,
+  Thread_Commenting_ApiView,
+)
+
+from threads.views.admin_views import (
+  ThreadPin_Toggle_ApiView,
+  ThreadPin_List_ApiView,
+  Thread_AdminUpdateState_ApiView,
+)
+
 
 app_name = 'threads'
 router = routers.SimpleRouter()

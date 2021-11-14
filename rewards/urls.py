@@ -1,6 +1,6 @@
 from django.urls import path
 
-from rewards.views import (
+from rewards.views.admin_views import (
   UserKarma_List_ApiView
 )
 
