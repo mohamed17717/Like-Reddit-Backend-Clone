@@ -7,5 +7,5 @@ from rewards.views.admin_views import (
 app_name = 'rewards'
 
 urlpatterns = [
-  path('u/list/karma/', UserKarma_List_ApiView.as_view(), name="list-users-on-karma"),
+  path('admin-user/list-on-karma/', UserKarma_List_ApiView.as_view(), name="list-users-on-karma"),
 ]

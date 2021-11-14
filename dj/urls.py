@@ -17,6 +17,6 @@ urlpatterns = [
   path('', include('accounts.urls', namespace='accounts')),
   path('', include('posts.urls', namespace='posts')),
 
-  path('admin/', admin.site.urls),
+  path('dashboard/', admin.site.urls),
   path('docs/', include_docs_urls(title='DJ Forum API'))
 ]

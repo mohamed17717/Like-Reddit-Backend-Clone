@@ -8,6 +8,6 @@ from saves.views.owner_views import (
 app_name = 'saves'
 
 urlpatterns = [
-  path('p/<int:post_id>/save/', SavePost_ToggleSave_ApiView.as_view(), name="save-post-toggle"),
-  path('p/saves/', SavePost_ListSaves_ApiView.as_view(), name="list-saved-posts"),
+  path('post/save/<int:post_id>/', SavePost_ToggleSave_ApiView.as_view(), name="save-post-toggle"),
+  path('post/saves/', SavePost_ListSaves_ApiView.as_view(), name="list-saved-posts"),
 ]

@@ -5,6 +5,6 @@ from notifications.views.owner_views import Notification_ListOwn_ApiView
 app_name = 'notifications'
 
 urlpatterns = [
-  path('notifications/', Notification_ListOwn_ApiView.as_view(), name='list-notifications'),
+  path('user/notifications/', Notification_ListOwn_ApiView.as_view(), name='list-notifications'),
 ]
 

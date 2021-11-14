@@ -19,19 +19,18 @@ from reports.views.admin_views import (
 app_name = 'reports'
 router = routers.SimpleRouter()
 
-router.register(r'report-types', ReportType_ApiView)
-router.register(r'sub-report-types', ReportSubType_ApiView)
+router.register(r'admin-report/type', ReportType_ApiView)
+router.register(r'admin-report/sub-type', ReportSubType_ApiView)
 
 
 urlpatterns = [
-  path('report-types/list/', ReportType_UserList_ApiView.as_view(), name='list-reports-type'),
-  path('reports-sub-types/list/', ReportSubType_UserList_ApiView.as_view(), name='list-reports-sub-types'),
+  path('report/type/list/', ReportType_UserList_ApiView.as_view(), name='list-reports-type'),
+  path('report/sub-type/list/', ReportSubType_UserList_ApiView.as_view(), name='list-reports-sub-types'),
+  path('report/post/<int:post_id>/', PostReport_UserReport_Apiview.as_view(), name='post-report'),
 
-  path('p/<int:post_id>/report/', PostReport_UserReport_Apiview.as_view(), name='post-report'),
-  path('r/list/', PostReport_ListReports_ApiView.as_view(), name='list-reports'),
-  path('r/decision/list/', ReportDecision_ListDecision_ApiView.as_view(), name='list-report-decisions'),
-
-  path('r/<int:pk>/update-decision/', PostReport_UpdateDecision_Apiview.as_view(), name='update-report-decision'),
+  path('admin-report/list/', PostReport_ListReports_ApiView.as_view(), name='list-reports'),
+  path('admin-report/decision/list/', ReportDecision_ListDecision_ApiView.as_view(), name='list-report-decisions'),
+  path('admin-report/decision/<int:report_id>/', PostReport_UpdateDecision_Apiview.as_view(), name='update-report-decision'),
 
 ] + router.urls
 

@@ -23,18 +23,18 @@ from threads.views.admin_views import (
 app_name = 'threads'
 router = routers.SimpleRouter()
 
-router.register(r'th/owner', Thread_Owner_ApiView, 'thread-owner')
+router.register(r'own/thread', Thread_Owner_ApiView, 'thread-owner')
 
 urlpatterns = [
-  path('th/<int:pk>/', Thread_Retrieve_ApiView.as_view(), name="thread-retrieve"),
-  path('th/list/<int:sub_category_id>/', Thread_ListOnSubCategory_ApiView.as_view(), name="list-threads-category"),
-  path('th/<int:pk>/comment/', Thread_Commenting_ApiView.as_view(), name="thread-commenting"),
+  path('thread/<int:thread_id>/', Thread_Retrieve_ApiView.as_view(), name="thread-retrieve"),
+  path('thread/list/<int:sub_category_id>/', Thread_ListOnSubCategory_ApiView.as_view(), name="list-threads-category"),
+  path('thread/<int:thread_id>/comment/', Thread_Commenting_ApiView.as_view(), name="thread-commenting"),
 
-  path('th/<int:thread_id>/pin/', ThreadPin_Toggle_ApiView.as_view(), name='pin-thread'),
-  path('th/pinned/', ThreadPin_List_ApiView.as_view(), name='list-pinned-threads'),
-  path('th/<int:pk>/update-state/', Thread_AdminUpdateState_ApiView.as_view(), name='admin-update-thread-state'),
+  path('admin-thread/<int:thread_id>/pin/', ThreadPin_Toggle_ApiView.as_view(), name='pin-thread'),
+  path('admin-thread/pinned/', ThreadPin_List_ApiView.as_view(), name='list-pinned-threads'),
+  path('admin-thread/<int:thread_id>/update-state/', Thread_AdminUpdateState_ApiView.as_view(), name='admin-update-thread-state'),
 
-  path('th/<int:thread_id>/private/', Thread_OwnerUpdateStatePrivate_ApiView.as_view(), name='owner-make-post-private'),
-  path('th/<int:thread_id>/public/', Thread_OwnerUpdateStatePublic_ApiView.as_view(), name='owner-make-post-public'),
+  path('own/thread/<int:thread_id>/private/', Thread_OwnerUpdateStatePrivate_ApiView.as_view(), name='owner-make-post-private'),
+  path('own/thread/<int:thread_id>/public/', Thread_OwnerUpdateStatePublic_ApiView.as_view(), name='owner-make-post-public'),
 ] + router.urls
 

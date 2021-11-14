@@ -15,10 +15,11 @@ from follows.views.owner_views import (
 app_name = 'follows'
 
 urlpatterns = [
-  path('u/<str:username>/follow/', UserFollow_ToggleFollow_ApiView.as_view(), name="user-follow-toggle"),
-  path('u/<str:username>/check-follow/', UserFollow_CheckFollow_ApiView.as_view(), name="user-follow-check"),
-  path('following/', UserFollow_ListFollows_ApiView.as_view(), name="user-following-list"),
-  path('followers/', UserFollow_ListFollowers_ApiView.as_view(), name="user-followers-list"),
+  path('user/follow/<str:username>/', UserFollow_ToggleFollow_ApiView.as_view(), name="user-follow-toggle"),
+  path('user/follow/<str:username>/check/', UserFollow_CheckFollow_ApiView.as_view(), name="user-follow-check"),
 
-  path('t/<int:thread_id>/follow/', ThreadFollow_ToggleFollow_ApiView.as_view(), name="thread-follow-toggle"),
+  path('user/following/', UserFollow_ListFollows_ApiView.as_view(), name="user-following-list"),
+  path('user/followers/', UserFollow_ListFollowers_ApiView.as_view(), name="user-followers-list"),
+
+  path('thread/follow/<int:thread_id>/', ThreadFollow_ToggleFollow_ApiView.as_view(), name="thread-follow-toggle"),
 ]
