@@ -1,10 +1,29 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 
 from posts.models import Post
-from reports.serializers import PostReport_Create_Serializer
+from reports.models import ReportSubType, ReportType
+from reports.serializers import (
+  PostReport_Create_Serializer,
+  ReportSubTypeSerializer,
+  ReportTypeSerializer
+)
+
+
+class ReportType_UserList_ApiView(ListAPIView):
+  queryset = ReportType.objects.all()
+  serializer_class = ReportTypeSerializer
+  permission_classes = [IsAuthenticated]
+  paginator = None
+
+
+class ReportSubType_UserList_ApiView(ListAPIView):
+  queryset = ReportSubType.objects.all()
+  serializer_class = ReportSubTypeSerializer
+  permission_classes = [IsAuthenticated]
+  paginator = None
 
 
 class PostReport_UserReport_Apiview(CreateAPIView):

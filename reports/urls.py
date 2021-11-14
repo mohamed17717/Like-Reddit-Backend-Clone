@@ -2,7 +2,11 @@ from django.urls import path
 
 from rest_framework import routers
 
-from reports.views.user_views import PostReport_UserReport_Apiview
+from reports.views.user_views import (
+  PostReport_UserReport_Apiview,
+  ReportType_UserList_ApiView,
+  ReportSubType_UserList_ApiView,
+)
 from reports.views.admin_views import (
   ReportType_ApiView,
   ReportSubType_ApiView,
@@ -20,6 +24,9 @@ router.register(r'sub-report-types', ReportSubType_ApiView)
 
 
 urlpatterns = [
+  path('report-types/list/', ReportType_UserList_ApiView.as_view(), name='list-reports-type'),
+  path('reports-sub-types/list/', ReportSubType_UserList_ApiView.as_view(), name='list-reports-sub-types'),
+
   path('p/<int:post_id>/report/', PostReport_UserReport_Apiview.as_view(), name='post-report'),
   path('r/list/', PostReport_ListReports_ApiView.as_view(), name='list-reports'),
   path('r/decision/list/', ReportDecision_ListDecision_ApiView.as_view(), name='list-report-decisions'),

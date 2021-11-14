@@ -5,8 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from rest_framework.generics import ListAPIView, UpdateAPIView
 
-from core.generics import CreateUpdateDestroyViewSet
-from core.permissions import IsAdminOrReadOnly
+from core.generics import CreateUpdateDestroyListViewSet
 
 from reports.models import PostReport, ReportDecision, ReportType, ReportSubType
 from reports.serializers import (
@@ -23,7 +22,7 @@ class ReportType_ApiView(ModelViewSet):
   serializer_class = ReportTypeSerializer
   model = ReportType
 
-  permission_classes = [IsAdminOrReadOnly]
+  permission_classes = [IsAdminUser]
   paginator = None
 
   def retrieve(self, request, *args, **kwargs):
@@ -34,11 +33,11 @@ class ReportType_ApiView(ModelViewSet):
     return Response(sub_types.data)
 
 
-class ReportSubType_ApiView(CreateUpdateDestroyViewSet):
+class ReportSubType_ApiView(CreateUpdateDestroyListViewSet):
   queryset = ReportSubType.objects.all()
   serializer_class = ReportSubTypeSerializer
 
-  permission_classes = [IsAdminOrReadOnly]
+  permission_classes = [IsAdminUser]
   paginator = None
 
 

@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from rest_framework.generics import ListAPIView
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -9,6 +10,13 @@ from core.generics import ToggleRecordGenericView
 
 from impressions.models import Emoji, PostDownVote, PostEmoji, PostUpVote
 from posts.models import Post
+from impressions.serializers import EmojiSerializer
+
+
+class Emoji_UserList_ApiView(ListAPIView):
+  queryset = Emoji.objects.all()
+  serializer_class = EmojiSerializer
+  permission_classes = [IsAuthenticated]
 
 
 class PostEmoji_UserReact_ApiView(ToggleRecordGenericView):
