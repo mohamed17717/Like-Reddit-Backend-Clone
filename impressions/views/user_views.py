@@ -23,7 +23,7 @@ class PostEmoji_UserReact_ApiView(ToggleRecordGenericView):
   model = PostEmoji
   permission_classes = [IsAuthenticated]
 
-  def get_queryset_kwargs(self, request, post_id, emoji_id, **kwargs):
+  def get_queryset_kwargs(self, request, post_id, emoji_id):
     post = get_object_or_404(Post, id=post_id)
     emoji = get_object_or_404(Emoji, id=emoji_id)
 

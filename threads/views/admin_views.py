@@ -16,7 +16,6 @@ class ThreadPin_List_ApiView(ListAPIView):
 
 class ThreadPin_Toggle_ApiView(ToggleRecordGenericView):
   model = ThreadPin
-  lookup_field = 'thread_id'
   permission_classes = [IsAdminUser]
 
   def get_queryset_kwargs(self, request, thread_id):
