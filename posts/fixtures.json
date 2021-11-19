@@ -1,0 +1,27 @@
+[
+  {
+    "model": "posts.PostConetntType",
+    "fields": { "type": "text" }
+  },
+  {
+    "model": "posts.PostConetntType",
+    "fields": { "type": "html" }
+  },
+  {
+    "model": "posts.PostConetntType",
+    "fields": { "type": "markdown" }
+  },
+
+  {
+    "model": "posts.PostState",
+    "fields": { "name": "active" }
+  },
+  {
+    "model": "posts.PostState",
+    "fields": { "name": "hide" }
+  },
+  {
+    "model": "posts.PostState",
+    "fields": { "name": "soft delete" }
+  }
+]

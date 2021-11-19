@@ -1,0 +1,23 @@
+[
+  {
+    "model": "threads.ThreadState",
+    "fields": { "state": "active" }
+  },
+  {
+    "model": "threads.ThreadState",
+    "fields": { "state": "hide" }
+  },
+  {
+    "model": "threads.ThreadState",
+    "fields": { "state": "pending" }
+  },
+  {
+    "model": "threads.ThreadState",
+    "fields": { "state": "soft delete" }
+  },
+
+  {
+    "model": "threads.ThreadDefaultSetting",
+    "fields": { "default_thread_state": 1, "is_posting_active": true }
+  }
+]

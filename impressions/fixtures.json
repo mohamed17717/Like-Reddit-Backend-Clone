@@ -1,0 +1,30 @@
+[
+  {
+    "model": "impressions.Emoji",
+    "fields": { "name": "❤️" }
+  },
+  {
+    "model": "impressions.Emoji",
+    "fields": { "name": "🍺" }
+  },
+  {
+    "model": "impressions.Emoji",
+    "fields": { "name": "🤩" }
+  },
+  {
+    "model": "impressions.Emoji",
+    "fields": { "name": "😂" }
+  },
+  {
+    "model": "impressions.Emoji",
+    "fields": { "name": "👏" }
+  },
+  {
+    "model": "impressions.Emoji",
+    "fields": { "name": "💡" }
+  },
+  {
+    "model": "impressions.Emoji",
+    "fields": { "name": "🎱" }
+  }
+]
