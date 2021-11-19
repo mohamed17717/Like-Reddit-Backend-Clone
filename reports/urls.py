@@ -6,6 +6,8 @@ from reports.views.user_views import (
   PostReport_UserReport_Apiview,
   ReportType_UserList_ApiView,
   ReportSubType_UserList_ApiView,
+
+  ReportSubType_UserListOnType_ApiView
 )
 from reports.views.admin_views import (
   ReportType_ApiView,
@@ -26,6 +28,7 @@ router.register(r'admin-report/sub-type', ReportSubType_ApiView)
 urlpatterns = [
   path('report/type/list/', ReportType_UserList_ApiView.as_view(), name='list-reports-type'),
   path('report/sub-type/list/', ReportSubType_UserList_ApiView.as_view(), name='list-reports-sub-types'),
+  path('report/<int:category_id>/sub-type/list/', ReportSubType_UserListOnType_ApiView.as_view(), name='list-reports-sub-types-by-category'),
   path('report/post/<int:post_id>/', PostReport_UserReport_Apiview.as_view(), name='post-report'),
 
   path('admin-report/list/', PostReport_ListReports_ApiView.as_view(), name='list-reports'),

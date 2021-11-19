@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from posts.models import Post
 from reports.models import ReportSubType, ReportType
@@ -25,6 +27,15 @@ class ReportSubType_UserList_ApiView(ListAPIView):
   permission_classes = [IsAuthenticated]
   paginator = None
 
+
+class ReportSubType_UserListOnType_ApiView(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def get(self, request, category_id):
+    obj = get_object_or_404(ReportType, pk=category_id)
+    sub_types = ReportSubTypeSerializer(obj.sub_types, many=True)
+
+    return Response(sub_types.data)
 
 class PostReport_UserReport_Apiview(CreateAPIView):
   serializer_class = PostReport_Create_Serializer
