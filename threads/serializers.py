@@ -64,7 +64,7 @@ class Thread_ListThreadsInSubCategoryPage_serializer(serializers.ModelSerializer
   url = serializers.URLField(source='get_absolute_url')
   class Meta:
     model = Thread
-    fields = ('id', 'title', 'post', 'state', 'created', 'url')
+    fields = ('id', 'title', 'post', 'state', 'created', 'url', 'description')
 
 
 class Thread_AdminUpdateState_Serializer(serializers.ModelSerializer):

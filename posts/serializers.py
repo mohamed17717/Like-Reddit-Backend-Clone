@@ -36,7 +36,7 @@ class Post_InOwnerThreadActions_Serializer(serializers.ModelSerializer):
 
   class Meta:
     model = Post
-    fields = ('description', 'post_content', )
+    fields = ('id', 'post_content', )
 
 
 class Post_Commenting_Serializer(serializers.ModelSerializer):
@@ -50,7 +50,7 @@ class Post_ForListing_Serializer(serializers.ModelSerializer):
   user = UserBasicPublicSerializer(read_only=True)
   class Meta:
     model = Post
-    fields = ('id', 'description', 'user',)
+    fields = ('id', 'user',)
 
 
 class Post_OwnerActions_Serializer(serializers.ModelSerializer):

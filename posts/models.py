@@ -85,7 +85,7 @@ class Post(models.Model):
     verbose_name_plural = 'Posts'
 
   def __str__(self):
-    return f'({self.user}) {self.description}'
+    return f'({self.user}) ({self.created}) {self.post_content.content[:60]}'
 
   def get_absolute_url(self):
     '''url is for the thread it attached with'''
