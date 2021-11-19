@@ -6,6 +6,9 @@ from posts.models import Post, PostConetntType, PostContent
 from posts.serializers import Post_Commenting_Serializer, Post_ForListing_Serializer, Post_InOwnerThreadActions_Serializer
 from threads.models import ThreadState, Thread, ThreadPost, ThreadPin, ThreadDefaultSetting, ThreadUserVisit, Flair, ThreadFlair
 
+def dict_get(d, *k):
+    for i in k:
+        yield d[i]
 
 class ThreadStateSerializer(serializers.ModelSerializer):
   class Meta:
@@ -28,22 +31,15 @@ class Thread_Owner_serializer(serializers.ModelSerializer):
     fields = ('id', 'title', 'post', 'state', 'category', 'created')
 
   def create(self, validated_data):
-    category_data = validated_data.get('category')
-
-    category = get_object_or_404(SubCategory, **category_data)
-    validated_data['category'] = category
-
+    request = self.context.get('request')
     post_data = validated_data.get('post')
-    post_content_data = post_data.get('post_content')
-    post_content_type_data = post_content_data.get('type')
+    post = Post.objects.create_deep({'user': request.user, **post_data})
 
-    post_content_data['type'], _ = PostConetntType.objects.get_or_create(**post_content_type_data)
-    post_data['post_content'] = PostContent.objects.create(**post_content_data)
-    post_data['user'] = self.context.get('request').user
-    validated_data['post'] = Post.objects.create(**post_data)
-    
-    instance = Thread.objects.create(**validated_data)
-    return instance
+    category_data = validated_data.get('category')
+    category = get_object_or_404(SubCategory, **category_data)
+
+    validated_data.update({'post': post, 'category': category})
+    return Thread.objects.create(**validated_data)
 
   def update(self, instance, validated_data):
     instance.title = validated_data.get('title', instance.title)
@@ -52,23 +48,12 @@ class Thread_Owner_serializer(serializers.ModelSerializer):
     instance.category = get_object_or_404(SubCategory, **category_data)
 
     post_data = validated_data.get('post')
-    instance.post.description = post_data.get('description', instance.post.description)
+    Post.objects.update_deep(instance.post, post_data)
 
-    post_content_data = post_data.get('post_content')
-    instance.post.post_content.content = post_content_data.get('content', instance.post.post_content.content)
-    post_content_type_data = post_content_data.get('type', {'type': instance.post.post_content.type.type})
-    instance.post.post_content.type, _ = PostConetntType.objects.get_or_create(**post_content_type_data)
-    
     instance.category.save()
-    instance.post.save()
-    instance.post.post_content.save()
     instance.save()
 
     return instance
-
-
-    return 
-
 
 
 
@@ -104,23 +89,15 @@ class ThreadPost_Serializer(serializers.ModelSerializer):
     fields = ('post', 'thread')
 
   def create(self, validated_data):
-    thread_id = self.context.get('kwargs')['pk']
+    request, kwargs = dict_get(self.context, 'request', 'kwargs')
+
+    user = request.user
+    thread_id = kwargs.get('thread_id')
     thread = get_object_or_404(Thread, id=thread_id)
+    post_data = validated_data.get('post')
 
-    post = validated_data.get('post').get('post_content')
-
-    content_data = post.get('content')
-    type_data = post.get('type')
-    type, _ = PostConetntType.objects.get_or_create(**type_data)
-
-    post_content = PostContent.objects.create(content=content_data, type=type)
-
-    post = Post.objects.create(user=self.context.get('request').user, post_content=post_content)
-
-    print('\n\nPOST: ', post)
-    instance = ThreadPost.objects.create(post=post, thread=thread)
-    print('instance: ',instance, '\n\n')
-    return instance
+    obj = Post.objects.create_comment_on_thread(user, thread, post_data)
+    return obj
 
 
 class ThreadPinSerializer(serializers.ModelSerializer):

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.urls import reverse
+
+from posts.managers import PostManager
 
 
 User = get_user_model()
@@ -59,12 +60,6 @@ class PostState(models.Model):
   @classmethod
   def get_active_obj(cls): return cls.get_value_obj('active')
 
-  @classmethod
-  def get_hide_obj(cls): return cls.get_value_obj('hide')
-
-  @classmethod
-  def get_soft_delete_obj(cls): return cls.get_value_obj('soft delete')
-
   class Meta:
     verbose_name = 'PostState'
     verbose_name_plural = 'PostStates'
@@ -84,6 +79,8 @@ class Post(models.Model):
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
 
+  objects = PostManager()
+
   class Meta:
     verbose_name = 'Post'
     verbose_name_plural = 'Posts'
@@ -91,7 +88,6 @@ class Post(models.Model):
   def __str__(self):
     return f'({self.user}) {self.description}'
 
-  
   def get_absolute_url(self):
     '''url is for the thread it attached with'''
     # thread = self.thread or self.thread_post.thread or self.replay.post.thread_post.thread
@@ -115,11 +111,4 @@ class PostReplay(models.Model):
 
   def __str__(self):
     return f'{self.replay}'
-
-
-
-
-
-
-
 

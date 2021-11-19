@@ -5,17 +5,19 @@ from accounts.serializers import UserBasicPublicSerializer
 from posts.models import PostConetntType, PostContent, PostState, Post, PostReplay
 
 
-class PostConetntTypeSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = PostConetntType
-    fields = '__all__'
-
 
 class PostContentSerializer(serializers.ModelSerializer):
   type = serializers.CharField(source='type.type')
   class Meta:
     model = PostContent
     fields = ('type', 'content')
+
+  def clean_type(self):
+    allowed_types = ['text', 'html', 'markdown']
+    type = self.cleaned_data.get('type')
+    if type not in allowed_types:
+      raise serializers.ValidationError(f'type {type} is not, Allowed types are [{", ".join(allowed_types)}] ')
+    return type
 
 
 class PostStateSerializer(serializers.ModelSerializer):
@@ -42,7 +44,7 @@ class Post_Commenting_Serializer(serializers.ModelSerializer):
 
   class Meta:
     model = Post
-    fields = ('post_content', )
+    fields = ('post_content', 'id')
 
 class Post_ForListing_Serializer(serializers.ModelSerializer):
   user = UserBasicPublicSerializer(read_only=True)
@@ -53,40 +55,26 @@ class Post_ForListing_Serializer(serializers.ModelSerializer):
 
 class Post_OwnerActions_Serializer(serializers.ModelSerializer):
   user = UserBasicPublicSerializer(read_only=True)
-  post_content = PostContentSerializer()
+  # post_content = PostContentSerializer()
+  comment = serializers.CharField(source='post_content.content')
+  comment_type = serializers.CharField(source='post_content.type')
+  state = serializers.CharField(source='state.name', read_only=True)
+
   class Meta:
     model = Post
-    fields = ('id','user', 'post_content')
+    fields = ('id','user', 'comment', 'comment_type', 'state')
 
   def update(self, instance, validated_data):
-    post_content_data = validated_data.pop('post_content')
-    post_content = instance.post_content
-
-    post_content_type_data = post_content_data.pop('type')
-    post_content_type, _ = PostConetntType.objects.get_or_create(**post_content_type_data)
-
-    post_content.content = post_content_data.get('content', post_content.content)
-    post_content.type = post_content_type
-    post_content.save()
-
-    return instance
+    post = Post.objects.update_deep(instance, validated_data)
+    return post
 
   def create(self, validated_data):
     request = self.context.get('request')
-    
     kwargs = self.context.get('kwargs')
+
     post_id = kwargs.get('post_id')
-    main_post = get_object_or_404(Post, id=post_id)
 
-    post_content_data = validated_data.pop('post_content')
-    post_content_type_data = post_content_data.pop('type')
-
-    type, _ = PostConetntType.objects.get_or_create(**post_content_type_data)
-    post_content = PostContent.objects.create(type=type, **post_content_data)
-
-    replay = Post.objects.create(post_content=post_content, user=request.user)
-
-    PostReplay.objects.create(post=main_post, replay=replay)
+    replay = Post.objects.create_replay_on_comment(request.user, post_id, validated_data)
     return replay
 
 class Post_UpdateState_serializer(serializers.ModelSerializer):
@@ -96,13 +84,8 @@ class Post_UpdateState_serializer(serializers.ModelSerializer):
     fields = ('id', 'state')
 
   def update(self, instance, validated_data):
-    state_data = validated_data.pop('state')
-    new_state, _ = PostState.objects.get_or_create(**state_data)
-
-    instance.state = new_state
-    instance.save()
-
-    return instance
+    obj = Post.objects.update_deep(instance, validated_data)
+    return obj
 
 
 class PostReplaySerializer(serializers.ModelSerializer):
