@@ -47,6 +47,8 @@ class Thread(models.Model):
   category = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='threads')
   state = models.ForeignKey(ThreadState, on_delete=models.SET_DEFAULT, default=ThreadState.get_default_obj, related_name='threads')
 
+  description = models.TextField(blank=True, null=True)
+
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
 
