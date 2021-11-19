@@ -33,8 +33,14 @@ def notify(user:User, type:str, sender:models.Model):
 def notify_many(users:list[User], type:str, sender:models.Model):
   type, _ = NotificationType.objects.get_or_create(type=type)
 
-  notifications = Notification.objects.bulk_create([ Notification(user=user, type=type) for user in users ])
-  NotificationSender.objects.bulk_create([ NotificationSender(notification=notification, sender_object=sender) for notification in notifications ])
+  senders = []
+  for user in users:
+    n = Notification(user=user, type=type)
+    n.save()
+
+    senders.append(NotificationSender(notification=n, sender_object=sender))
+
+  NotificationSender.objects.bulk_create(senders)
 
 
 
