@@ -15,7 +15,7 @@ router.register(r'admin-category', Category_ApiView)
 router.register(r'admin-category/sub', SubCategory_ApiView)
 
 urlpatterns = [
-  path('categories/', Category_UserList_ApiView.as_view(), 'user-list-categories'),
-  path('categories/sub/', SubCategory_UserList_ApiView.as_view(), 'user-list-sub-categories'),
+  path('categories/', Category_UserList_ApiView.as_view(), name='user-list-categories'),
+  path('categories/sub/', SubCategory_UserList_ApiView.as_view(), name='user-list-sub-categories'),
 
 ] + router.urls
