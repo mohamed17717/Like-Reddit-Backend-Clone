@@ -73,7 +73,6 @@ class Post(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
   post_content = models.OneToOneField(PostContent, on_delete=models.PROTECT, related_name='post')
 
-  description = models.CharField(max_length=128, blank=True, null=True)
   state = models.ForeignKey(PostState, on_delete=models.SET_DEFAULT, default=PostState.get_active_obj, related_name='posts')
 
   created = models.DateField(auto_now_add=True)
