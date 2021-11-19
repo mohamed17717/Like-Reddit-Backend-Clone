@@ -29,6 +29,7 @@ class ReportDecision(models.Model):
 class ReportType(models.Model):
   """ 2 Layers of report (1) type like cant be here (2) its nudity """
   title = models.CharField(max_length=256)
+  description = models.TextField(blank=True, null=True)
 
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
@@ -44,6 +45,7 @@ class ReportType(models.Model):
 class ReportSubType(models.Model):
   title = models.CharField(max_length=256)
   type = models.ForeignKey(ReportType, on_delete=models.PROTECT, related_name='sub_types')
+  description = models.TextField(blank=True, null=True)
 
   created = models.DateField(auto_now_add=True)
   updated = models.DateField(auto_now=True)
