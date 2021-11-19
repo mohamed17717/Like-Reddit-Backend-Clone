@@ -27,8 +27,8 @@ class PostEmoji(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='emojis')
   emoji = models.ForeignKey(Emoji, on_delete=models.CASCADE, related_name='post_emojis')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'PostEmoji'
@@ -48,8 +48,8 @@ class PostUpVote(models.Model):
   post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='upvotes')
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='upvotes')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'PostUpVote'
@@ -68,8 +68,8 @@ class PostDownVote(models.Model):
   post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='downvotes')
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='downvotes')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'PostDownVote'

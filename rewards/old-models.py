@@ -17,8 +17,8 @@ class Reward(models.Model):
   description = models.TextField(blank=True, null=True)
   points = models.PositiveIntegerField()
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'Reward'
@@ -33,8 +33,8 @@ class RewardTodoAction(models.Model):
   title = models.CharField(max_length=128)
   points = models.PositiveIntegerField()
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'RewardTodoAction'
@@ -50,8 +50,8 @@ class UserAction(models.Model):
   action = models.ForeignKey(RewardTodoAction, on_delete=models.CASCADE, related_name='actions')
   count = models.PositiveIntegerField(default=0)
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'UserAction'
@@ -66,8 +66,8 @@ class UserReward(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rewards')
   reward = models.ForeignKey(Reward, on_delete=models.CASCADE, related_name='rewards')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'UserReward'
@@ -82,8 +82,8 @@ class UserTotalPoints(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reward_points')
   points = models.PositiveIntegerField(default=0)
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'UserTotalPoints'

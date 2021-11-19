@@ -5,8 +5,8 @@ from django.db import models
 class Category(models.Model):
   name = models.CharField(max_length=32)
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'Category'
@@ -21,8 +21,8 @@ class SubCategory(models.Model):
   name = models.CharField(max_length=32)
   category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='sub_categories')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'SubCategory'

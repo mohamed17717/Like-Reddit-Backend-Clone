@@ -10,8 +10,8 @@ class SavePost(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='saved_posts')
   post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='saved_posts')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'SavePost'

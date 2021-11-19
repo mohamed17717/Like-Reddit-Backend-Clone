@@ -49,8 +49,8 @@ class Thread(models.Model):
 
   description = models.TextField(blank=True, null=True)
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'Thread'
@@ -69,8 +69,8 @@ class ThreadPost(models.Model):
   thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='posts')
   post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='thread_post')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'ThreadPost'
@@ -113,8 +113,8 @@ class ThreadUserVisit(models.Model):
   thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='visits')
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='visits')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'ThreadUserVisit'
@@ -141,8 +141,8 @@ class ThreadFlair(models.Model):
   thread = models.OneToOneField(Thread, on_delete=models.CASCADE, related_name='flair')
   flair = models.ForeignKey(Flair, on_delete=models.CASCADE, related_name='threads')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'ThreadFlair'

@@ -31,8 +31,8 @@ class ReportType(models.Model):
   title = models.CharField(max_length=256)
   description = models.TextField(blank=True, null=True)
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'ReportType'
@@ -47,8 +47,8 @@ class ReportSubType(models.Model):
   type = models.ForeignKey(ReportType, on_delete=models.PROTECT, related_name='sub_types')
   description = models.TextField(blank=True, null=True)
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'ReportSubType'
@@ -64,8 +64,8 @@ class PostReport(models.Model):
   type = models.ForeignKey(ReportSubType, on_delete=models.SET_NULL, related_name='reports', blank=True, null=True)
   decision = models.ForeignKey(ReportDecision, on_delete=models.SET_DEFAULT, default=ReportDecision.get_default_value)
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'PostReport'

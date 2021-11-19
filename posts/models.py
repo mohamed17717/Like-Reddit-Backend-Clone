@@ -75,8 +75,8 @@ class Post(models.Model):
 
   state = models.ForeignKey(PostState, on_delete=models.SET_DEFAULT, default=PostState.get_active_obj, related_name='posts')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   objects = PostManager()
 

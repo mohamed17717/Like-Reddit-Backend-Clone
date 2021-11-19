@@ -40,8 +40,8 @@ class Notification(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
   type = models.ForeignKey(NotificationType, on_delete=models.CASCADE, related_name='notifications')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   @property
   def message(self):

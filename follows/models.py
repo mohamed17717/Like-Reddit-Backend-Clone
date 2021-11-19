@@ -14,8 +14,8 @@ class UserFollow(models.Model):
   target = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_followers')
   follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_targets')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'UserFollow'
@@ -35,8 +35,8 @@ class ThreadFollow(models.Model):
   target = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='thread_followers')
   follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='thread_targets')
 
-  created = models.DateField(auto_now_add=True)
-  updated = models.DateField(auto_now=True)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
 
   class Meta:
     verbose_name = 'ThreadFollow'
