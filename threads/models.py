@@ -31,22 +31,13 @@ class ThreadState(models.Model):
     return obj
 
   @classmethod
-  def get_active_obj(cls): return cls.get_value_obj('active')
-
-  @classmethod
-  def get_hide_obj(cls): return cls.get_value_obj('hide')
-
-  @classmethod
-  def get_soft_delete_obj(cls): return cls.get_value_obj('soft delete')
-
-  @classmethod
-  def get_pending_obj(cls): return cls.get_value_obj('pending')
-
-  @classmethod
   def get_default_obj(cls):
-    default = ThreadDefaultSetting.objects.all().first()
-    default = default and default.pk or cls.get_active_obj()
-    return default
+    default_setting = ThreadDefaultSetting.objects.all().first()
+    if default_setting:
+      obj = default_setting.default_thread_state.pk
+    else:
+      obj = cls.get_value_obj('active')
+    return obj
 
 
 # W: Anyone | R: Anyone
@@ -104,7 +95,7 @@ class ThreadPin(models.Model):
 
 # W: Static | R: Admin
 class ThreadDefaultSetting(models.Model):
-  default_thread_state =  models.OneToOneField(ThreadState, on_delete=models.SET_DEFAULT, default=ThreadState.get_active_obj, related_name='default_state')
+  default_thread_state =  models.OneToOneField(ThreadState, on_delete=models.CASCADE, related_name='default_state')
   is_posting_active = models.BooleanField(default=True)
 
   class Meta:
