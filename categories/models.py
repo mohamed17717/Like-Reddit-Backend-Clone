@@ -21,6 +21,8 @@ class SubCategory(models.Model):
   name = models.CharField(max_length=32)
   category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='sub_categories')
 
+  threads_count = models.PositiveIntegerField(default=0)
+
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
 
