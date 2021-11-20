@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -22,6 +23,8 @@ class UserProfile(models.Model):
   def __str__(self):
     return self.user.username
 
+  def get_absolute_url(self):
+    return reverse("accounts:user-profile", kwargs={"username": self.user.username})
 
 # W: Admin | R: Anyone
 class UserVerified(models.Model):

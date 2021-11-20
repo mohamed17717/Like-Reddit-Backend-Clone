@@ -7,6 +7,8 @@ from accounts.views.admin_views import (
   UserBan_ApiView,
 )
 
+from accounts.views.user_views import UserProfile_ApiView
+
 app_name = 'accounts'
 
 router = routers.SimpleRouter()
@@ -19,4 +21,6 @@ urlpatterns = [
   path('rest-auth/', include('rest_framework.urls')),
   path('auth/', include('djoser.urls')),
   path('auth/', include('djoser.urls.jwt')),
+
+  path('user/<str:username>/', UserProfile_ApiView.as_view(), name='user-profile')
 ] + router.urls
