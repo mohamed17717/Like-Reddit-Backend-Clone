@@ -60,8 +60,7 @@ class Thread(models.Model):
     return self.title
 
   def get_absolute_url(self):
-    return reverse("threads:thread-retrieve", kwargs={"pk": self.pk})
-  
+    return reverse("threads:thread-retrieve", kwargs={"thread_id": self.pk})
 
 
 # W: Anyone | R: Anyone
