@@ -16,6 +16,9 @@ class UserProfile(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
   profile_picture = models.ImageField(upload_to='static/user-profile-pic/', default='static/user-profile-pic/default.jpg')
 
+  follower_count = models.PositiveIntegerField(default=0)
+  following_count = models.PositiveIntegerField(default=0)
+
   class Meta:
     verbose_name = 'UserProfile'
     verbose_name_plural = 'UsersProfiles'
