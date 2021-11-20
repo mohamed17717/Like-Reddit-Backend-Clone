@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
 
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from categories.models import SubCategory
 from threads.models import Thread
@@ -11,7 +11,9 @@ from threads.models import Thread
 from threads.serializers import (
   Thread_ListThreadsInSubCategoryPage_serializer,
   Thread_Owner_serializer,
-  ThreadPost_Serializer
+  ThreadPost_Serializer,
+
+  Thread_LatestList_Serializer
 ) 
 
 
@@ -46,3 +48,8 @@ class Thread_Commenting_ApiView(CreateAPIView):
     context.update({"request": self.request, 'kwargs': self.kwargs})
     return context
 
+
+class Thread_LatestList_ApiView(ListAPIView):
+  queryset = Thread.objects.all()
+  serializer_class = Thread_LatestList_Serializer
+  permission_classes = [AllowAny]

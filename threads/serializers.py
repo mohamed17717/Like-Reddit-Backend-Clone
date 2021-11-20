@@ -61,11 +61,19 @@ class Thread_ListThreadsInSubCategoryPage_serializer(serializers.ModelSerializer
   post = Post_ForListing_Serializer(read_only=True)
   state = serializers.CharField(source='state.state', read_only=True)
 
-  url = serializers.URLField(source='get_absolute_url')
+  url = serializers.URLField(source='get_absolute_url', read_only=True)
   class Meta:
     model = Thread
     fields = ('id', 'title', 'post', 'state', 'created', 'url', 'description')
 
+
+class Thread_LatestList_Serializer(serializers.ModelSerializer):
+  post = Post_ForListing_Serializer(read_only=True)
+  url = serializers.URLField(source='get_absolute_url', read_only=True)
+  category = serializers.CharField(source='category.name', read_only=True)
+  class Meta:
+    model = Thread
+    fields = ('id', 'title', 'post', 'created', 'url', 'description', 'category')
 
 class Thread_AdminUpdateState_Serializer(serializers.ModelSerializer):
   class Meta:

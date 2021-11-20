@@ -11,6 +11,7 @@ from threads.views.user_views import (
   Thread_Retrieve_ApiView,
   Thread_ListOnSubCategory_ApiView,
   Thread_Commenting_ApiView,
+  Thread_LatestList_ApiView,
 )
 
 from threads.views.admin_views import (
@@ -29,6 +30,7 @@ urlpatterns = [
   path('thread/<int:thread_id>/', Thread_Retrieve_ApiView.as_view(), name="thread-retrieve"),
   path('thread/list/<int:sub_category_id>/', Thread_ListOnSubCategory_ApiView.as_view(), name="list-threads-category"),
   path('thread/<int:thread_id>/comment/', Thread_Commenting_ApiView.as_view(), name="thread-commenting"),
+  path('thread/latest/', Thread_LatestList_ApiView.as_view(), name='latest-threads'),
 
   path('admin-thread/<int:thread_id>/pin/', ThreadPin_Toggle_ApiView.as_view(), name='pin-thread'),
   path('admin-thread/pinned/', ThreadPin_List_ApiView.as_view(), name='list-pinned-threads'),

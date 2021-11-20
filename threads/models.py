@@ -55,6 +55,7 @@ class Thread(models.Model):
   class Meta:
     verbose_name = 'Thread'
     verbose_name_plural = 'Threads'
+    ordering = ['-id']
 
   def __str__(self):
     return self.title
