@@ -4,7 +4,8 @@ from rest_framework import routers
 
 from posts.views.admin_views import Post_AdminUpdateState_ApiView
 from posts.views.owner_views import Post_OwnerActions_ApiView
-from posts.views.user_views import Post_CreateReplay_ApiView, PostReplay_ListPostReplays_ApiView
+from posts.views.user_views import Post_CreateReplay_ApiView
+from posts.views.anon_views import PostReplay_ListPostReplays_ApiView
 
 
 app_name = 'posts'

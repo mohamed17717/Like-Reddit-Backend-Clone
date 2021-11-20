@@ -1,8 +1,9 @@
 from django.urls import path
 
 from rest_framework import routers
+
 from categories.views.admin_views import Category_ApiView, SubCategory_ApiView
-from categories.views.user_views import (
+from categories.views.anon_views import (
   Category_UserList_ApiView,
   SubCategory_UserList_ApiView,
 )

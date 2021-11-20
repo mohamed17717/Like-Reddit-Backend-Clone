@@ -7,7 +7,7 @@ from accounts.views.admin_views import (
   UserBan_ApiView,
 )
 
-from accounts.views.user_views import UserProfile_ApiView
+from accounts.views.anon_views import UserProfile_ApiView
 
 app_name = 'accounts'
 
