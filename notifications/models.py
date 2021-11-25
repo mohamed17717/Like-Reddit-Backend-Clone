@@ -40,6 +40,8 @@ class Notification(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
   type = models.ForeignKey(NotificationType, on_delete=models.CASCADE, related_name='notifications')
 
+  is_viewed = models.BooleanField(default=False)
+
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
 
@@ -49,8 +51,8 @@ class Notification(models.Model):
     message_format = self.type.message.message_format
 
     message = ''
-    if sender.sender_object:
-      message = message_format.format(username=sender.sender_object)
+    if message_format and sender.sender_object:
+      message = message_format.format(sender.sender_object)
     else:
       self.delete()
     return message

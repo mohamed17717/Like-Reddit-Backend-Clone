@@ -15,9 +15,11 @@ class NotificationMessageSerializer(serializers.ModelSerializer):
 
 
 class NotificationSerializer(serializers.ModelSerializer):
+  type = serializers.CharField(source='type.type')
+  msg = serializers.CharField(source='message')
   class Meta:
     model = Notification
-    fields = ('message', 'created') #'__all__'
+    fields = ('msg', 'created', 'is_viewed', 'type', )
 
 
 class NotificationSenderSerializer(serializers.ModelSerializer):
