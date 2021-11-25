@@ -8,10 +8,6 @@ from categories.models import SubCategory
 
 User = get_user_model()
 
-# TODO:
-#   set counters for threads etc...
-#   signal for user visit
-
 
 # W: Static | R: Admin
 class ThreadState(models.Model):
@@ -48,6 +44,9 @@ class Thread(models.Model):
   state = models.ForeignKey(ThreadState, on_delete=models.SET_DEFAULT, default=ThreadState.get_default_obj, related_name='threads')
 
   description = models.TextField(blank=True, null=True)
+
+  visits_count = models.PositiveIntegerField(default=0)
+  comments_count = models.PositiveIntegerField(default=0)
 
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)

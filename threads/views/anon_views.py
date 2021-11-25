@@ -1,3 +1,4 @@
+from django.db.models.expressions import F
 from django.shortcuts import get_object_or_404
 
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -22,6 +23,10 @@ class Thread_Retrieve_ApiView(RetrieveAPIView):
 
   lookup_field = 'pk'
   lookup_url_kwarg = 'thread_id'
+
+  def get(self, request, *args, **kwargs):
+    Thread.objects.select_for_update().filter(pk=kwargs[self.lookup_url_kwarg]).update(visits_count=F('visits_count') + 1)
+    return super().get(request, *args, **kwargs)
 
 
 class Thread_ListOnSubCategory_ApiView(APIView, LimitOffsetPagination):
