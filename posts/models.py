@@ -78,6 +78,11 @@ class Post(models.Model):
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
 
+  upvote_count = models.PositiveIntegerField(default=0)
+  downvote_count = models.PositiveIntegerField(default=0)
+  emoji_count = models.PositiveIntegerField(default=0)
+  replays_count = models.PositiveIntegerField(default=0)
+
   objects = PostManager()
 
   class Meta:

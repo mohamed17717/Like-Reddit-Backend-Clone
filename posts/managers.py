@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.expressions import F
 from django.shortcuts import get_object_or_404
 
 import threads.models as thModels
@@ -59,6 +60,10 @@ class PostQuerySet(models.QuerySet):
 
     return post_instance
 
+  def update_counter_field(self, pk, field_name, amount):
+    new_value = { field_name: F(field_name) + amount }
+    self.select_for_update().filter(pk=pk).update(**new_value)
+
 class PostManager(models.Manager):
   def get_queryset(self):
     return PostQuerySet(self.model, using=self._db, hints=self._hints)
@@ -75,4 +80,7 @@ class PostManager(models.Manager):
 
   def update_deep(self, post_instance, post_data):
     return self.get_queryset().update_deep(post_instance, post_data)
+
+  def update_counter_field(self, pk, field_name, amount):
+    return self.get_queryset().update_counter_field(pk, field_name, amount)
 
