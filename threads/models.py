@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.contrib.contenttypes.fields import GenericRelation
 
 from posts.models import Post
 from categories.models import SubCategory
+from privates.models import PrivateContent
 
 
 User = get_user_model()
@@ -48,6 +50,9 @@ class Thread(models.Model):
   visits_count = models.PositiveIntegerField(default=0)
   comments_count = models.PositiveIntegerField(default=0)
 
+  # generic field private
+  private = GenericRelation(PrivateContent, object_id_field="content_id", related_query_name="thread")
+
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
 
@@ -62,6 +67,9 @@ class Thread(models.Model):
   def get_absolute_url(self):
     return reverse("threads:thread-retrieve", kwargs={"thread_id": self.pk})
 
+  @property
+  def is_private(self):
+    return bool(self.private.first()) or self.category.is_private
 
 # W: Anyone | R: Anyone
 class ThreadPost(models.Model):
