@@ -6,14 +6,14 @@ from threads.t_serializers.thread import ThreadSerializer
 class CategoryBasicSerializer(serializers.ModelSerializer):
   class Meta:
     model = SubCategory
-    fields = ['name', 'id']
+    fields = ['name', 'id', 'is_private']
 
 class SubCategoryBasicSerializer(serializers.ModelSerializer):
   threads_count = serializers.IntegerField(source='threads.count', read_only=True)
   latest_thread = ThreadSerializer(source='threads.first')
   class Meta:
     model = SubCategory
-    fields = ['name', 'id', 'threads_count', 'latest_thread']
+    fields = ['name', 'id', 'threads_count', 'latest_thread', 'is_private']
 
 
 # ------------------- full ----------------- #
@@ -25,7 +25,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
-  category = CategoryBasicSerializer(read_only=True)
+  # category = CategoryBasicSerializer(read_only=True)
   threads_count = serializers.IntegerField(source='threads.count', read_only=True)
   class Meta:
     model = SubCategory
@@ -37,5 +37,5 @@ class SubCategory_ListFromThread_Serializer(serializers.ModelSerializer):
   main_category = serializers.CharField(source='category.name', read_only=True)
   class Meta:
     model = SubCategory
-    fields = ('main_category', 'name')
+    fields = ('main_category', 'name', 'is_private')
 

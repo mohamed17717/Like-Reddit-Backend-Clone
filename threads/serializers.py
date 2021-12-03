@@ -2,13 +2,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from categories.models import SubCategory
 from categories.serializers import SubCategory_ListFromThread_Serializer
-from posts.models import Post, PostConetntType, PostContent
+from posts.models import Post
 from posts.serializers import Post_Commenting_Serializer, Post_ForListing_Serializer, Post_InOwnerThreadActions_Serializer
 from threads.models import ThreadState, Thread, ThreadPost, ThreadPin, ThreadDefaultSetting, ThreadUserVisit, Flair, ThreadFlair
 
 def dict_get(d, *k):
-    for i in k:
-        yield d[i]
+  for i in k:
+    yield d[i]
 
 class ThreadStateSerializer(serializers.ModelSerializer):
   class Meta:
@@ -73,7 +73,7 @@ class Thread_LatestList_Serializer(serializers.ModelSerializer):
   category = serializers.CharField(source='category.name', read_only=True)
   class Meta:
     model = Thread
-    fields = ('id', 'title', 'post', 'created', 'url', 'description', 'category')
+    fields = ('id', 'is_private', 'title', 'post', 'created', 'url', 'description', 'category')
 
 class Thread_AdminUpdateState_Serializer(serializers.ModelSerializer):
   class Meta:
