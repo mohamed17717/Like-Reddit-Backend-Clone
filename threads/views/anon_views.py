@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
 from categories.models import SubCategory
-from core.permissions import IsUserHasAccess
+from core.permissions import IsUserHasAccessToThisContent
 
 from threads.models import Thread
 from threads.serializers import (
@@ -30,7 +30,7 @@ class Thread_Retrieve_ApiView(RetrieveAPIView):
     pk = kwargs[self.lookup_url_kwarg]
     thread = Thread.objects.filter(pk=pk).first()
 
-    IsUserHasAccess(request, thread)
+    IsUserHasAccessToThisContent(request, thread)
 
     Thread.objects.select_for_update().filter(pk=pk).update(visits_count=F('visits_count') + 1)
 
@@ -44,7 +44,7 @@ class Thread_ListOnSubCategory_ApiView(APIView, LimitOffsetPagination):
   def get(self, request, sub_category_id):
     sub_category = get_object_or_404(SubCategory, id=sub_category_id)
 
-    IsUserHasAccess(request, sub_category)
+    IsUserHasAccessToThisContent(request, sub_category)
 
     threads = sub_category.threads.all()
     results = self.paginate_queryset(threads, request, view=self)

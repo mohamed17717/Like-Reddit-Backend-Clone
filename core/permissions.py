@@ -22,7 +22,7 @@ class IsUserNotBanned(permissions.BasePermission):
     return not (user.is_authenticated and user.is_banned)
 
 
-class IsUserHasAccess:
+class IsUserHasAccessToThisContent:
   message = 'You can\'t access private content.'
   code = HTTP_403_FORBIDDEN
 

@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 from categories.models import Category
 from categories.serializers import CategorySerializer, SubCategorySerializer
 
-from core.permissions import IsUserHasAccess
+from core.permissions import IsUserHasAccessToThisContent
 
 
 class Category_UserList_ApiView(ListAPIView):
@@ -24,7 +24,7 @@ class SubCategory_ListOnCategory_ApiView(APIView, LimitOffsetPagination):
   def get(self, request, category_id):
     category = get_object_or_404(Category, pk=category_id)
 
-    IsUserHasAccess(request, category)
+    IsUserHasAccessToThisContent(request, category)
 
     sub_categories = category.sub_categories.all()
     results = self.paginate_queryset(sub_categories, request, view=self)
