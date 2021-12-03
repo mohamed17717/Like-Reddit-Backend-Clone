@@ -18,10 +18,6 @@
   },
   {
     "model": "posts.PostState",
-    "fields": { "name": "hide" }
-  },
-  {
-    "model": "posts.PostState",
     "fields": { "name": "soft delete" }
   }
 ]

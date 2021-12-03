@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from rest_framework.generics import get_object_or_404
 
 from accounts.serializers import UserBasicPublicSerializer
-from posts.models import PostConetntType, PostContent, PostState, Post, PostReplay
+from posts.models import PostContent, PostState, Post, PostReplay
 
 
 
@@ -58,7 +57,7 @@ class Post_OwnerActions_Serializer(serializers.ModelSerializer):
   # post_content = PostContentSerializer()
   comment = serializers.CharField(source='post_content.content')
   comment_type = serializers.CharField(source='post_content.type')
-  state = serializers.CharField(source='state.name', read_only=True)
+  state = serializers.CharField(source='existing_state.name', read_only=True)
 
   class Meta:
     model = Post
@@ -78,7 +77,7 @@ class Post_OwnerActions_Serializer(serializers.ModelSerializer):
     return replay
 
 class Post_UpdateState_serializer(serializers.ModelSerializer):
-  state = serializers.CharField(source='state.name')
+  state = serializers.CharField(source='existing_state.name')
   class Meta:
     model = Post
     fields = ('id', 'state')

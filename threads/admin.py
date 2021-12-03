@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 from threads.models import (
-  ThreadState,
+  PendingState,
+  PrivacyState,
   Thread,
   ThreadPost,
   ThreadPin,
@@ -11,7 +12,8 @@ from threads.models import (
   ThreadFlair,
 )
 
-admin.site.register(ThreadState)
+admin.site.register(PendingState)
+admin.site.register(PrivacyState)
 admin.site.register(Thread)
 admin.site.register(ThreadPost)
 admin.site.register(ThreadPin)

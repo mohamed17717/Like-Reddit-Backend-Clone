@@ -1,19 +1,24 @@
 [
   {
-    "model": "threads.ThreadState",
-    "fields": { "state": "active" }
+    "model": "threads.PrivacyState",
+    "fields": { "state": "public" }
   },
   {
-    "model": "threads.ThreadState",
-    "fields": { "state": "hide" }
+    "model": "threads.PrivacyState",
+    "fields": { "state": "private" }
   },
+
   {
-    "model": "threads.ThreadState",
+    "model": "threads.PendingState",
     "fields": { "state": "pending" }
   },
   {
-    "model": "threads.ThreadState",
-    "fields": { "state": "soft delete" }
+    "model": "threads.PendingState",
+    "fields": { "state": "accept" }
+  },
+  {
+    "model": "threads.PendingState",
+    "fields": { "state": "declined" }
   },
 
   {

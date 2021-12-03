@@ -4,16 +4,11 @@ from categories.models import SubCategory
 from categories.serializers import SubCategory_ListFromThread_Serializer
 from posts.models import Post
 from posts.serializers import Post_Commenting_Serializer, Post_ForListing_Serializer, Post_InOwnerThreadActions_Serializer
-from threads.models import ThreadState, Thread, ThreadPost, ThreadPin, ThreadDefaultSetting, ThreadUserVisit, Flair, ThreadFlair
+from threads.models import PendingState, Thread, ThreadPost, ThreadPin, ThreadDefaultSetting, ThreadUserVisit, Flair, ThreadFlair
 
 def dict_get(d, *k):
   for i in k:
     yield d[i]
-
-class ThreadStateSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = ThreadState
-    fields = '__all__'
 
 
 class ThreadSerializer(serializers.ModelSerializer):
@@ -25,7 +20,7 @@ class ThreadSerializer(serializers.ModelSerializer):
 class Thread_Owner_serializer(serializers.ModelSerializer):
   post = Post_InOwnerThreadActions_Serializer()
   category = SubCategory_ListFromThread_Serializer() # serializers.CharField(source='category.name')
-  state = serializers.CharField(source='state.state', read_only=True)
+  state = serializers.CharField(source='privacy_state.state', read_only=True)
   class Meta:
     model = Thread
     fields = ('id', 'title', 'post', 'state', 'category', 'created')
@@ -59,12 +54,10 @@ class Thread_Owner_serializer(serializers.ModelSerializer):
 
 class Thread_ListThreadsInSubCategoryPage_serializer(serializers.ModelSerializer):
   post = Post_ForListing_Serializer(read_only=True)
-  state = serializers.CharField(source='state.state', read_only=True)
-
   url = serializers.URLField(source='get_absolute_url', read_only=True)
   class Meta:
     model = Thread
-    fields = ('id', 'title', 'post', 'state', 'created', 'url', 'description')
+    fields = ('id', 'title', 'post', 'created', 'url', 'description')
 
 
 class Thread_LatestList_Serializer(serializers.ModelSerializer):
@@ -75,14 +68,16 @@ class Thread_LatestList_Serializer(serializers.ModelSerializer):
     model = Thread
     fields = ('id', 'is_private', 'title', 'post', 'created', 'url', 'description', 'category')
 
-class Thread_AdminUpdateState_Serializer(serializers.ModelSerializer):
+class Thread_AdminUpdatePendingState_Serializer(serializers.ModelSerializer):
   class Meta:
     model = Thread
-    fields = ('id', 'state',)
+    fields = ('id', 'pending_state',)
 
   def update(self, instance, validated_data):
-    new_state = validated_data.get('state', instance.state)
-    instance.state = new_state
+    new_state_value = validated_data.get('pending_state', instance.state)
+    new_state, _ = PendingState.objects.get_or_create(state=new_state_value)
+
+    instance.pending_state = new_state
     instance.save()
     return instance
 

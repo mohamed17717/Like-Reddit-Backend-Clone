@@ -8,7 +8,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
 
 from core.permissions import IsUserNotBanned
 
-from threads.models import Thread, ThreadState
+from threads.models import Thread, PrivacyState
 from threads.serializers import Thread_Owner_serializer
 
 
@@ -33,9 +33,9 @@ class Thread_OwnerUpdateStatePrivate_ApiView(APIView):
     thread = get_object_or_404(Thread, id=thread_id)
     status = HTTP_403_FORBIDDEN
     if request.user.pk == thread.post.user.pk:
-      private, _ = ThreadState.objects.get_or_create(state='private')
+      private, _ = PrivacyState.objects.get_or_create(state='private')
 
-      thread.state = private
+      thread.privacy_state = private
       thread.save()
 
       status = HTTP_200_OK
@@ -50,9 +50,9 @@ class Thread_OwnerUpdateStatePublic_ApiView(APIView):
     thread = get_object_or_404(Thread, id=thread_id)
     status = HTTP_403_FORBIDDEN
     if request.user.pk == thread.post.user.pk:
-      public, _ = ThreadState.objects.get_or_create(state='public')
+      public, _ = PrivacyState.objects.get_or_create(state='public')
 
-      thread.state = public
+      thread.privacy_state = public
       thread.save()
 
       status = HTTP_200_OK
