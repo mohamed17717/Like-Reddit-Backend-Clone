@@ -1,0 +1,32 @@
+[
+  {
+    "model": "states.ExistingState",
+    "fields": { "name": "active" }
+  },
+  {
+    "model": "states.ExistingState",
+    "fields": { "name": "soft delete" }
+  },
+
+  {
+    "model": "states.PendingState",
+    "fields": { "state": "pending" }
+  },
+  {
+    "model": "states.PendingState",
+    "fields": { "state": "accept" }
+  },
+  {
+    "model": "states.PendingState",
+    "fields": { "state": "declined" }
+  },
+
+  {
+    "model": "states.PrivacyState",
+    "fields": { "state": "public" }
+  },
+  {
+    "model": "states.PrivacyState",
+    "fields": { "state": "private" }
+  }
+]

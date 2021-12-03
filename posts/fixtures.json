@@ -10,14 +10,5 @@
   {
     "model": "posts.PostConetntType",
     "fields": { "type": "markdown" }
-  },
-
-  {
-    "model": "posts.PostState",
-    "fields": { "name": "active" }
-  },
-  {
-    "model": "posts.PostState",
-    "fields": { "name": "soft delete" }
   }
 ]

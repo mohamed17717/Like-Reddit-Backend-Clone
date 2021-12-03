@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 
 import threads.models as thModels
 import posts.models as pModels
-
+from states.models import ExistingState
 
 class PostQuerySet(models.QuerySet):
   def create_comment_on_thread(self, user, thread, post_data):
@@ -54,7 +54,7 @@ class PostQuerySet(models.QuerySet):
       post_instance.save()
 
     if state_data:
-      new_state = get_object_or_404(pModels.PostState, **state_data)
+      new_state = get_object_or_404(ExistingState, **state_data)
       post_instance.state = new_state
       post_instance.save()
 

@@ -1,27 +1,5 @@
 [
   {
-    "model": "threads.PrivacyState",
-    "fields": { "state": "public" }
-  },
-  {
-    "model": "threads.PrivacyState",
-    "fields": { "state": "private" }
-  },
-
-  {
-    "model": "threads.PendingState",
-    "fields": { "state": "pending" }
-  },
-  {
-    "model": "threads.PendingState",
-    "fields": { "state": "accept" }
-  },
-  {
-    "model": "threads.PendingState",
-    "fields": { "state": "declined" }
-  },
-
-  {
     "model": "threads.ThreadDefaultSetting",
     "fields": { "default_thread_state": 1, "is_posting_active": true }
   }

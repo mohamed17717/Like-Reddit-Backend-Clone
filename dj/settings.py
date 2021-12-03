@@ -40,6 +40,7 @@ INSTALLED_APPS = [
   'rewards',
   'saves',
   'threads',
+  'states',
 
   # third parties
   'rest_framework',

@@ -6,49 +6,32 @@ from django.contrib.contenttypes.fields import GenericRelation
 from posts.models import Post
 from categories.models import SubCategory
 from privates.models import PrivateContent
+from states.models import PendingState, PrivacyState
 
 
 User = get_user_model()
 
 
 # W: Static | R: Admin
-class PendingState(models.Model):
-  default_state = 'accept'
-  state = models.CharField(max_length=32)
+class ThreadDefaultSetting(models.Model):
+  default_pending_state =  models.OneToOneField(PendingState, on_delete=models.CASCADE, related_name='default_state')
+  is_posting_active = models.BooleanField(default=True)
 
   class Meta:
-    verbose_name = 'PendingState'
-    verbose_name_plural = 'PendingStates'
+    verbose_name = 'ThreadDefaultSetting'
+    verbose_name_plural = 'ThreadDefaultSettings'
 
   def __str__(self):
-    return self.state
+    return 'Set Thread Settings'
 
   @classmethod
-  def get_default_obj(cls):
-    default_setting = ThreadDefaultSetting.objects.first()
+  def get_default_pending_state(cls):
+    default_setting = cls.objects.first()
+    obj_id = 1
     if default_setting:
-      obj = default_setting.default_pending_state.pk
-    else:
-      obj = cls.objects.get_or_create(state=cls.default_state)[0].pk
-    return obj
+      obj_id = default_setting.default_pending_state.pk
 
-
-# W: Static | R: Admin
-class PrivacyState(models.Model):
-  default_state = 'public'
-  state = models.CharField(max_length=32)
-
-  class Meta:
-    verbose_name = 'PrivacyState'
-    verbose_name_plural = 'PrivacyStates'
-
-  def __str__(self):
-    return self.state
-
-  @classmethod
-  def get_default_obj(cls):
-    obj = cls.objects.get_or_create(state=cls.default_state)[0].pk
-    return obj
+    return obj_id
 
 
 # W: Anyone | R: Anyone
@@ -57,7 +40,7 @@ class Thread(models.Model):
   title = models.CharField(max_length=128)
   category = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='threads')
 
-  pending_state = models.ForeignKey(PendingState, on_delete=models.SET_DEFAULT, default=PendingState.get_default_obj, related_name='threads')
+  pending_state = models.ForeignKey(PendingState, on_delete=models.SET_DEFAULT, default=ThreadDefaultSetting.get_default_pending_state, related_name='threads')
   privacy_state = models.ForeignKey(PrivacyState, on_delete=models.SET_DEFAULT, default=PrivacyState.get_default_obj, related_name='threads')
 
   description = models.TextField(blank=True, null=True)
@@ -117,17 +100,6 @@ class ThreadPin(models.Model):
     return f'{self.thread}'
 
 
-# W: Static | R: Admin
-class ThreadDefaultSetting(models.Model):
-  default_pending_state =  models.OneToOneField(PendingState, on_delete=models.CASCADE, related_name='default_state')
-  is_posting_active = models.BooleanField(default=True)
-
-  class Meta:
-    verbose_name = 'ThreadDefaultSetting'
-    verbose_name_plural = 'ThreadDefaultSettings'
-
-  def __str__(self):
-    return 'Set Thread Settings'
 
 
 # W: Runtime | R: Runtime

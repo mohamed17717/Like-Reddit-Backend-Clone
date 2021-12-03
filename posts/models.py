@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 from posts.managers import PostManager
-
+from states.models import ExistingState
 
 User = get_user_model()
 
@@ -48,32 +48,12 @@ class PostContent(models.Model):
     return self.content
 
 
-# W: Static | R: Admin
-class PostState(models.Model):
-  name = models.CharField(max_length=32)
-
-  @classmethod
-  def get_value_obj(cls, value) -> int:
-    obj = cls.objects.get_or_create(name=value)[0].pk
-    return obj
-
-  @classmethod
-  def get_active_obj(cls): return cls.get_value_obj('active')
-
-  class Meta:
-    verbose_name = 'PostState'
-    verbose_name_plural = 'PostStates'
-
-  def __str__(self):
-    return self.name
-
-
 # W: Anyone | R: Anyone
 class Post(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
   post_content = models.OneToOneField(PostContent, on_delete=models.PROTECT, related_name='post')
 
-  existing_state = models.ForeignKey(PostState, on_delete=models.SET_DEFAULT, default=PostState.get_active_obj, related_name='posts')
+  existing_state = models.ForeignKey(ExistingState, on_delete=models.SET_DEFAULT, default=ExistingState.get_default_obj, related_name='posts')
 
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)

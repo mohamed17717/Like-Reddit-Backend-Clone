@@ -8,7 +8,9 @@ from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
 
 from core.permissions import IsUserNotBanned
 
-from threads.models import Thread, PrivacyState
+from threads.models import Thread
+from states.models import PrivacyState
+
 from threads.serializers import Thread_Owner_serializer
 
 
