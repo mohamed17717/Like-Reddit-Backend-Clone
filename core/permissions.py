@@ -13,6 +13,15 @@ class IsAdminOrReadOnly(permissions.BasePermission):
 
     return IsAdmin or IsJustRead
 
+
+class IsUserNotBanned(permissions.BasePermission):
+  message = 'You can\'t do this action because you are banned right now.'
+
+  def has_permission(self, request, view):
+    user = request.user
+    return not (user.is_authenticated and user.is_banned)
+
+
 class IsUserHasAccess:
   message = 'You can\'t access private content.'
   code = HTTP_403_FORBIDDEN
