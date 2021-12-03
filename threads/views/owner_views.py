@@ -6,12 +6,14 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
 
+from core.permissions import IsUserNotBanned
+
 from threads.models import Thread, ThreadState
 from threads.serializers import Thread_Owner_serializer
 
 
 class Thread_Owner_ApiView(ModelViewSet):
-  permission_classes = [IsAuthenticated]
+  permission_classes = [IsAuthenticated, IsUserNotBanned]
   serializer_class = Thread_Owner_serializer
 
   def get_queryset(self):
