@@ -3,10 +3,12 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
 from categories.models import SubCategory
+from core.permissions import IsUserHasAccess
 
 from threads.models import Thread
 from threads.serializers import (
@@ -25,8 +27,15 @@ class Thread_Retrieve_ApiView(RetrieveAPIView):
   lookup_url_kwarg = 'thread_id'
 
   def get(self, request, *args, **kwargs):
-    Thread.objects.select_for_update().filter(pk=kwargs[self.lookup_url_kwarg]).update(visits_count=F('visits_count') + 1)
-    return super().get(request, *args, **kwargs)
+    pk = kwargs[self.lookup_url_kwarg]
+    thread = Thread.objects.filter(pk=pk).first()
+
+    IsUserHasAccess(request, thread)
+
+    Thread.objects.select_for_update().filter(pk=pk).update(visits_count=F('visits_count') + 1)
+
+    serialized = self.serializer_class(thread)
+    return Response(serialized.data)
 
 
 class Thread_ListOnSubCategory_ApiView(APIView, LimitOffsetPagination):
@@ -34,6 +43,9 @@ class Thread_ListOnSubCategory_ApiView(APIView, LimitOffsetPagination):
 
   def get(self, request, sub_category_id):
     sub_category = get_object_or_404(SubCategory, id=sub_category_id)
+
+    IsUserHasAccess(request, sub_category)
+
     threads = sub_category.threads.all()
     results = self.paginate_queryset(threads, request, view=self)
 
