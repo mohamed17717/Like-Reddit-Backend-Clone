@@ -55,6 +55,8 @@ class UserBan(models.Model):
   days = models.PositiveIntegerField(default=1)
   start = models.DateField(auto_now_add=True)
 
+  state = models.CharField(max_length=16, default='active')
+
   class Meta:
     verbose_name = 'UserBan'
     verbose_name_plural = 'UsersBans'
