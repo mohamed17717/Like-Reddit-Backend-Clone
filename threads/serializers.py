@@ -91,7 +91,7 @@ class Thread_AdminUpdatePendingState_Serializer(serializers.ModelSerializer):
 class ThreadPost_Serializer(serializers.ModelSerializer):
   thread = ThreadSerializer(read_only=True)
   post = Post_Commenting_Serializer()
-  # post = PostContentSerializer()
+
   class Meta:
     model = ThreadPost
     fields = ('post', 'thread')
@@ -99,12 +99,10 @@ class ThreadPost_Serializer(serializers.ModelSerializer):
   def create(self, validated_data):
     request, kwargs = dict_get(self.context, 'request', 'kwargs')
 
-    user = request.user
-    thread_id = kwargs.get('thread_id')
-    thread = get_object_or_404(Thread, id=thread_id)
+    thread = Thread.objects.one_alive(pk=kwargs.get('thread_id'))
     post_data = validated_data.get('post')
 
-    obj = Post.objects.create_comment_on_thread(user, thread, post_data)
+    obj = Post.objects.create_comment_on_thread(request.user, thread, post_data)
     return obj
 
 

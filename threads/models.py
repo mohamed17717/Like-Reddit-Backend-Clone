@@ -7,6 +7,7 @@ from posts.models import Post
 from categories.models import SubCategory
 from privates.models import PrivateContent
 from states.models import PendingState, PrivacyState
+from threads.managers import ThreadManager
 
 
 User = get_user_model()
@@ -53,6 +54,8 @@ class Thread(models.Model):
 
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
+
+  objects = ThreadManager()
 
   class Meta:
     verbose_name = 'Thread'

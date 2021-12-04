@@ -19,7 +19,6 @@ from threads.serializers import (
 
 
 class Thread_Retrieve_ApiView(RetrieveAPIView):
-  queryset = Thread.objects.all()
   serializer_class = Thread_Owner_serializer
   permission_classes = [AllowAny]
 
@@ -28,7 +27,7 @@ class Thread_Retrieve_ApiView(RetrieveAPIView):
 
   def get(self, request, *args, **kwargs):
     pk = kwargs[self.lookup_url_kwarg]
-    thread = Thread.objects.filter(pk=pk).first()
+    thread = Thread.objects.one_alive(pk=pk)
 
     IsUserHasAccessToThisContent(request, thread)
 
@@ -46,7 +45,7 @@ class Thread_ListOnSubCategory_ApiView(APIView, LimitOffsetPagination):
 
     IsUserHasAccessToThisContent(request, sub_category)
 
-    threads = sub_category.threads.all()
+    threads = sub_category.threads.all_alive()
     results = self.paginate_queryset(threads, request, view=self)
 
     serializer = Thread_ListThreadsInSubCategoryPage_serializer(results, many=True)
@@ -54,6 +53,6 @@ class Thread_ListOnSubCategory_ApiView(APIView, LimitOffsetPagination):
 
 
 class Thread_LatestList_ApiView(ListAPIView):
-  queryset = Thread.objects.all()
+  queryset = Thread.objects.all_alive()
   serializer_class = Thread_LatestList_Serializer
   permission_classes = [AllowAny]

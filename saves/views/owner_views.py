@@ -20,7 +20,7 @@ class SavePost_ToggleSave_ApiView(ToggleRecordGenericView):
 
 class SavePost_ListSaves_ApiView(APIView):
   def get(self, request, **kwargs):
-    qs = SavePost.objects.filter(user=request.user)
+    qs = SavePost.objects.filter(user=request.user, post__existing_state='active')
     serialized = SavePostSerializer(qs, many=True)
 
     return Response(serialized.data)

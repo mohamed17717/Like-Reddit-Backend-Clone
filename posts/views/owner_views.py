@@ -11,5 +11,6 @@ class Post_OwnerActions_ApiView(UpdateDestroyListRetrieveViewSet):
   permission_classes = [IsAuthenticated]
 
   def get_queryset(self):
-    return Post.objects.filter(user=self.request.user)
+    qs = Post.objects.all_for_owner(self.request.user)
+    return qs
 

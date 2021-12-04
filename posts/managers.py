@@ -64,6 +64,22 @@ class PostQuerySet(models.QuerySet):
     new_value = { field_name: F(field_name) + amount }
     self.select_for_update().filter(pk=pk).update(**new_value)
 
+  def all_alive(self):
+    qs = self.filter(**self.exist_condition)
+    return qs
+
+  def one_alive(self, **kwargs):
+    obj = get_object_or_404(self.model, **self.exist_condition, **kwargs)
+    return obj
+
+  def all_for_owner(self, user):
+    qs = self.filter(user=user, **self.exist_condition)
+    return qs
+
+  @property
+  def exist_condition(self):
+    return {'existing_state__state': 'active'}
+
 class PostManager(models.Manager):
   def get_queryset(self):
     return PostQuerySet(self.model, using=self._db, hints=self._hints)
@@ -84,3 +100,16 @@ class PostManager(models.Manager):
   def update_counter_field(self, pk, field_name, amount):
     return self.get_queryset().update_counter_field(pk, field_name, amount)
 
+
+  def all_alive(self):
+    return self.get_queryset().all_alive()
+
+  def one_alive(self, **kwargs):
+    return self.get_queryset().one_alive(**kwargs)
+
+  def all_for_owner(self, user):
+    return self.get_queryset().all_for_owner(user)
+
+  @property
+  def exist_condition(self):
+    return self.get_queryset().exist_condition
