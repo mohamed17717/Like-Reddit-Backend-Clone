@@ -31,7 +31,7 @@ class IsUserHasAccessToThisContent:
     self.instance = instance
     self.raise_exception = raise_exception
 
-    return self.check()
+    self.check()
 
   def is_instance_private(self) -> bool:
     return self.instance.is_private
