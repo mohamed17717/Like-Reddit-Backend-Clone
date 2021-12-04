@@ -10,11 +10,12 @@ from rest_framework.permissions import AllowAny
 from categories.models import SubCategory
 from core.permissions import IsUserHasAccessToThisContent
 
-from threads.models import Thread
+from threads.models import Thread, ThreadPin
 from threads.serializers import (
   Thread_ListThreadsInSubCategoryPage_serializer,
   Thread_Owner_serializer,
-  Thread_LatestList_Serializer
+  Thread_LatestList_Serializer,
+  ThreadPinSerializer
 ) 
 
 
@@ -56,3 +57,22 @@ class Thread_LatestList_ApiView(ListAPIView):
   queryset = Thread.objects.all_alive()
   serializer_class = Thread_LatestList_Serializer
   permission_classes = [AllowAny]
+  
+class ThreadPin_CommonPinnedThreads_ApiView(ListAPIView):
+  queryset = ThreadPin.objects.all_alive_common()
+  serializer_class = ThreadPinSerializer
+  permission_classes = [AllowAny]
+class ThreadPin_ListOnSubCategory_ApiView(APIView, LimitOffsetPagination):
+  permission_classes = [AllowAny]
+  serializer_class = ThreadPinSerializer
+
+  def get(self, request, sub_category_id):
+    sub_category = get_object_or_404(SubCategory, id=sub_category_id)
+
+    IsUserHasAccessToThisContent(request, sub_category)
+
+    threads = ThreadPin.objects.all_alive_on_sub_category(sub_category)
+    results = self.paginate_queryset(threads, request, view=self)
+
+    serializer = self.serializer_class(results, many=True)
+    return self.get_paginated_response(data=serializer.data)

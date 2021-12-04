@@ -86,7 +86,13 @@ class Thread_AdminUpdatePendingState_Serializer(serializers.ModelSerializer):
     instance.save()
     return instance
 
+class Thread_ListAsPending_Serializer(serializers.ModelSerializer):
+  url = serializers.URLField(source='get_absolute_url', read_only=True)
+  category = serializers.CharField(source='category.name', read_only=True)
 
+  class Meta:
+    model = Thread
+    fields = ('id', 'pending_state', 'url', 'title', 'description', 'category', 'created')
 
 class ThreadPost_Serializer(serializers.ModelSerializer):
   thread = ThreadSerializer(read_only=True)
@@ -107,7 +113,8 @@ class ThreadPost_Serializer(serializers.ModelSerializer):
 
 
 class ThreadPinSerializer(serializers.ModelSerializer):
-  url = serializers.URLField(source='thread.get_absolute_url')
+  # url = serializers.URLField(source='thread.get_absolute_url')
+  thread = Thread_LatestList_Serializer(read_only=True)
   class Meta:
     model = ThreadPin
     fields = ('thread', 'url')

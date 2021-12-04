@@ -6,13 +6,19 @@ from rest_framework.permissions import IsAdminUser
 from core.generics import ToggleRecordGenericView
 from threads.models import Thread, ThreadPin
 
-from threads.serializers import Thread_AdminUpdatePendingState_Serializer, ThreadPinSerializer 
+from threads.serializers import Thread_AdminUpdatePendingState_Serializer, Thread_ListAsPending_Serializer, ThreadPinSerializer 
 
 
 class ThreadPin_List_ApiView(ListAPIView):
   queryset = ThreadPin.objects.all()
   permission_classes = [IsAdminUser]
   serializer_class = ThreadPinSerializer
+
+class Thread_ListPending_ApiView(ListAPIView):
+  queryset = Thread.objects.all_pending()
+  permission_classes = [IsAdminUser]
+  serializer_class = Thread_ListAsPending_Serializer
+
 
 class ThreadPin_Toggle_ApiView(ToggleRecordGenericView):
   model = ThreadPin

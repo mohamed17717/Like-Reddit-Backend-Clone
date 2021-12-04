@@ -7,7 +7,7 @@ from posts.models import Post
 from categories.models import SubCategory
 from privates.models import PrivateContent
 from states.models import PendingState, PrivacyState
-from threads.managers import ThreadManager
+from threads.managers import ThreadManager, ThreadPinManager
 
 
 User = get_user_model()
@@ -94,6 +94,8 @@ class ThreadPost(models.Model):
 # W: Admin | R: Anyone
 class ThreadPin(models.Model):
   thread = models.OneToOneField(Thread, on_delete=models.CASCADE, related_name='pinned')
+
+  objects = ThreadPinManager()
 
   class Meta:
     verbose_name = 'ThreadPin'
