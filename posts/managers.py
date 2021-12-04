@@ -109,7 +109,3 @@ class PostManager(models.Manager):
 
   def all_for_owner(self, user):
     return self.get_queryset().all_for_owner(user)
-
-  @property
-  def exist_condition(self):
-    return self.get_queryset().exist_condition
