@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+
 from rest_framework import serializers
 
 from djoser.serializers import UserCreateSerializer
@@ -10,6 +11,8 @@ from follows.models import UserFollow
 
 User = get_user_model()
 
+
+# ------------- Djoser ------------- #
 class UserCreateSerializer(UserCreateSerializer):
   class Meta(UserCreateSerializer.Meta):
     model = User
@@ -18,6 +21,7 @@ class UserCreateSerializer(UserCreateSerializer):
     REQUIRED_FIELDS = ['username']
 
 
+# ------------- Basic User Info ------------- #
 class UserBasicPublicSerializer(serializers.ModelSerializer):
   profile_picture = serializers.StringRelatedField(source='profile.profile_picture.url')
   profile_url = serializers.StringRelatedField(source='profile.get_absolute_url')
@@ -25,6 +29,9 @@ class UserBasicPublicSerializer(serializers.ModelSerializer):
     model = User
     fields = ('username', 'first_name', 'last_name', 'email', 'profile_picture', 'profile_url')
 
+
+
+# ------------- Profile Page ------------- #
 
 class UserProfilePageSerializer(UserBasicPublicSerializer):
   is_followed = serializers.SerializerMethodField(read_only=True)
@@ -36,7 +43,8 @@ class UserProfilePageSerializer(UserBasicPublicSerializer):
 
   class Meta(UserBasicPublicSerializer.Meta):
     fields = UserBasicPublicSerializer.Meta.fields + (
-      'is_followed', 'is_own_profile', 'following_count', 'followers_count',
+      'is_followed', 'is_own_profile',
+      'following_count', 'followers_count',
       'following_list_url', 'followers_list_url'
     )
 
@@ -60,38 +68,34 @@ class UserProfilePageSerializer(UserBasicPublicSerializer):
     return reverse('follows:user-followers-list', kwargs={'username': obj.username})
 
 
-class UserVerifiedSerializer(serializers.ModelSerializer):
+
+# ------------- Verify Premium Ban ------------- #
+class Abstract_User_VerifyPremiumBan_Serializer(serializers.ModelSerializer):
   user = UserBasicPublicSerializer(read_only=True)
   delete_url = serializers.SerializerMethodField()
 
+  delete_url_viewname = None # required
+
   class Meta:
+    model = None # required
+    fields = ('user', 'delete_url')
+
+  def get_delete_url(self, obj):
+    return reverse(self.delete_url_viewname, kwargs={'pk': obj.pk})
+
+
+class UserVerifiedSerializer(Abstract_User_VerifyPremiumBan_Serializer):
+  delete_url_viewname = 'accounts:user-verify-detail'
+  class Meta(Abstract_User_VerifyPremiumBan_Serializer.Meta):
     model = UserVerified
-    fields = ('user', 'delete_url')
 
-  def get_delete_url(self, obj):
-    return reverse('accounts:user-verify-detail', kwargs={'pk': obj.pk})
-
-
-class UserPremiumSerializer(serializers.ModelSerializer):
-  user = UserBasicPublicSerializer(read_only=True)
-  delete_url = serializers.SerializerMethodField()
-
-  class Meta:
+class UserPremiumSerializer(Abstract_User_VerifyPremiumBan_Serializer):
+  delete_url_viename = 'accounts:user-premium-detail'
+  class Meta(Abstract_User_VerifyPremiumBan_Serializer.Meta):
     model = UserPremium
-    fields = ('user', 'delete_url')
 
-  def get_delete_url(self, obj):
-    return reverse('accounts:user-premium-detail', kwargs={'pk': obj.pk})
-
-class UserBanSerializer(serializers.ModelSerializer):
-  user = UserBasicPublicSerializer(read_only=True)
-  delete_url = serializers.SerializerMethodField()
-
-  class Meta:
+class UserBanSerializer(Abstract_User_VerifyPremiumBan_Serializer):
+  delete_url_viewname = 'accounts:user-ban-detail'
+  class Meta(Abstract_User_VerifyPremiumBan_Serializer.Meta):
     model = UserBan
-    fields = ('user', 'delete_url')
-
-  def get_delete_url(self, obj):
-    return reverse('accounts:user-ban-detail', kwargs={'pk': obj.pk})
-
 
