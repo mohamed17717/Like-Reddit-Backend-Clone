@@ -13,9 +13,9 @@ app_name = 'accounts'
 
 router = routers.SimpleRouter()
 
-router.register(r'admin-user/verify', UserVerified_ApiView)
-router.register(r'admin-user/premium', UserPremium_ApiView)
-router.register(r'admin-user/ban', UserBan_ApiView)
+router.register(r'admin-user/verify', UserVerified_ApiView, 'user-verify')
+router.register(r'admin-user/premium', UserPremium_ApiView, 'user-premium')
+router.register(r'admin-user/ban', UserBan_ApiView, 'user-ban')
 
 urlpatterns = [
   path('rest-auth/', include('rest_framework.urls')),
