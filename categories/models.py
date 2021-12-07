@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
+from django.urls.base import reverse
 
 from privates.models import PrivateContent
 
@@ -17,6 +18,9 @@ class Category(models.Model):
   class Meta:
     verbose_name = 'Category'
     verbose_name_plural = 'Categories'
+
+  def get_absolute_url(self):
+    return reverse("categories:user-list-sub-categories", kwargs={"category_id": self.pk})
 
   def __str__(self):
     return f'{self.id} - {self.name}'
@@ -43,8 +47,11 @@ class SubCategory(models.Model):
     verbose_name = 'SubCategory'
     verbose_name_plural = 'SubCategories'
 
+  def get_absolute_url(self):
+    return reverse("threads:user-list-threads", kwargs={"sub_category_id": self.pk})
+
   def __str__(self):
-    return f'{self.id} -{self.name} ({self.category.name})'
+    return f'{self.id} - {self.name} ({self.category.name})'
 
   @property
   def is_private(self):

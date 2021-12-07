@@ -31,7 +31,7 @@ urlpatterns = [
   path('thread/<int:thread_id>/comment/', Thread_Commenting_ApiView.as_view(), name="thread-commenting"),
 
   path('thread/<int:thread_id>/', Thread_Retrieve_ApiView.as_view(), name="thread-retrieve"),
-  path('thread/list/<int:sub_category_id>/', Thread_ListOnSubCategory_ApiView.as_view(), name="list-threads-category"),
+  path('thread/list/<int:sub_category_id>/', Thread_ListOnSubCategory_ApiView.as_view(), name="user-list-threads"),
   path('thread/latest/', Thread_LatestList_ApiView.as_view(), name='latest-threads'),
   path('thread/pinned/', ThreadPin_CommonPinnedThreads_ApiView.as_view(), name='common-pinned-threads'),
   path('thread/pinned/<int:sub_category_id>/', ThreadPin_ListOnSubCategory_ApiView.as_view(), name="pinned-threads-by-category"),
