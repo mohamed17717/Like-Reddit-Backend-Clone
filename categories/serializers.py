@@ -3,39 +3,36 @@ from categories.models import Category, SubCategory
 
 from threads.t_serializers.thread import ThreadSerializer
 
+
+# ------------ Basic ------------ #
 class CategoryBasicSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = SubCategory
-    fields = ['name', 'id', 'is_private']
-
-class SubCategoryBasicSerializer(serializers.ModelSerializer):
-  threads_count = serializers.IntegerField(source='threads.count', read_only=True)
-  latest_thread = ThreadSerializer(source='threads.first')
-  class Meta:
-    model = SubCategory
-    fields = ['name', 'id', 'threads_count', 'latest_thread', 'is_private']
-
-
-# ------------------- full ----------------- #
-class CategorySerializer(serializers.ModelSerializer):
-  sub_categories = SubCategoryBasicSerializer(many=True, read_only=True)
+  url = serializers.URLField(source='get_absolute_url')
   class Meta:
     model = Category
-    fields = '__all__'
+    fields = ('name', 'is_private', 'url')
+
+class SubCategoryBasicSerializer(serializers.ModelSerializer):
+  url = serializers.URLField(source='get_absolute_url')
+  class Meta:
+    model = SubCategory
+    fields = ('name',  'is_private', 'url')
+
+class SubCategory_PlusParent_Serializer(SubCategoryBasicSerializer):
+  category = CategoryBasicSerializer(read_only=True)
+  class Meta(SubCategoryBasicSerializer.Meta):
+    fields = SubCategoryBasicSerializer.Meta.fields + ('category',)
 
 
-class SubCategorySerializer(serializers.ModelSerializer):
-  # category = CategoryBasicSerializer(read_only=True)
+# ------------ Homepage++ ------------ #
+class SubCategory_Homepage_Serializer(SubCategoryBasicSerializer):
   threads_count = serializers.IntegerField(source='threads.count', read_only=True)
-  class Meta:
-    model = SubCategory
-    fields = '__all__'
+  latest_thread = ThreadSerializer(source='threads.first')
+  class Meta(SubCategoryBasicSerializer.Meta):
+    fields = SubCategoryBasicSerializer.Meta.fields + ('threads_count', 'latest_thread')
 
+class Category_Homepage_Serializer(CategoryBasicSerializer):
+  sub_categories = SubCategory_Homepage_Serializer(many=True, read_only=True)
+  class Meta(CategoryBasicSerializer.Meta):
+    fields = CategoryBasicSerializer.Meta.fields + ('sub_categories',)
 
-
-class SubCategory_ListFromThread_Serializer(serializers.ModelSerializer):
-  main_category = serializers.CharField(source='category.name', read_only=True)
-  class Meta:
-    model = SubCategory
-    fields = ('main_category', 'name', 'is_private')
 

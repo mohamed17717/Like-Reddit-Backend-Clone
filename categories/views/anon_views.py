@@ -6,18 +6,18 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny
 
 from categories.models import Category
-from categories.serializers import CategorySerializer, SubCategorySerializer
+from categories.serializers import Category_Homepage_Serializer, SubCategory_Homepage_Serializer
 
 from core.permissions import IsUserHasAccessToThisContent
 
 
 class Category_UserList_ApiView(ListAPIView):
   queryset = Category.objects.all()
-  serializer_class = CategorySerializer
+  serializer_class = Category_Homepage_Serializer
   permission_classes = [AllowAny]
 
 class SubCategory_ListOnCategory_ApiView(APIView, LimitOffsetPagination):
-  serializer_class = SubCategorySerializer
+  serializer_class = SubCategory_Homepage_Serializer
   permission_classes = [AllowAny]
   count = 20
 

@@ -7,7 +7,7 @@ from posts.models import Post
 from threads.models import Thread, ThreadPost, ThreadPin, ThreadDefaultSetting, ThreadUserVisit, Flair, ThreadFlair
 from states.models import PendingState
 
-from categories.serializers import SubCategory_ListFromThread_Serializer
+from categories.serializers import SubCategory_PlusParent_Serializer
 from posts.serializers import Post_Commenting_Serializer, Post_ForListing_Serializer, Post_InOwnerThreadActions_Serializer
 
 
@@ -24,7 +24,7 @@ class ThreadSerializer(serializers.ModelSerializer):
 
 class Thread_Owner_serializer(serializers.ModelSerializer):
   post = Post_InOwnerThreadActions_Serializer()
-  category = SubCategory_ListFromThread_Serializer() # serializers.CharField(source='category.name')
+  category = SubCategory_PlusParent_Serializer()
   state = serializers.CharField(source='privacy_state.state', read_only=True)
   class Meta:
     model = Thread
