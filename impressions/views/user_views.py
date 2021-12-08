@@ -29,47 +29,34 @@ class PostEmoji_UserReact_ApiView(ToggleRecordGenericView):
 
     return {'user': request.user, 'post': post, 'emoji': emoji}
 
-class PostUpVote_UserReact_ApiView(APIView):
+
+# ------------------- Abstract Upvote Downvote ------------------------#
+class Abstract_UpvoteDownvote_ApiView(APIView):
   permission_classes = [IsAuthenticated]
+  model = None # required
+  inverse_model = None # required
+
+  def get(self, request, post_id):
+    user = request.user
+    post = get_object_or_404(Post, id=post_id)
+
+    self.inverse_model.objects.filter(post=post, user=user).delete()
+    self.model.objects.create(post=post, user=user)
+
+    return Response(status=HTTP_201_CREATED)
+
+
+  def delete(self, request, post_id):
+    user = request.user
+    post = get_object_or_404(Post, id=post_id)
+
+    self.model.objects.filter(post=post, user=user).delete()
+    return Response(status=HTTP_200_OK)
+
+class PostUpVote_UserReact_ApiView(Abstract_UpvoteDownvote_ApiView):
   model = PostUpVote
   inverse_model = PostDownVote
 
-  def get(self, request, post_id):
-    user = request.user
-    post = get_object_or_404(Post, id=post_id)
-
-    self.inverse_model.objects.filter(post=post, user=user).delete()
-    self.model.objects.create(post=post, user=user)
-
-    return Response(status=HTTP_201_CREATED)
-
-
-  def delete(self, request, post_id):
-    user = request.user
-    post = get_object_or_404(Post, id=post_id)
-
-    self.model.objects.filter(post=post, user=user).delete()
-    return Response(status=HTTP_200_OK)
-
-class PostDownVote_UserReact_ApiView(APIView):
-  permission_classes = [IsAuthenticated]
+class PostDownVote_UserReact_ApiView(Abstract_UpvoteDownvote_ApiView):
   model = PostDownVote
   inverse_model = PostUpVote
-
-  def get(self, request, post_id):
-    user = request.user
-    post = get_object_or_404(Post, id=post_id)
-
-    self.inverse_model.objects.filter(post=post, user=user).delete()
-    self.model.objects.create(post=post, user=user)
-
-    return Response(status=HTTP_201_CREATED)
-
-
-  def delete(self, request, post_id):
-    user = request.user
-    post = get_object_or_404(Post, id=post_id)
-
-    self.model.objects.filter(post=post, user=user).delete()
-    return Response(status=HTTP_200_OK)
-
