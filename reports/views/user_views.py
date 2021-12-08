@@ -1,17 +1,13 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from posts.models import Post
 from reports.models import ReportSubType, ReportType
-from reports.serializers import (
-  PostReport_Create_Serializer,
-  ReportSubTypeSerializer,
-  ReportTypeSerializer
-)
+from reports.serializers import PostReportSerializer, ReportSubTypeSerializer, ReportTypeSerializer
 
 
 class ReportType_UserList_ApiView(ListAPIView):
@@ -30,15 +26,18 @@ class ReportSubType_UserList_ApiView(ListAPIView):
 
 class ReportSubType_UserListOnType_ApiView(APIView):
   permission_classes = [IsAuthenticated]
+  lookup_url_kwarg = 'type_id'
 
-  def get(self, request, category_id):
-    obj = get_object_or_404(ReportType, pk=category_id)
+  def get(self, request, **kwargs):
+    type_id = kwargs.get(self.lookup_url_kwarg)
+    obj = get_object_or_404(ReportType, pk=type_id)
+
     sub_types = ReportSubTypeSerializer(obj.sub_types, many=True)
 
     return Response(sub_types.data)
 
 class PostReport_UserReport_Apiview(CreateAPIView):
-  serializer_class = PostReport_Create_Serializer
+  serializer_class = PostReportSerializer
   permission_classes = [IsAuthenticated]
 
   lookup_field = 'pk'

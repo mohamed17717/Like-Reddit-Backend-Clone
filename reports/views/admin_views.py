@@ -9,11 +9,7 @@ from core.generics import CreateUpdateDestroyListViewSet
 
 from reports.models import PostReport, ReportDecision, ReportType, ReportSubType
 from reports.serializers import (
-  PostReport_UpdateDecision_Serializer,
-  PostReportSerializer,
-  ReportDecisionSerializer,
-  ReportTypeSerializer,
-  ReportSubTypeSerializer
+  PostReportSerializer, ReportDecisionSerializer, ReportTypeSerializer, ReportSubTypeSerializer
 )
 
 
@@ -25,8 +21,7 @@ class ReportType_ApiView(ModelViewSet):
   permission_classes = [IsAdminUser]
   paginator = None
 
-  def retrieve(self, request, *args, **kwargs):
-    pk = self.kwargs['pk']
+  def retrieve(self, request, pk):
     obj = get_object_or_404(self.model, pk=pk)
     sub_types = ReportSubTypeSerializer(obj.sub_types, many=True)
 
@@ -57,7 +52,7 @@ class ReportDecision_ListDecision_ApiView(ListAPIView):
 
 class PostReport_UpdateDecision_Apiview(UpdateAPIView):
   queryset = PostReport.objects.all()
-  serializer_class = PostReport_UpdateDecision_Serializer
+  serializer_class = PostReportSerializer
   permission_classes = [IsAdminUser]
 
   lookup_field = 'pk'

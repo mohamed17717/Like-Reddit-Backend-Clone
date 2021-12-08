@@ -24,24 +24,11 @@ class ReportSubTypeSerializer(serializers.ModelSerializer):
 class PostReportSerializer(serializers.ModelSerializer):
   class Meta:
     model = PostReport
-    fields = '__all__'
-
-
-
-class PostReport_Create_Serializer(serializers.ModelSerializer):
-  class Meta:
-    model = PostReport
-    fields = ('id', 'type', 'user','post',)
+    fields = ('id', 'type', 'user','post', 'decision')
 
     extra_kwargs = {
       'user': {'read_only': True},
       'post': {'read_only': True},
+      'type': {'read_only': True},
     }
-
-class PostReport_UpdateDecision_Serializer(serializers.ModelSerializer):
-  class Meta:
-    model = PostReport
-    fields = ('id', 'decision',)
-
-
 
