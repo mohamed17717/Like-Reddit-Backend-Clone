@@ -6,7 +6,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny
 
 from categories.models import Category
-from categories.serializers import Category_Homepage_Serializer, SubCategory_Homepage_Serializer
+from categories.serializers_homepage import Category_Homepage_Serializer, SubCategory_Homepage_Serializer
 
 from core.permissions import IsUserHasAccessToThisContent
 
