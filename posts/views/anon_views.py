@@ -1,18 +1,22 @@
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
-from rest_framework.response import Response
 
 from posts.models import Post
-from posts.serializers import PostReplaySerializer
+from posts.serializers import PostSerializer
 
 
-class PostReplay_ListPostReplays_ApiView(APIView):
+class PostReplay_ListPostReplays_ApiView(APIView, LimitOffsetPagination):
   lookup_field = 'pk'
   lookup_url_kwarg = 'post_id'
   permission_classes = [AllowAny]
 
   def get(self, request, post_id):
     post = Post.objects.one_alive(pk=post_id)
-    serialized = PostReplaySerializer(post.replays.all_alive(), many=True)
+    replays = post.replays.all_alive()
 
-    return Response(serialized.data)
+    results = self.paginate_queryset(replays, request, view=self)
+    serializer = PostSerializer(results, many=True)
+
+    return self.get_paginated_response(data=serializer.data)
+
