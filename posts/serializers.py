@@ -1,8 +1,9 @@
+from django.urls import reverse
+
 from rest_framework import serializers
 
 from accounts.serializers import UserBasicPublicSerializer
-from posts.models import PostContent, Post, PostReplay
-
+from posts.models import PostContent, Post
 
 
 class PostContentSerializer(serializers.ModelSerializer):
@@ -11,82 +12,68 @@ class PostContentSerializer(serializers.ModelSerializer):
     model = PostContent
     fields = ('type', 'content')
 
-  def clean_type(self):
-    allowed_types = ['text', 'html', 'markdown']
-    type = self.cleaned_data.get('type')
-    if type not in allowed_types:
-      raise serializers.ValidationError(f'type {type} is not, Allowed types are [{", ".join(allowed_types)}] ')
-    return type
-
-
-
+class Post_ToThreadRelation_Serializer(serializers.ModelSerializer):
+  url = serializers.CharField(source='get_absolute_url')
+  thread_title = serializers.CharField(source='get_thread_title')
+  thread_relation = serializers.CharField(source='get_thread_relation')
+  class Meta:
+    model = Post
+    fields = ('url', 'thread_title', 'thread_relation')
 
 class PostSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Post
-    fields = '__all__'
+  url = serializers.CharField(source='get_absolute_url')
+  urls = serializers.SerializerMethodField()
+  user = UserBasicPublicSerializer()
 
-class Post_InOwnerThreadActions_Serializer(serializers.ModelSerializer):
   post_content = PostContentSerializer()
 
   class Meta:
     model = Post
-    fields = ('id', 'post_content', )
+    fields = (
+      'user', 'post_content', 'created', 'upvote_count',
+      'downvote_count', 'emoji_count', 'replays_count',
+      'url', 'urls'
+    )
+    extra_kwargs = {
+      'user': {'read_only': True},
+      'created': {'read_only': True},
+      'upvote_count': {'read_only': True},
+      'downvote_count': {'read_only': True},
+      'emoji_count': {'read_only': True},
+      'replays_count': {'read_only': True},
+      'url': {'read_only': True},
+      'urls': {'read_only': True},
+    }
 
-
-class Post_Commenting_Serializer(serializers.ModelSerializer):
-  post_content = PostContentSerializer()
-
-  class Meta:
-    model = Post
-    fields = ('post_content', 'id')
-
-class Post_ForListing_Serializer(serializers.ModelSerializer):
-  user = UserBasicPublicSerializer(read_only=True)
-  class Meta:
-    model = Post
-    fields = ('id', 'user',)
-
-
-class Post_OwnerActions_Serializer(serializers.ModelSerializer):
-  user = UserBasicPublicSerializer(read_only=True)
-  # post_content = PostContentSerializer()
-  comment = serializers.CharField(source='post_content.content')
-  comment_type = serializers.CharField(source='post_content.type')
-  state = serializers.CharField(source='existing_state.state', read_only=True)
-
-  class Meta:
-    model = Post
-    fields = ('id','user', 'comment', 'comment_type', 'state')
+  def get_urls(self, obj):
+    return {
+      'save_url': reverse('saves:save-post-toggle', kwargs={'post_id': obj.pk}), 
+      'upvote_url': reverse('impressions:user-react-upvote-to-post', kwargs={'post_id': obj.pk}), 
+      'downvote_url': reverse('impressions:user-react-downvote-to-post', kwargs={'post_id': obj.pk}), 
+      'replay_url': reverse('posts:create-post-replay', kwargs={'post_id': obj.pk}),
+      'list_replays_url': reverse('posts:list-post-replays', kwargs={'post_id': obj.pk}),
+    }
 
   def update(self, instance, validated_data):
     post = Post.objects.update_deep(instance, validated_data)
     return post
 
   def create(self, validated_data):
-    request = self.context.get('request')
-    kwargs = self.context.get('kwargs')
+    context = self.context
 
-    post_id = kwargs.get('post_id')
+    user = context['request'].user
+    validated_data.update({'user': user})
 
-    replay = Post.objects.create_replay_on_comment(request.user, post_id, validated_data)
-    return replay
+    post = Post.objects.create_deep(validated_data)
 
-class Post_UpdateState_serializer(serializers.ModelSerializer):
-  state = serializers.CharField(source='existing_state.state')
-  class Meta:
-    model = Post
-    fields = ('id', 'state')
+    create_method = {
+      'replay': Post.objects.create_replay_on_comment,
+      'comment': Post.objects.create_comment_on_thread,
+      'thread_post': None # already created
+    }.get(context.get('post_type'))
 
-  def update(self, instance, validated_data):
-    obj = Post.objects.update_deep(instance, validated_data)
-    return obj
+    if create_method:
+      create_method(post, context['to'])
 
-
-class PostReplaySerializer(serializers.ModelSerializer):
-  # post = Post_OwnerActions_Serializer(read_only=True)
-  replay = Post_OwnerActions_Serializer(read_only=True)
-  class Meta:
-    model = PostReplay
-    fields = ('id', 'replay', )
+    return post
 
