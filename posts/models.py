@@ -73,24 +73,39 @@ class Post(models.Model):
     return f'({self.user}) ({self.created}) {self.post_content.content[:60]}'
 
   def get_absolute_url(self):
-    '''url is for the thread it attached with'''
-    thread_deep2 = self.replay.post if hasattr(self, 'replay') else self
-    thread_deep1 = thread_deep2.thread_post if hasattr(thread_deep2, 'thread_post') else self
-    thread = thread_deep1.thread
-
-    # post = self
-
-    # its_post_for_replay = hasattr(post, 'replay')
-    # if its_post_for_replay:
-    #   post = post.replay.post
-
-    # its_post_for_comment = hasattr(post, 'thread_post')
-    # if its_post_for_comment:
-    #   post = post.thread_post
-
-    # thread = post.thread
-
+    # thread_deep2 = self.replay.post if hasattr(self, 'replay') else self
+    # thread_deep1 = thread_deep2.thread_post if hasattr(thread_deep2, 'thread_post') else self
+    # thread = thread_deep1.thread
+    thread = self.get_thread()
     return f'{thread.get_absolute_url()}#post{self.pk}'
+
+  def get_thread_title(self):
+    thread = self.get_thread()
+    return thread.title
+
+  def get_thread_relation(self):
+    return self.get_relation()
+
+  def get_thread(self):
+    post = self
+
+    its_post_for_replay = hasattr(post, 'replay')
+    if its_post_for_replay:
+      post = post.replay.post
+
+    its_post_for_comment = hasattr(post, 'thread_post')
+    if its_post_for_comment:
+      post = post.thread_post
+
+    thread = post.thread
+    return thread
+
+  def get_relation(self):
+    possible_relations = ['replay', 'thread_post', 'thread']
+
+    for rel in possible_relations:
+      if hasattr(self, rel):
+        return rel
 
 
 # W: Anyone | R: Anyone
