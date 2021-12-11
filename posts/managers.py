@@ -7,16 +7,11 @@ import posts.models as pModels
 from states.models import ExistingState
 
 class PostQuerySet(models.QuerySet):
-  def create_comment_on_thread(self, user, thread, post_data):
-    post = self.create_deep({'user': user, **post_data})
-    obj = thModels.ThreadPost.objects.create(thread=thread, post=post)
-
+  def create_comment_on_thread(self, comment, thread):
+    obj = thModels.ThreadPost.objects.create(thread=thread, post=comment)
     return obj
 
-  def create_replay_on_comment(self, user, comment_id, post_data):
-    comment = get_object_or_404(self.model, id=comment_id)
-    replay = self.create_deep({'user': user, **post_data})
-
+  def create_replay_on_comment(self, replay, comment):
     pModels.PostReplay.objects.create(post=comment, replay=replay)
     return replay
   
@@ -43,7 +38,7 @@ class PostQuerySet(models.QuerySet):
 
       oc_post_content.content = post_content_data.get('content', oc_post_content.content)
 
-      content_type = post_content_data.get('type', '')
+      content_type = post_content_data.get('type', oc_post_content.type)
       content_type = content_type if type(content_type) == str else content_type['type']
       oc_post_content.type = get_object_or_404(pModels.PostContentType, type=content_type)
 
@@ -84,11 +79,11 @@ class PostManager(models.Manager):
   def get_queryset(self):
     return PostQuerySet(self.model, using=self._db, hints=self._hints)
 
-  def create_replay_on_comment(self, user, comment_id, post_data):
-    return self.get_queryset().create_replay_on_comment(user, comment_id, post_data)
+  def create_replay_on_comment(self, replay, comment):
+    return self.get_queryset().create_replay_on_comment(replay, comment)
 
-  def create_comment_on_thread(self, user, thread, post_data):
-    return self.get_queryset().create_comment_on_thread(user, thread, post_data)
+  def create_comment_on_thread(self, comment, thread):
+    return self.get_queryset().create_comment_on_thread(comment, thread)
 
 
   def create_deep(self, data):
