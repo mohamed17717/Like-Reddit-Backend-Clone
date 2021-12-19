@@ -20,3 +20,18 @@ urlpatterns = [
   path('dashboard/', admin.site.urls),
   path('docs/', include_docs_urls(title='DJ Forum API'))
 ]
+
+
+# from rest_framework.schemas import get_schema_view
+# from django.views.generic import TemplateView
+
+# schema_view = get_schema_view(title="DJ Forum API", patterns=urlpatterns)
+
+# urlpatterns += [
+#   path('openapi/', schema_view, name='openapi-schema'),
+#   path('docs/', TemplateView.as_view(
+#     template_name='documentation.html',
+#     extra_context={'schema_url':'openapi-schema'}
+#   ), name='swagger-ui'),
+# ]
+
