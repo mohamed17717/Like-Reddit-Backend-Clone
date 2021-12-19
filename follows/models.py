@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models.expressions import F
 from django.db.models.query_utils import Q
+from django.urls import  reverse
 
 from threads.models import Thread
 
@@ -27,7 +28,12 @@ class UserFollow(models.Model):
     ]
 
   def __str__(self):
-    return f'New Follower ({self.follower}) for you ({self.target})'
+    return f'({self.follower}) -> ({self.target})'
+
+  def get_notification_url(self):
+    return reverse('accounts:user-profile', kwargs={'username': self.follower.username})
+  def get_notification_message(self):
+    return f'{self.follower.username} is start following you.'
 
 
 # W: Anyone | R: Anyone

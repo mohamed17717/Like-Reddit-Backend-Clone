@@ -4,9 +4,10 @@ from notifications.models import Notification
 
 
 class NotificationSerializer(serializers.ModelSerializer):
-  type = serializers.CharField(source='type.type')
-  msg = serializers.CharField(source='message')
+  url = serializers.URLField(source='sender.sender_object.get_notification_url')
+  msg = serializers.URLField(source='sender.sender_object.get_notification_message')
+
   class Meta:
     model = Notification
-    fields = ('msg', 'created', 'is_viewed', 'type', )
+    fields = ('msg', 'created', 'is_viewed', 'url', )
 

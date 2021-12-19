@@ -1,0 +1,62 @@
+[
+  {
+    "model": "notifications.NotificationType",
+    "fields": {
+      "type": "comment_replay"
+    }
+  },
+  {
+    "model": "notifications.NotificationType",
+    "fields": {
+      "type": "followed"
+    }
+  },
+  {
+    "model": "notifications.NotificationType",
+    "fields": {
+      "type": "new_thread"
+    }
+  },
+  {
+    "model": "notifications.NotificationType",
+    "fields": {
+      "type": "post_downvote"
+    }
+  },
+  {
+    "model": "notifications.NotificationType",
+    "fields": {
+      "type": "post_emoji"
+    }
+  },
+  {
+    "model": "notifications.NotificationType",
+    "fields": {
+      "type": "post_upvote"
+    }
+  },
+  {
+    "model": "notifications.NotificationType",
+    "fields": {
+      "type": "thread_comment"
+    }
+  },
+  {
+    "model": "notifications.NotificationType",
+    "fields": {
+      "type": "user_ban"
+    }
+  },
+  {
+    "model": "notifications.NotificationType",
+    "fields": {
+      "type": "user_premium"
+    }
+  },
+  {
+    "model": "notifications.NotificationType",
+    "fields": {
+      "type": "user_verified"
+    }
+  }
+]

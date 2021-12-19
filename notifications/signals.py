@@ -6,6 +6,8 @@ from django.dispatch import receiver
 
 from notifications.models import Notification, NotificationSender, NotificationType
 
+from notifications.static_vals import NOTIFY_TYPE as N_Type
+
 # senders
 from follows.models import UserFollow
 from posts.models import PostReplay
@@ -48,7 +50,7 @@ def notify_many(users:list[User], type:str, sender:models.Model):
 def notify_user_for_getting_followed(sender, instance, created, **kwargs):
   if created:
     user = instance.target
-    notify(user, 'followed', instance)
+    notify(user, N_Type.FOLLOWED, instance)
 
 
 @receiver(post_save, sender=Thread)
@@ -57,14 +59,14 @@ def notify_user_followers_for_publishing_new_thread(sender, instance, created, *
     publisher = instance.post.user
     followers = [item.follower for item in publisher.user_followers.all()]
 
-    notify_many(followers, 'new_thread', instance)
+    notify_many(followers, N_Type.NEW_THREAD, instance)
 
 
 @receiver(post_save, sender=ThreadPost)
 def notify_user_for_someone_commented_on_his_thread(sender, instance, created, **kwargs):
   if created:
     thread_publisher = instance.thread.post.user
-    notify(thread_publisher, 'thread_comment', instance)
+    notify(thread_publisher, N_Type.THREAD_COMMENT, instance)
 
 
 @receiver(post_save, sender=ThreadPost)
@@ -75,55 +77,56 @@ def notify_thread_followers_for_new_comment(sender, instance, created, **kwargs)
     thread_followers = instance.thread.thread_followers.filter(~Q(follower=comment_publisher))
     followers = [item.follower for item in thread_followers]
 
-    notify_many(followers, 'thread_comment', instance)
+    notify_many(followers, N_Type.THREAD_COMMENT, instance)
 
 
 @receiver(post_save, sender=PostReplay)
 def notify_user_for_somone_replaying_to_his_comment(sender, instance, created, **kwargs):
   if created:
     user = instance.post.user
-    notify(user, 'comment_replay', instance)
+    notify(user, N_Type.COMMENT_REPLAY, instance)
+
 
 
 @receiver(post_save, sender=PostUpVote)
 def notify_user_for_upvote(sender, instance, created, **kwargs):
   if created:
     user = instance.post.user
-    notify(user, 'post_upvote', instance)
+    notify(user, N_Type.POST_UPVOTE, instance)
 
 
 @receiver(post_save, sender=PostDownVote)
 def notify_user_for_downvote(sender, instance, created, **kwargs):
   if created:
     user = instance.post.user
-    notify(user, 'post_downvote', instance)
+    notify(user, N_Type.POST_DOWNVOTE, instance)
 
 
 @receiver(post_save, sender=PostEmoji)
 def notify_user_for_emoji(sender, instance, created, **kwargs):
   if created:
     user = instance.post.user
-    notify(user, 'post_emoji', instance)
+    notify(user, N_Type.POST_EMOJI, instance)
 
 
 @receiver(post_save, sender=UserVerified)
 def notify_user_for_getting_verified(sender, instance, created, **kwargs):
   if created:
     user = instance.user
-    notify(user, 'user_verified', instance)
+    notify(user, N_Type.USER_VERIFIED, instance)
 
 
 @receiver(post_save, sender=UserPremium)
 def notify_user_for_getting_premium(sender, instance, created, **kwargs):
   if created:
     user = instance.user
-    notify(user, 'user_premium', instance)
+    notify(user, N_Type.USER_PREMIUM, instance)
 
 
 @receiver(post_save, sender=UserBan)
 def notify_user_for_getting_ban(sender, instance, created, **kwargs):
   if created:
     user = instance.user
-    notify(user, 'user_ban', instance)
+    notify(user, N_Type.USER_BAN, instance)
 
 

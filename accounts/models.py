@@ -34,6 +34,11 @@ class UserVerified(models.Model):
   def __str__(self):
     return self.user.username
 
+  def get_notification_url(self):
+    return None
+  def get_notification_message(self):
+    return f'Congrats, You are now a verified user.'
+
 
 
 # W: Admin | R: Anyone
@@ -47,6 +52,11 @@ class UserPremium(models.Model):
 
   def __str__(self):
     return self.user.username
+
+  def get_notification_url(self):
+    return None
+  def get_notification_message(self):
+    return f'Congrats, You are now a premium user.'
 
 
 # W: Admin | R: Anyone
@@ -64,4 +74,7 @@ class UserBan(models.Model):
   def __str__(self):
     return self.user.username
 
-
+  def get_notification_url(self):
+    return None
+  def get_notification_message(self):
+    return f'You are got banned for {self.days} days.'

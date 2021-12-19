@@ -72,6 +72,11 @@ class Thread(models.Model):
   def is_private(self):
     return bool(self.private.first()) or self.category.is_private
 
+  def get_notification_url(self):
+    return self.get_absolute_url()
+  def get_notification_message(self):
+    return f'{self.post.user.username} you followed has published new thread about ({self.title}) check it now.'
+
 # W: Anyone | R: Anyone
 class ThreadPost(models.Model):
   thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='posts')
@@ -86,10 +91,13 @@ class ThreadPost(models.Model):
 
     ordering = ['-created']
 
-
   def __str__(self):
     return f'{self.post}'
 
+  def get_notification_url(self):
+    return self.post.get_absolute_url()
+  def get_notification_message(self):
+    return f'New comment from {self.post.user.username} on thread ({self.thread.title}).'
 
 # W: Admin | R: Anyone
 class ThreadPin(models.Model):

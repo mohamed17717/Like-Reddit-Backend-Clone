@@ -37,7 +37,10 @@ class PostEmoji(models.Model):
   def __str__(self):
     return f'{self.user} -> ({self.emoji}) -> {self.post}'
 
-
+  def get_notification_url(self):
+    return self.post.get_absolute_url()
+  def get_notification_message(self):
+    return f'{self.user.username} has reacted to your post by {self.emoji.name}.'
 
 # W: Anyone | R: Anyone
 class PostUpVote(models.Model):
@@ -58,6 +61,10 @@ class PostUpVote(models.Model):
   def __str__(self):
     return f'{self.user} -> {self.post}'
 
+  def get_notification_url(self):
+    return self.post.get_absolute_url()
+  def get_notification_message(self):
+    return f'{self.user.username} has upvoted your post.'
 
 # W: Anyone | R: Anyone
 class PostDownVote(models.Model):
@@ -78,3 +85,7 @@ class PostDownVote(models.Model):
   def __str__(self):
     return f'{self.user} -> {self.post}'
 
+  def get_notification_url(self):
+    return self.post.get_absolute_url()
+  def get_notification_message(self):
+    return f'{self.user.username} has downvoted your post.'

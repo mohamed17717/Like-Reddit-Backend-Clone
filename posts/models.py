@@ -120,3 +120,9 @@ class PostReplay(models.Model):
   def __str__(self):
     return f'{self.replay}'
 
+  def get_notification_url(self):
+    return self.post.get_absolute_url()
+  def get_notification_message(self):
+    return f'{self.post.user.username} is replied to you, on ({self.post.get_thread_title()}).'
+
+
