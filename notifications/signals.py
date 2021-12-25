@@ -30,7 +30,10 @@ User = get_user_model()
 def notify(user:User, type:str, sender:models.Model):
   type, _ = NotificationType.objects.get_or_create(type=type)
   notification = Notification.objects.create(user=user, type=type)
-  NotificationSender.objects.create(notification=notification, sender_object=sender)
+
+  sender_obj = NotificationSender.objects.create(sender_object=sender)
+  notification.sender.set([sender_obj])
+
 
 def notify_many(users:list[User], type:str, sender:models.Model):
   type, _ = NotificationType.objects.get_or_create(type=type)
