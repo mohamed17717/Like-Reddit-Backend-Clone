@@ -12,8 +12,8 @@ app_name = 'categories'
 
 router = routers.SimpleRouter()
 
-router.register(r'admin-category', Category_ApiView, 'admin-category')
-router.register(r'admin-category/sub', SubCategory_ApiView, 'admin-sub-category')
+router.register(r'admin/category', Category_ApiView, 'admin-category')
+router.register(r'admin/sub-category', SubCategory_ApiView, 'admin-sub-category')
 
 urlpatterns = [
   path('category/', Category_UserList_ApiView.as_view(), name='user-list-categories'),
