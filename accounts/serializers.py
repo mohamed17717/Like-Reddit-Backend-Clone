@@ -73,12 +73,13 @@ class UserProfilePageSerializer(UserBasicPublicSerializer):
 class Abstract_User_VerifyPremiumBan_Serializer(serializers.ModelSerializer):
   user = UserBasicPublicSerializer(read_only=True)
   delete_url = serializers.SerializerMethodField()
+  user_id = serializers.IntegerField(write_only=True)
 
   delete_url_viewname = None # required
 
   class Meta:
     model = None # required
-    fields = ('user', 'delete_url')
+    fields = ('user', 'delete_url', 'user_id')
 
   def get_delete_url(self, obj):
     return reverse(self.delete_url_viewname, kwargs={'pk': obj.pk})
@@ -90,7 +91,7 @@ class UserVerifiedSerializer(Abstract_User_VerifyPremiumBan_Serializer):
     model = UserVerified
 
 class UserPremiumSerializer(Abstract_User_VerifyPremiumBan_Serializer):
-  delete_url_viename = 'accounts:user-premium-detail'
+  delete_url_viewname = 'accounts:user-premium-detail'
   class Meta(Abstract_User_VerifyPremiumBan_Serializer.Meta):
     model = UserPremium
 
@@ -98,4 +99,5 @@ class UserBanSerializer(Abstract_User_VerifyPremiumBan_Serializer):
   delete_url_viewname = 'accounts:user-ban-detail'
   class Meta(Abstract_User_VerifyPremiumBan_Serializer.Meta):
     model = UserBan
+    fields = Abstract_User_VerifyPremiumBan_Serializer.Meta.fields + ('days',)
 
