@@ -24,18 +24,18 @@ class NotificationType(models.Model):
 
 # W: Runtime | R: Runtime
 class NotificationSender(models.Model):
-  limits = models.Q(app_label='follows', model='UserFollow') | \
-    models.Q(app_label='posts', model='PostReplay') | \
-    models.Q(app_label='threads', model='Thread') | \
-    models.Q(app_label='threads', model='ThreadPost') | \
-    models.Q(app_label='impressions', model='PostUpVote') | \
-    models.Q(app_label='impressions', model='PostDownVote') | \
-    models.Q(app_label='impressions', model='PostEmoji') | \
-    models.Q(app_label='accounts', model='UserBan') | \
-    models.Q(app_label='accounts', model='UserPremium') | \
-    models.Q(app_label='accounts', model='UserVerified')
+  # limits = models.Q(app_label='follows', model='UserFollow') | \
+  #   models.Q(app_label='posts', model='PostReplay') | \
+  #   models.Q(app_label='threads', model='Thread') | \
+  #   models.Q(app_label='threads', model='ThreadPost') | \
+  #   models.Q(app_label='impressions', model='PostUpVote') | \
+  #   models.Q(app_label='impressions', model='PostDownVote') | \
+  #   models.Q(app_label='impressions', model='PostEmoji') | \
+  #   models.Q(app_label='accounts', model='UserBan') | \
+  #   models.Q(app_label='accounts', model='UserPremium') | \
+  #   models.Q(app_label='accounts', model='UserVerified')
 
-  sender_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limits)
+  sender_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, ) # limit_choices_to=limits
   sender_id = models.PositiveIntegerField()
   sender_object = GenericForeignKey('sender_type', 'sender_id')
 
@@ -54,8 +54,12 @@ class Notification(models.Model):
 
   is_viewed = models.BooleanField(default=False)
 
-  # generic field private
-  sender = GenericRelation(NotificationSender, object_id_field="sender_id", related_query_name="notification")
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type", 
+    related_query_name="notification"
+  )
 
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
