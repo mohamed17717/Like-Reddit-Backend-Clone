@@ -3,7 +3,7 @@ from rest_framework.generics import ListAPIView
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK
+from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from rest_framework.response import Response
 
 from core.generics import ToggleRecordGenericView
@@ -45,13 +45,12 @@ class Abstract_UpvoteDownvote_ApiView(APIView):
 
     return Response(status=HTTP_201_CREATED)
 
-
   def delete(self, request, post_id):
     user = request.user
     post = get_object_or_404(Post, id=post_id)
 
     self.model.objects.filter(post=post, user=user).delete()
-    return Response(status=HTTP_200_OK)
+    return Response(status=HTTP_204_NO_CONTENT)
 
 class PostUpVote_UserReact_ApiView(Abstract_UpvoteDownvote_ApiView):
   model = PostUpVote
