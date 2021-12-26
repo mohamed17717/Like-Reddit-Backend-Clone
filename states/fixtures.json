@@ -1,11 +1,11 @@
 [
   {
     "model": "states.ExistingState",
-    "fields": { "name": "active" }
+    "fields": { "state": "active" }
   },
   {
     "model": "states.ExistingState",
-    "fields": { "name": "soft delete" }
+    "fields": { "state": "soft delete" }
   },
 
   {

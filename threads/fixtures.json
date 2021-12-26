@@ -1,6 +1,6 @@
 [
   {
     "model": "threads.ThreadDefaultSetting",
-    "fields": { "default_thread_state": 1, "is_posting_active": true }
+    "fields": { "default_pending_state": 1, "is_posting_active": true }
   }
 ]
