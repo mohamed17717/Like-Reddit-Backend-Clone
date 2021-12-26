@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK
+from rest_framework.status import HTTP_204_NO_CONTENT
 
 from follows.models import UserFollow, ThreadFollow
 from core.generics import ToggleRecordGenericView
@@ -41,7 +41,7 @@ class UserFollow_CheckFollow_ApiView(views.APIView):
     qs_kwargs = self.get_queryset_kwargs(request, **kwargs)
     get_object_or_404(self.model, **qs_kwargs)
 
-    return Response(status=HTTP_200_OK)
+    return Response(status=HTTP_204_NO_CONTENT)
 
 
 class ThreadFollow_ToggleFollow_ApiView(ToggleRecordGenericView):

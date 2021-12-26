@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, mixins, views, response
 
+from rest_framework import viewsets, mixins, views, response
+from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED
 
 class CreateUpdateDestroyListViewSet(
     mixins.CreateModelMixin, mixins.UpdateModelMixin,
@@ -44,14 +45,14 @@ class ToggleRecordGenericView(views.APIView):
     qs_kwargs = self.get_queryset_kwargs(request, **kwargs)
     self.model.objects.create(**qs_kwargs)
 
-    return response.Response(status=201)
+    return response.Response(status=HTTP_201_CREATED)
 
   def delete(self, request, **kwargs):
     qs_kwargs = self.get_queryset_kwargs(request, **kwargs)
     obj = get_object_or_404(self.model, **qs_kwargs)
     obj.delete()
 
-    return response.Response(status=200)
+    return response.Response(status=HTTP_204_NO_CONTENT)
 
 
 
