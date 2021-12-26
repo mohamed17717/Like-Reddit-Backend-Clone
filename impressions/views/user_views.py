@@ -18,6 +18,8 @@ class Emoji_UserList_ApiView(ListAPIView):
   serializer_class = EmojiSerializer
   permission_classes = [IsAuthenticated]
 
+  paginator = None
+
 
 class PostEmoji_UserReact_ApiView(ToggleRecordGenericView):
   model = PostEmoji
@@ -49,7 +51,9 @@ class Abstract_UpvoteDownvote_ApiView(APIView):
     user = request.user
     post = get_object_or_404(Post, id=post_id)
 
-    self.model.objects.filter(post=post, user=user).delete()
+    reaction = get_object_or_404(self.model, post=post, user=user)
+    reaction.delete()
+
     return Response(status=HTTP_204_NO_CONTENT)
 
 class PostUpVote_UserReact_ApiView(Abstract_UpvoteDownvote_ApiView):
