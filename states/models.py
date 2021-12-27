@@ -5,7 +5,7 @@ class AbstractStateModel(models.Model):
   default_state = None
   states = []
 
-  state = models.CharField(max_length=32)
+  state = models.CharField(max_length=32, unique=True)
 
   class Meta:
     abstract = True

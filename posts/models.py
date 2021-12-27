@@ -9,7 +9,7 @@ User = get_user_model()
 
 # W: Static | R: Runtime
 class PostConetntType(models.Model):
-  type = models.CharField(max_length=32)
+  type = models.CharField(max_length=32, unique=True)
 
   class Meta:
     verbose_name = 'PostConetntType'

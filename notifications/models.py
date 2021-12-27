@@ -12,7 +12,7 @@ User = get_user_model()
 
 # W: Static | R: Runtime
 class NotificationType(models.Model):
-  type = models.CharField(max_length=64)
+  type = models.CharField(max_length=64, unique=True)
 
   class Meta:
     verbose_name = 'NotificationType'
