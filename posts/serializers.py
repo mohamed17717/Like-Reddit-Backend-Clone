@@ -3,14 +3,8 @@ from django.urls import reverse
 from rest_framework import serializers
 
 from accounts.serializers import UserBasicPublicSerializer
-from posts.models import PostContent, Post
+from posts.models import Post
 
-
-class PostContentSerializer(serializers.ModelSerializer):
-  type = serializers.CharField(source='type.type')
-  class Meta:
-    model = PostContent
-    fields = ('type', 'content')
 
 class Post_ToThreadRelation_Serializer(serializers.ModelSerializer):
   url = serializers.CharField(source='get_absolute_url')
@@ -21,28 +15,26 @@ class Post_ToThreadRelation_Serializer(serializers.ModelSerializer):
     fields = ('url', 'thread_title', 'thread_relation')
 
 class PostSerializer(serializers.ModelSerializer):
-  url = serializers.CharField(source='get_absolute_url')
-  urls = serializers.SerializerMethodField()
-  user = UserBasicPublicSerializer()
+  url = serializers.CharField(source='get_absolute_url', read_only=True)
+  urls = serializers.SerializerMethodField(read_only=True)
+  user = UserBasicPublicSerializer(read_only=True)
 
-  post_content = PostContentSerializer()
+  content = serializers.CharField(source="post_content.content")
+  content_type = serializers.CharField(source="post_content.type.type")
 
   class Meta:
     model = Post
     fields = (
-      'user', 'post_content', 'created', 'upvote_count',
+      'user', 'content', 'content_type', 'created', 'upvote_count',
       'downvote_count', 'emoji_count', 'replays_count',
       'url', 'urls'
     )
     extra_kwargs = {
-      'user': {'read_only': True},
       'created': {'read_only': True},
       'upvote_count': {'read_only': True},
       'downvote_count': {'read_only': True},
       'emoji_count': {'read_only': True},
       'replays_count': {'read_only': True},
-      'url': {'read_only': True},
-      'urls': {'read_only': True},
     }
 
   def get_urls(self, obj):
