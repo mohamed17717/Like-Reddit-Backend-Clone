@@ -21,7 +21,7 @@ class PostQuerySet(models.QuerySet):
 
     post_content_type_data = post_content_data.pop('type')
     if post_content_type_data:
-      post_content_data['type'] = get_object_or_404(pModels.PostContentType, **post_content_type_data)
+      post_content_data['type'] = get_object_or_404(pModels.PostConetntType, **post_content_type_data)
 
     data['post_content'] = pModels.PostContent.objects.create(**post_content_data)
 
@@ -38,9 +38,9 @@ class PostQuerySet(models.QuerySet):
 
       oc_post_content.content = post_content_data.get('content', oc_post_content.content)
 
-      content_type = post_content_data.get('type', oc_post_content.type)
+      content_type = post_content_data.get('type', oc_post_content.type.type)
       content_type = content_type if type(content_type) == str else content_type['type']
-      oc_post_content.type = get_object_or_404(pModels.PostContentType, type=content_type)
+      oc_post_content.type = get_object_or_404(pModels.PostConetntType, type=content_type)
 
       oc_post_content.save()
 
