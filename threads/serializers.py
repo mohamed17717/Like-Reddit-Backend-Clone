@@ -14,16 +14,24 @@ from posts.serializers import PostSerializer
 
 
 class Thread_BasicInfo_Serializer(serializers.ModelSerializer):
-  user = UserBasicPublicSerializer(source='post.user',read_only=True)
-  url = serializers.CharField(source='get_absolute_url')
-  category = SubCategory_PlusParent_Serializer()
+  user = UserBasicPublicSerializer(source='post.user', read_only=True)
+  url = serializers.CharField(source='get_absolute_url', read_only=True)
+  sub_category = SubCategory_PlusParent_Serializer(source="category", read_only=True)
+  sub_category_id = serializers.IntegerField(write_only=True)
 
   class Meta:
     model = Thread
     fields = (
-      'user', 'url', 'title', 'description', 'category',
-      'is_private', 'created', 'visits_count', 'comments_count'
+      'user', 'url', 'title', 'description', 'sub_category', 'sub_category_id',
+      'is_private', 'created', 'visits_count', 'comments_count',
     )
+
+    extra_kwargs = {
+      'is_private': {'read_only': True},
+      'created': {'read_only': True},
+      'visits_count': {'read_only': True},
+      'comments_count': {'read_only': True},
+    }
 
 class Thread_HandlePendingState_Serializer(Thread_BasicInfo_Serializer):
   class Meta(Thread_BasicInfo_Serializer.Meta):
@@ -42,7 +50,7 @@ class Thread_HandlePendingState_Serializer(Thread_BasicInfo_Serializer):
 
 class Thread_FullInfo_Serializer(Thread_BasicInfo_Serializer):
   post = PostSerializer()
-  comments = PostSerializer(source='posts', many=True, allow_null=True)
+  comments = PostSerializer(source='posts', many=True, allow_null=True, read_only=True)
   class Meta(Thread_BasicInfo_Serializer.Meta):
     fields = Thread_BasicInfo_Serializer.Meta.fields + ('post', 'comments')
 
@@ -53,8 +61,8 @@ class Thread_FullInfo_Serializer(Thread_BasicInfo_Serializer):
     post_data = validated_data.get('post')
     post = Post.objects.create_deep({'user': request.user, **post_data})
 
-    category_data = validated_data.get('category')
-    category = get_object_or_404(SubCategory, **category_data)
+    category_id = validated_data.pop('sub_category_id')
+    category = get_object_or_404(SubCategory, pk=category_id)
 
     validated_data.update({'post': post, 'category': category})
 
@@ -63,8 +71,8 @@ class Thread_FullInfo_Serializer(Thread_BasicInfo_Serializer):
   def update(self, instance, validated_data):
     instance.title = validated_data.get('title', instance.title)
 
-    category_data = validated_data.get('category', {'name': instance.category.name})
-    instance.category = get_object_or_404(SubCategory, **category_data)
+    category_id = validated_data.get('sub_category_id', instance.category.pk)
+    instance.category = get_object_or_404(SubCategory, pk=category_id)
 
     post_data = validated_data.get('post')
     Post.objects.update_deep(instance.post, post_data)
