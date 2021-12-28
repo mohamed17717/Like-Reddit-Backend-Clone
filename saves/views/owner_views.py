@@ -25,7 +25,7 @@ class SavePost_ListSaves_ApiView(ListAPIView):
   permission_classes = [IsAuthenticated]
 
   def get_queryset(self):
-    qs = SavePost.objects.filter(user=self.request.user, post__existing_state='active')
+    qs = SavePost.objects.filter(user=self.request.user, post__existing_state__state='active')
     return qs
 
 
