@@ -38,8 +38,8 @@ class IsUserHasAccessToThisContent:
   
   def is_user_has_access(self) -> bool:
     user = self.request.user
-    return user.is_authenticated and (user.is_premium or user.is_stuff)
-  
+    return user.is_authenticated and (user.is_premium or user.is_staff)
+
   def check(self):
     state = True
 
