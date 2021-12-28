@@ -9,6 +9,8 @@ db.sqlite3
 media/
 staticfiles/
 
+shell-test.py
+
 # Backup files # 
 *.bak 
 
