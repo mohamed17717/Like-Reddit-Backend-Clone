@@ -13,10 +13,11 @@ class PostReplay_ListPostReplays_ApiView(APIView, LimitOffsetPagination):
 
   def get(self, request, post_id):
     post = Post.objects.one_alive(pk=post_id)
-    replays = post.replays.all_alive()
+
+    replays = post.replays.all().filter(replay__existing_state__state='active')
 
     results = self.paginate_queryset(replays, request, view=self)
-    serializer = PostSerializer(results, many=True)
+    serializer = PostSerializer([r.replay for r in results], many=True)
 
     return self.get_paginated_response(data=serializer.data)
 
