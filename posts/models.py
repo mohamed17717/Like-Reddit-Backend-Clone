@@ -1,5 +1,7 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.contrib.auth import get_user_model
+from notifications.models import NotificationSender
 
 from posts.managers import PostManager
 from states.models import ExistingState
@@ -112,6 +114,12 @@ class Post(models.Model):
 class PostReplay(models.Model):
   post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='replays')
   replay = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='replay')
+
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type",
+  )
 
   class Meta:
     verbose_name = 'PostReplay'

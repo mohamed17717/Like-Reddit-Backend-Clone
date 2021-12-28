@@ -1,5 +1,7 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.contrib.auth import get_user_model
+from notifications.models import NotificationSender
 
 from posts.models import Post
 
@@ -26,6 +28,12 @@ class PostEmoji(models.Model):
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
 
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type",
+  )
+
   class Meta:
     verbose_name = 'PostEmoji'
     verbose_name_plural = 'PostEmojis'
@@ -50,6 +58,12 @@ class PostUpVote(models.Model):
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
 
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type",
+  )
+
   class Meta:
     verbose_name = 'PostUpVote'
     verbose_name_plural = 'PostUpVotes'
@@ -73,6 +87,12 @@ class PostDownVote(models.Model):
 
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
+
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type",
+  )
 
   class Meta:
     verbose_name = 'PostDownVote'

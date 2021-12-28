@@ -1,8 +1,10 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models.expressions import F
 from django.db.models.query_utils import Q
 from django.urls import  reverse
+from notifications.models import NotificationSender
 
 from threads.models import Thread
 
@@ -17,6 +19,12 @@ class UserFollow(models.Model):
 
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
+
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type",
+  )
 
   class Meta:
     verbose_name = 'UserFollow'

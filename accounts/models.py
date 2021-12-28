@@ -1,6 +1,9 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+
+from notifications.models import NotificationSender
 
 User = get_user_model()
 
@@ -24,6 +27,11 @@ class UserProfile(models.Model):
 class UserVerified(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='verified')
 
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type",
+  )
   class Meta:
     verbose_name = 'UserVerified'
     verbose_name_plural = 'UsersVerified'
@@ -41,6 +49,11 @@ class UserPremium(models.Model):
   """ Has Access To Private Content """
   user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='premium')
 
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type",
+  )
   class Meta:
     verbose_name = 'UserPremium'
     verbose_name_plural = 'UsersPremium'
@@ -60,6 +73,12 @@ class UserBan(models.Model):
   start = models.DateField(auto_now_add=True)
 
   state = models.CharField(max_length=16, default='active')
+
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type",
+  )
 
   class Meta:
     verbose_name = 'UserBan'

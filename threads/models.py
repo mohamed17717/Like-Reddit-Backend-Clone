@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.contrib.contenttypes.fields import GenericRelation
+from notifications.models import NotificationSender
 
 from posts.models import Post
 from categories.models import SubCategory
@@ -51,9 +52,15 @@ class Thread(models.Model):
 
   # generic field private
   private = GenericRelation(PrivateContent, object_id_field="content_id", related_query_name="thread")
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type",
+  )
 
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
+
 
   objects = ThreadManager()
 
@@ -85,6 +92,12 @@ class ThreadPost(models.Model):
 
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
+
+  sender = GenericRelation(
+    NotificationSender,
+    object_id_field="sender_id",
+    content_type_field="sender_type",
+  )
 
   class Meta:
     verbose_name = 'ThreadPost'
