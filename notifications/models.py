@@ -10,7 +10,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 
 User = get_user_model()
 
-# W: Static | R: Runtime
 class NotificationType(models.Model):
   type = models.CharField(max_length=64, unique=True)
 
@@ -21,8 +20,6 @@ class NotificationType(models.Model):
   def __str__(self):
     return self.type
 
-
-# W: Runtime | R: Runtime
 class NotificationSender(models.Model):
   # limits = models.Q(app_label='follows', model='UserFollow') | \
   #   models.Q(app_label='posts', model='PostReplay') | \
@@ -44,22 +41,16 @@ class NotificationSender(models.Model):
     verbose_name_plural = 'NotificationSenders'
 
   def __str__(self):
-    return f'({self.notification.pk}) {self.sender_object}'
+    return f'{self.sender_object}'
 
 
-# W: Anyone (signals) | R: Anyone
 class Notification(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
   type = models.ForeignKey(NotificationType, on_delete=models.CASCADE, related_name='notifications')
 
   is_viewed = models.BooleanField(default=False)
 
-  sender = GenericRelation(
-    NotificationSender,
-    object_id_field="sender_id",
-    content_type_field="sender_type", 
-    related_query_name="notification"
-  )
+  sender = models.ForeignKey(NotificationSender, on_delete=models.CASCADE, related_name='notifications', blank=True, null=True)
 
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
