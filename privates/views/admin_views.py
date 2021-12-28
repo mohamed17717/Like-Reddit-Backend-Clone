@@ -26,9 +26,9 @@ class Abstract_PrivateContent_ApiView(ToggleRecordGenericView):
 class PrivateContent_ToggleThreadPrivate_ApiView(Abstract_PrivateContent_ApiView):
   related_model = Thread
   lookup_url_kwarg = 'thread_id'
-class PrivateContent_ToggleCategoryPrivate_ApiView(ToggleRecordGenericView):
+class PrivateContent_ToggleCategoryPrivate_ApiView(Abstract_PrivateContent_ApiView):
   related_model = Category
   lookup_url_kwarg = 'category_id'
-class PrivateContent_ToggleSubCategoryPrivate_ApiView(ToggleRecordGenericView):
+class PrivateContent_ToggleSubCategoryPrivate_ApiView(Abstract_PrivateContent_ApiView):
   related_model = SubCategory
   lookup_url_kwarg = 'sub_category_id'
