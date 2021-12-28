@@ -70,6 +70,7 @@ class Thread(models.Model):
 
   @property
   def is_private(self):
+    # from admin perspective and allowed for premium users
     return bool(self.private.first()) or self.category.is_private
 
   def get_notification_url(self):
