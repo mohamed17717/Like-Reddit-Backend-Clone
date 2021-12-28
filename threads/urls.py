@@ -17,7 +17,8 @@ from threads.views.anon_views import (
 from threads.views.admin_views import (
   ThreadPin_Toggle_ApiView,
   ThreadPin_List_ApiView,
-  Thread_AdminUpdateState_ApiView,
+  Thread_AdminAcceptPendingState_ApiView,
+  Thread_AdminRejectPendingState_ApiView,
   Thread_ListPending_ApiView,
 )
 
@@ -36,10 +37,11 @@ urlpatterns = [
   path('thread/pinned/', ThreadPin_CommonPinnedThreads_ApiView.as_view(), name='common-pinned-threads'),
   path('thread/pinned/<int:sub_category_id>/', ThreadPin_ListOnSubCategory_ApiView.as_view(), name="pinned-threads-by-category"),
 
-  path('admin-thread/<int:thread_id>/pin/', ThreadPin_Toggle_ApiView.as_view(), name='pin-thread'),
-  path('admin-thread/pinned/', ThreadPin_List_ApiView.as_view(), name='list-pinned-threads'),
-  path('admin-thread/<int:thread_id>/update-state/', Thread_AdminUpdateState_ApiView.as_view(), name='admin-update-thread-state'),
-  path('admin-thread/pending/', Thread_ListPending_ApiView.as_view(), name='list-pending-threads'),
+  path('admin/thread/<int:thread_id>/pin/', ThreadPin_Toggle_ApiView.as_view(), name='pin-thread'),
+  path('admin/thread/pinned/', ThreadPin_List_ApiView.as_view(), name='list-pinned-threads'),
+  path('admin/thread/pending/', Thread_ListPending_ApiView.as_view(), name='list-pending-threads'),
+  path('admin/thread/<int:thread_id>/pending/accept/', Thread_AdminAcceptPendingState_ApiView.as_view(), name='admin-accept-pending-thread'),
+  path('admin/thread/<int:thread_id>/pending/reject/', Thread_AdminRejectPendingState_ApiView.as_view(), name='admin-reject-pending-thread'),
 
   path('own/thread/<int:thread_id>/private/', Thread_OwnerUpdateStatePrivate_ApiView.as_view(), name='owner-make-post-private'),
   path('own/thread/<int:thread_id>/public/', Thread_OwnerUpdateStatePublic_ApiView.as_view(), name='owner-make-post-public'),
