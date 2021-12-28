@@ -29,7 +29,7 @@ class ThreadQuerySet(models.QuerySet):
       **self.exist_condition,
       'pending_state__state': 'accept', 
       'privacy_state__state': 'public',
-      'pinned__isnull': True,
+      # 'pinned__isnull': True, # cant set null here
     }
   @property
   def exist_condition(self):
