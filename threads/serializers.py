@@ -8,7 +8,7 @@ from accounts.serializers import UserBasicPublicSerializer
 
 from categories.models import SubCategory
 from posts.models import Post
-from threads.models import Thread
+from threads.models import Thread, ThreadPost
 from states.models import PendingState
 
 from categories.serializers import SubCategory_PlusParent_Serializer
@@ -65,9 +65,15 @@ class Thread_WritePendingState_Serializer(serializers.ModelSerializer):
     return instance
 
 
+class ThreadComment_Serializer(serializers.ModelSerializer):
+  post = PostSerializer(read_only=True)
+  class Meta:
+    model = ThreadPost
+    fields = ('post', )
+
 class Thread_FullInfo_Serializer(Thread_BasicInfo_Serializer):
   post = PostSerializer()
-  comments = PostSerializer(source='posts', many=True, allow_null=True, read_only=True)
+  comments = ThreadComment_Serializer(source='posts', many=True, read_only=True)
   class Meta(Thread_BasicInfo_Serializer.Meta):
     fields = Thread_BasicInfo_Serializer.Meta.fields + ('post', 'comments')
 
