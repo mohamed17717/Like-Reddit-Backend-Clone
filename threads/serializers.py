@@ -1,6 +1,9 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
+from rest_framework.status import HTTP_400_BAD_REQUEST
+
 from accounts.serializers import UserBasicPublicSerializer
 
 from categories.models import SubCategory
@@ -33,18 +36,32 @@ class Thread_BasicInfo_Serializer(serializers.ModelSerializer):
       'comments_count': {'read_only': True},
     }
 
-class Thread_HandlePendingState_Serializer(Thread_BasicInfo_Serializer):
+class Thread_ReadPendingState_Serializer(Thread_BasicInfo_Serializer):
+  pending_state = serializers.CharField(source='pending_state.state')
   class Meta(Thread_BasicInfo_Serializer.Meta):
     model = Thread
     fields = Thread_BasicInfo_Serializer.Meta.fields + ('pending_state',)
     read_only_fields = Thread_BasicInfo_Serializer.Meta.fields
 
+
+class Thread_WritePendingState_Serializer(serializers.ModelSerializer):
+  pending_state = serializers.CharField(source='pending_state.state')
+  class Meta:
+    model = Thread
+    fields = ('pending_state',)
+
+  def validate_pending_state(self, value):
+    if value not in PendingState.states:
+      raise APIException(detail=f'only allowed {", ".join(PendingState.states)}', code=HTTP_400_BAD_REQUEST)
+    return value
+
   def update(self, instance, validated_data):
-    new_state_value = validated_data.get('pending_state', instance.state)
+    new_state_value = validated_data.get('pending_state', instance.pending_state.state)
     new_state, _ = PendingState.objects.get_or_create(state=new_state_value)
 
     instance.pending_state = new_state
     instance.save()
+
     return instance
 
 
@@ -83,5 +100,10 @@ class Thread_FullInfo_Serializer(Thread_BasicInfo_Serializer):
     return instance
 
 
+class Thread_Owner_Serializer(Thread_FullInfo_Serializer):
+  pending_state = serializers.CharField(source='pending_state.state', read_only=True)
+  privacy_state = serializers.CharField(source='privacy_state.state', read_only=True)
+  class Meta(Thread_FullInfo_Serializer.Meta):
+    fields = Thread_FullInfo_Serializer.Meta.fields + ('pending_state', 'privacy_state')
 
 
