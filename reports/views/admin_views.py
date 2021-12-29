@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
-from rest_framework.generics import ListAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView
+from rest_framework.status import HTTP_204_NO_CONTENT
 
 from core.generics import CreateUpdateDestroyListViewSet
 
@@ -50,13 +52,19 @@ class ReportDecision_ListDecision_ApiView(ListAPIView):
   paginator = None
 
 
-class PostReport_UpdateDecision_Apiview(UpdateAPIView):
-  queryset = PostReport.objects.all()
-  serializer_class = PostReportSerializer
+class PostReport_UpdateDecision_Apiview(APIView):
   permission_classes = [IsAdminUser]
 
-  lookup_field = 'pk'
-  lookup_url_kwarg = 'report_id'
+  def get(self, request, report_id):
+    report = get_object_or_404(PostReport, pk=report_id)
+
+    decision_string = tuple(filter(lambda i: i, request.path.split('/')))[-1]
+    decision_obj= get_object_or_404(ReportDecision, name=decision_string)
+
+    report.decision = decision_obj
+    report.save()
+
+    return Response(status=HTTP_204_NO_CONTENT)
 
 
 
