@@ -1,0 +1,314 @@
+{
+	"info": {
+		"_postman_id": "31dcebf9-c7b0-4378-b37b-6f49122ea411",
+		"name": "privates app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "admin actions",
+			"item": [
+				{
+					"name": "make thread private",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 503]);",
+									"",
+									"    if (pm.response.code === 503){",
+									"",
+									"        pm.test(\"record already exist.\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"Record already exist.\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/thread/:thread_id/private/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"thread",
+								":thread_id",
+								"private",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{thread_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "make thread public",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/thread/:thread_id/private/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"thread",
+								":thread_id",
+								"private",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{thread_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "make category private",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 503]);",
+									"",
+									"    if (pm.response.code === 503){",
+									"",
+									"        pm.test(\"record already exist.\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"Record already exist.\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/category/:category_id/private/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"category",
+								":category_id",
+								"private",
+								""
+							],
+							"variable": [
+								{
+									"key": "category_id",
+									"value": "{{category_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "make category public",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/category/:category_id/private/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"category",
+								":category_id",
+								"private",
+								""
+							],
+							"variable": [
+								{
+									"key": "category_id",
+									"value": "{{category_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "make sub_category private",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 503]);",
+									"",
+									"    if (pm.response.code === 503){",
+									"",
+									"        pm.test(\"record already exist.\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"Record already exist.\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/sub-category/:sub_category_id/private/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"sub-category",
+								":sub_category_id",
+								"private",
+								""
+							],
+							"variable": [
+								{
+									"key": "sub_category_id",
+									"value": "{{sub_category_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "make sub_category public",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/sub-category/:sub_category_id/private/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"sub-category",
+								":sub_category_id",
+								"private",
+								""
+							],
+							"variable": [
+								{
+									"key": "sub_category_id",
+									"value": "{{sub_category_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,119 @@
+{
+	"info": {
+		"_postman_id": "384f5e18-f4f9-4a76-8411-eca1f7a33ddd",
+		"name": "posts app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user actions",
+			"item": [
+				{
+					"name": "replay to comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"{{$randomLoremText}}\",\n    \"content_type\": \"text\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/post/:comment_id/replay/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"post",
+								":comment_id",
+								"replay",
+								""
+							],
+							"variable": [
+								{
+									"key": "comment_id",
+									"value": "{{comment_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "anonymous actions",
+			"item": [
+				{
+					"name": "list replays on comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base}}/post/:comment_id/replays/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"post",
+								":comment_id",
+								"replays",
+								""
+							],
+							"variable": [
+								{
+									"key": "comment_id",
+									"value": "{{comment_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

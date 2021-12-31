@@ -1,0 +1,600 @@
+{
+	"info": {
+		"_postman_id": "502dc746-cea7-4e96-83aa-1608665deb33",
+		"name": "impressions app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "admin actions",
+			"item": [
+				{
+					"name": "list emojis",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/post/emoji/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"post",
+								"emoji",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create emoji",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"temp_emoji_id\", pm.response.json().id);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomCurrencySymbol}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/admin/post/emoji/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"post",
+								"emoji",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update emoji",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomCurrencySymbol}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/admin/post/emoji/:emoji_id/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"post",
+								"emoji",
+								":emoji_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "emoji_id",
+									"value": "{{temp_emoji_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete emoji",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful delete request or its not exist\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/post/emoji/:emoji_id/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"post",
+								"emoji",
+								":emoji_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "emoji_id",
+									"value": "{{temp_emoji_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user actions",
+			"item": [
+				{
+					"name": "list emojis",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/post/emojis/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"post",
+								"emojis",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upvote post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 503]);",
+									"",
+									"    if (pm.response.code === 503){",
+									"",
+									"        pm.test(\"record already exist.\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"Record already exist.\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/react/:post_id/up/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"react",
+								":post_id",
+								"up",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "post_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete upvote on post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/react/:post_id/up/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"react",
+								":post_id",
+								"up",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "post_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "downvote post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 503]);",
+									"",
+									"    if (pm.response.code === 503){",
+									"",
+									"        pm.test(\"record already exist.\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"Record already exist.\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/react/:post_id/down/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"react",
+								":post_id",
+								"down",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "post_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete downvote on post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/react/:post_id/down/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"react",
+								":post_id",
+								"down",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "post_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "react with emoji on post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 503]);",
+									"",
+									"    if (pm.response.code === 503){",
+									"",
+									"        pm.test(\"record already exist.\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"Record already exist.\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/react/:post_id/emoji/:emoji_id/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"react",
+								":post_id",
+								"emoji",
+								":emoji_id",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "post_id",
+									"value": "1"
+								},
+								{
+									"key": "emoji_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete emoji react on post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/react/:post_id/emoji/:emoji_id/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"react",
+								":post_id",
+								"emoji",
+								":emoji_id",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "post_id",
+									"value": "1"
+								},
+								{
+									"key": "emoji_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

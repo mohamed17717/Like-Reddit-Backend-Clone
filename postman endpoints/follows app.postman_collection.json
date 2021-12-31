@@ -1,0 +1,420 @@
+{
+	"info": {
+		"_postman_id": "ea5cdfdf-6563-44aa-baf3-7353d211dad3",
+		"name": "follows app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "owner actions",
+			"item": [
+				{
+					"name": "list followers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/followers/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"followers",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list following",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/following/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"following",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "anonymous actions",
+			"item": [
+				{
+					"name": "list user followers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/:username/followers/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								":username",
+								"followers",
+								""
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{admin_username}}",
+									"description": "user you wanna list his followers list"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list user following",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/:username/following/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								":username",
+								"following",
+								""
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{admin_username}}",
+									"description": "user you wanna list his following list"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user actions",
+			"item": [
+				{
+					"name": "follow another user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 503]);",
+									"",
+									"    if (pm.response.code === 503){",
+									"",
+									"        pm.test(\"record already exist.\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"Record already exist.\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/follow/:username/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"follow",
+								":username",
+								""
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{another_username}}",
+									"description": "current user wanna follow this user"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unfollow another user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/follow/:username/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"follow",
+								":username",
+								""
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "{{another_username}}",
+									"description": "current user wanna unfollow this user"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "chack follow of another user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful check request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/follow/:username/check/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"follow",
+								":username",
+								"check",
+								""
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "d3v.mhmd",
+									"description": "current user wanna follow this user"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "follow thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 503]);",
+									"",
+									"    if (pm.response.code === 503){",
+									"",
+									"        pm.test(\"record already exist.\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"Record already exist.\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/follow/thread/:thread_id/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"follow",
+								"thread",
+								":thread_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "1",
+									"description": "thread that current user wanna to unfollow"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unfollow thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/follow/thread/:thread_id/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"follow",
+								"thread",
+								":thread_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "1",
+									"description": "thread that current user wanna to unfollow"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

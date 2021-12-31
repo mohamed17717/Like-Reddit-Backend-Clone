@@ -1,0 +1,562 @@
+{
+	"info": {
+		"_postman_id": "c3f874f5-1563-4131-a8a1-6dd4647e2dec",
+		"name": "categories app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "admin actions",
+			"item": [
+				{
+					"name": "category",
+					"item": [
+						{
+							"name": "list categories",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const response = pm.response.json();",
+											"",
+											"const lastResult = response.results.slice(-1).pop();",
+											"const resultUrl = lastResult.url;",
+											"const resultId = resultUrl.split('/').filter(i => i).pop();",
+											"",
+											"pm.environment.set(\"category_id\", resultId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/admin/category/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"category",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"const response = pm.response.json();",
+											"",
+											"const resultUrl = response.url;",
+											"const resultId = resultUrl.split('/').filter(i => i).pop();",
+											"",
+											"pm.environment.set(\"temp_category_id\", resultId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"games\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/admin/category/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"category",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"new games\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/admin/category/:category_id/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"category",
+										":category_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "category_id",
+											"value": "{{temp_category_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.environment.unset(\"temp_category_id\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/admin/category/:category_id/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"category",
+										":category_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "category_id",
+											"value": "{{temp_category_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "sub category",
+					"item": [
+						{
+							"name": "list sub categories",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const response = pm.response.json()",
+											"",
+											"const lastResult = response.results.slice(-1).pop();",
+											"const resultUrl = lastResult.url;",
+											"const resultId = resultUrl.split('/').filter(i => i).pop();",
+											"",
+											"pm.environment.set(\"sub_category_id\", resultId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/admin/sub-category/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"sub-category",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create sub category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"const response = pm.response.json()",
+											"",
+											"const resultUrl = response.url;",
+											"const resultId = resultUrl.split('/').filter(i => i).pop();",
+											"",
+											"pm.environment.set(\"temp_sub_category_id\", resultId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{$randomWords}}\",\n    \"category_id\": {{category_id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/admin/sub-category/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"sub-category",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update sub category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"category_id\": {{temp_sub_category_id}},\n    \"name\": \"{{$randomWord}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/admin/sub-category/:sub_category_id/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"sub-category",
+										":sub_category_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "sub_category_id",
+											"value": "{{temp_sub_category_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "partial update sub category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"category_id\": {{sub_category_id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/admin/sub-category/:sub_category_id/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"sub-category",
+										":sub_category_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "sub_category_id",
+											"value": "{{temp_sub_category_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete sub category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/admin/sub-category/:sub_category_id/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"sub-category",
+										":sub_category_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "sub_category_id",
+											"value": "{{temp_sub_category_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "anonymous actions",
+			"item": [
+				{
+					"name": "list categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/category/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"category",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list sub-categories in category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/category/:category_id/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"category",
+								":category_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "category_id",
+									"value": "{{category_id}}",
+									"description": "id of the categpry you wanna list"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

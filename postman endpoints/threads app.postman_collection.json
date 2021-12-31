@@ -1,0 +1,931 @@
+{
+	"info": {
+		"_postman_id": "0b6410e9-c219-4c20-af32-0914d95cad03",
+		"name": "threads app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "admin actions",
+			"item": [
+				{
+					"name": "pin thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 503]);",
+									"",
+									"    if (pm.response.code === 503){",
+									"",
+									"        pm.test(\"record already exist.\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"Record already exist.\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/thread/:thread_id/pin/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"thread",
+								":thread_id",
+								"pin",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{thread_id}}",
+									"description": "thread id admin wnanna to pin "
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unpin thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Toggle request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/thread/:thread_id/pin/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"thread",
+								":thread_id",
+								"pin",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{thread_id}}",
+									"description": "thread id admin wnanna to pin "
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list pinned threads",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/thread/pinned/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"thread",
+								"pinned",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list pending threads",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/thread/pending/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"thread",
+								"pending",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "accept pending thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 500]);",
+									"",
+									"    if (pm.response.code === 500) {",
+									"",
+									"        pm.test(\"valid exception\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"only allowed accept, pending, declined\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/thread/:thread_id/pending/accept/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"thread",
+								":thread_id",
+								"pending",
+								"accept",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "5",
+									"description": "thread id admin wnanna to pin "
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reject pending thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204, 500]);",
+									"",
+									"    if (pm.response.code === 500) {",
+									"",
+									"        pm.test(\"valid exception\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"only allowed accept, pending, declined\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/admin/thread/:thread_id/pending/reject/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"admin",
+								"thread",
+								":thread_id",
+								"pending",
+								"reject",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "5",
+									"description": "thread id admin wnanna to pin "
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "owner actions",
+			"item": [
+				{
+					"name": "list own threads",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const response = pm.response.json();",
+									"const results = response.results;",
+									"const firstResult = results[0]",
+									"const firstResultId = firstResult.url.split('/').filter(i => i).pop()",
+									"",
+									"pm.environment.set(\"thread_id\", firstResultId);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/own/thread/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"own",
+								"thread",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const response = pm.response.json();",
+									"const resultId = response.url.split('/').filter(i => i).pop();",
+									"pm.environment.set(\"temp_thread_id\", resultId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{$randomProductName}}\",\n    \"post\": {\n        \"content_type\": \"html\",\n        \"content\": \"{{$randomLoremSentences}}\"\n    },\n    \"sub_category_id\": {{sub_category_id}},\n    \"description\": \"{{$randomLoremSentence}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/own/thread/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"own",
+								"thread",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{$randomProductName}}\",\n    \"post\": {\n        \"content_type\": \"html\",\n        \"content\": \"{{$randomLoremSentences}}\"\n    },\n    \"sub_category_id\": {{sub_category_id}},\n    \"description\": \"{{$randomLoremSentence}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/own/thread/:thread_id/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"own",
+								"thread",
+								":thread_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{temp_thread_id}}",
+									"description": "thread you wanna to update"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "partial update thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"post\": {\n        \"content_type\": \"text\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/own/thread/:thread_id/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"own",
+								"thread",
+								":thread_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{temp_thread_id}}",
+									"description": "thread you wanna to update"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"pm.environment.unset(\"temp_thread_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/own/thread/:thread_id/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"own",
+								"thread",
+								":thread_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{temp_thread_id}}",
+									"description": "thread you wanna to update"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "owner make thread private",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/own/thread/:thread_id/private/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"own",
+								"thread",
+								":thread_id",
+								"private",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{thread_id}}",
+									"description": "thread you wanna to update"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "owner make thread public",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base}}/own/thread/:thread_id/public/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"own",
+								"thread",
+								":thread_id",
+								"public",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{thread_id}}",
+									"description": "thread you wanna to update"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "anonymous actions",
+			"item": [
+				{
+					"name": "view thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 500]);",
+									"",
+									"    if(pm.response.code === 500) {",
+									"",
+									"        pm.test(\"error is a private content\", function () {",
+									"            var jsonData = pm.response.json();",
+									"            pm.expect(jsonData.detail).to.eql(\"You can't access private content.\");",
+									"        });",
+									"",
+									"    }",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base}}/thread/:thread_id",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"thread",
+								":thread_id"
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{thread_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "latest threads",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/thread/latest/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"thread",
+								"latest",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pinned threads",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/thread/pinned/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"thread",
+								"pinned",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pinned threads on sub category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/thread/pinned/:sub_category_id",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"thread",
+								"pinned",
+								":sub_category_id"
+							],
+							"variable": [
+								{
+									"key": "sub_category_id",
+									"value": "{{sub_category_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list threads on sub category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/thread/list/:sub_category_id",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"thread",
+								"list",
+								":sub_category_id"
+							],
+							"variable": [
+								{
+									"key": "sub_category_id",
+									"value": "{{sub_category_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user actions",
+			"item": [
+				{
+					"name": "comment on thread",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// set post_id",
+									"const response = pm.response.json();",
+									"const resultId = response.urls.save_url.split(\"/\").filter(i=>i).pop();",
+									"",
+									"pm.environment.set(\"post_id\", resultId);",
+									"pm.environment.set(\"comment_id\", resultId);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"{{$randomLoremSentences}}\",\n    \"content_type\": \"text\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/thread/:thread_id/comment/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"thread",
+								":thread_id",
+								"comment",
+								""
+							],
+							"variable": [
+								{
+									"key": "thread_id",
+									"value": "{{thread_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

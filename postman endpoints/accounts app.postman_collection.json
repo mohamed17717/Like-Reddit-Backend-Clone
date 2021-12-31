@@ -1,0 +1,522 @@
+{
+	"info": {
+		"_postman_id": "8a5d9cd2-1ac5-4f98-a9f5-e5c0e31dd098",
+		"name": "accounts app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const response = pm.response.json();",
+									"pm.environment.set(\"email\", response.email);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{password}}\",\n    \"re_password\": \"{{password}}\",\n    \"username\": \"{{$randomUserName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/auth/users/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uid\": \"Mg\",\n    \"token\": \"ax5v46-f637189fabd4d9399545a6e5a918fd72\"\n}\n"
+						},
+						"url": {
+							"raw": "{{base}}/auth/users/activation/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"activation",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.environment.set('admin_auth', `JWT ${response.access}`)",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"mhmd@gmail.com\",\n    \"password\": \"12345\"\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/auth/jwt/create/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"auth",
+								"jwt",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.environment.set('auth', `JWT ${response.access}`)",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"d3v.mhmd@gmail.com\",\n    \"password\": \"mo_01202215016\"\n}"
+						},
+						"url": {
+							"raw": "{{base}}/auth/jwt/create/",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"auth",
+								"jwt",
+								"create",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "login using email and password.\naccount must be activated"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin actions",
+			"item": [
+				{
+					"name": "verify",
+					"item": [
+						{
+							"name": "list verified users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/admin/verify/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"verify",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create verified user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/admin/verify/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"verify",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete verified user",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/admin/verify/4/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"verify",
+										"4",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "premium",
+					"item": [
+						{
+							"name": "list premium users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/admin/premium/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"premium",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create premium user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/admin/premium/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"premium",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete premium user",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/admin/premium/5/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"premium",
+										"5",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ban",
+					"item": [
+						{
+							"name": "list bans",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/admin/ban/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"ban",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ban user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 5,\n    \"days\": 3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/admin/ban/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"ban",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete ban",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_auth}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base}}/admin/ban/2/",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"admin",
+										"ban",
+										"2",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "user profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/user/:username/",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"user",
+						":username",
+						""
+					],
+					"variable": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"description": "username wanna to navigate his profile"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
