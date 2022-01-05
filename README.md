@@ -85,6 +85,19 @@ This is an example of how to list things you need to use the software and how to
 
 - [postman workspace](https://www.postman.com/mhmd17/workspace/little-reddit-api)
 
+## TODO
+
+- [ ] update is_private property in post to is_premium
+- [ ] in thread view user got twice from thread and post split that
+- [ ] use uuid and slug instead of pk
+- [ ] new notification type to pin message as a banner in pages
+- [ ] api to merge thread
+- [ ] abstract class for soft_delete
+- [ ] extra fields like (user: bio, gender, interests, ...)
+- [ ] generate url for report post type and generate in sub types url
+- [ ] make report decision affect places automatic (notify, hide post or whatever)
+- [ ] post contain emoji list with their url
+
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
